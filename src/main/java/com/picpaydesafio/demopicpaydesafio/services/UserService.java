@@ -4,6 +4,9 @@ import com.picpaydesafio.demopicpaydesafio.domain.user.User;
 import com.picpaydesafio.demopicpaydesafio.domain.user.UserType;
 import com.picpaydesafio.demopicpaydesafio.dtos.UserDTO;
 import com.picpaydesafio.demopicpaydesafio.repositories.UserRepository;
+import com.picpaydesafio.demopicpaydesafio.services.exceptions.InsufficientBalance;
+import com.picpaydesafio.demopicpaydesafio.services.exceptions.UserAlreadyExists;
+import com.picpaydesafio.demopicpaydesafio.services.exceptions.UserNotFound;
 import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,18 +18,18 @@ public class UserService {
   @Autowired
   private UserRepository repository;
 
-  public void validateTransaction(User sender, BigDecimal amount) throws Exception {
+  public void validateTransaction(User sender, BigDecimal amount) {
     if (sender.getUserType() == UserType.MERCHANT) {
-      throw new Exception("Usuário não está autorizado a realizar transação.");
+      throw new UserAlreadyExists("Usuário não está autorizado a realizar transação.");
     }
 
     if (sender.getBalance().compareTo(amount) < 0) {
-      throw new Exception("Saldo insuficiente.");
+      throw new InsufficientBalance("Saldo insuficiente.");
     }
   }
 
-  public User findUserById(Long id) throws Exception {
-    return this.repository.findUserById(id).orElseThrow(() -> new Exception("Usuário não encontrado"));
+  public User findUserById(Long id) {
+    return this.repository.findUserById(id).orElseThrow(() -> new UserNotFound("Usuário não encontrado"));
   }
 
   public void saveUser(User user) {
