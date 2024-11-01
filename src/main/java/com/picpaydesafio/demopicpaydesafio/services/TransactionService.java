@@ -1,10 +1,13 @@
 package com.picpaydesafio.demopicpaydesafio.services;
 
+import com.picpaydesafio.demopicpaydesafio.domain.transction.DefaultTransactionFactory;
 import com.picpaydesafio.demopicpaydesafio.domain.transction.Transaction;
+import com.picpaydesafio.demopicpaydesafio.domain.transction.TransactionFactory;
 import com.picpaydesafio.demopicpaydesafio.domain.user.User;
 import com.picpaydesafio.demopicpaydesafio.dtos.TransactionDTO;
 import com.picpaydesafio.demopicpaydesafio.repositories.TransactionRepository;
 import com.picpaydesafio.demopicpaydesafio.services.exceptions.UnauthorizedTransaction;
+import jakarta.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -18,35 +21,36 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class TransactionService {
 
-  @Autowired
   private UserService userService;
-
-  @Autowired
   private TransactionRepository repository;
-
-  @Autowired
   private NotificationService notificationService;
-
-  @Autowired
   private RestTemplate restTemplate;
 
+  private TransactionFactory transactionFactor;
+  @Autowired
+  public TransactionService(
+      NotificationService notificationService,
+      TransactionRepository repository,
+      RestTemplate restTemplate,
+      DefaultTransactionFactory transactionFactor,
+      UserService userService
+  ) {
+    this.notificationService = notificationService;
+    this.repository = repository;
+    this.restTemplate = restTemplate;
+    this.transactionFactor = transactionFactor;
+    this.userService = userService;
+  }
+
   @Transactional
-  public Transaction createTransction(TransactionDTO transaction) throws Exception {
+  public Transaction createTransction(TransactionDTO transaction) {
     User sender = this.userService.findUserById(transaction.senderId());
     User receiver = this.userService.findUserById(transaction.receiverId());
 
     userService.validateTransaction(sender, transaction.value());
+    validadeIfSenderIsAuthorized(sender, transaction);
 
-    boolean isAuthorized = this.authorizedTransaction(sender, transaction.value());
-    if (!isAuthorized) {
-      throw new UnauthorizedTransaction("Transação não autorizada.");
-    }
-
-    Transaction newTransaction = new Transaction();
-    newTransaction.setAmount(transaction.value());
-    newTransaction.setSender(sender);
-    newTransaction.setReceiver(receiver);
-    newTransaction.setTimestamp(LocalDateTime.now());
+    Transaction newTransaction = transactionFactor.createTransaction(sender, receiver, transaction.value());
 
     sender.setBalance(sender.getBalance().subtract(transaction.value()));
     receiver.setBalance(receiver.getBalance().add(transaction.value()));
@@ -71,6 +75,12 @@ public class TransactionService {
      else {
        return false;
      }
+  }
 
+  private void validadeIfSenderIsAuthorized(User sender, TransactionDTO transaction) {
+    boolean isAuthorized = this.authorizedTransaction(sender, transaction.value());
+    if (!isAuthorized) {
+      throw new UnauthorizedTransaction("Transação não autorizada.");
+    }
   }
 }
