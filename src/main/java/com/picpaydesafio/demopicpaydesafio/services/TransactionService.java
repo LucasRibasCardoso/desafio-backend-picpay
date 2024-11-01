@@ -1,15 +1,13 @@
 package com.picpaydesafio.demopicpaydesafio.services;
 
-import com.picpaydesafio.demopicpaydesafio.domain.transction.DefaultTransactionFactory;
+import com.picpaydesafio.demopicpaydesafio.domain.transction.factory.DefaultTransactionFactory;
 import com.picpaydesafio.demopicpaydesafio.domain.transction.Transaction;
-import com.picpaydesafio.demopicpaydesafio.domain.transction.TransactionFactory;
+import com.picpaydesafio.demopicpaydesafio.domain.transction.factory.TransactionFactory;
 import com.picpaydesafio.demopicpaydesafio.domain.user.User;
 import com.picpaydesafio.demopicpaydesafio.dtos.TransactionDTO;
 import com.picpaydesafio.demopicpaydesafio.repositories.TransactionRepository;
 import com.picpaydesafio.demopicpaydesafio.services.exceptions.UnauthorizedTransaction;
-import jakarta.annotation.PostConstruct;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
