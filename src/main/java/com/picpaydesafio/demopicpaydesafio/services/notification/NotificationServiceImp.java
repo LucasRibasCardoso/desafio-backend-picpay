@@ -1,20 +1,19 @@
-package com.picpaydesafio.demopicpaydesafio.services;
+package com.picpaydesafio.demopicpaydesafio.services.notification;
 
 import com.picpaydesafio.demopicpaydesafio.domain.user.User;
 import com.picpaydesafio.demopicpaydesafio.dtos.NotificationDTO;
-import com.picpaydesafio.demopicpaydesafio.services.exceptions.OfflineService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class NotificationService {
+public class NotificationServiceImp implements NotificationService {
 
   @Autowired
   private RestTemplate restTemplate;
 
+  @Override
   public void sendNotification(User user, String message) {
     String email = user.getEmail();
     NotificationDTO notificationRequest = new NotificationDTO(email, message);

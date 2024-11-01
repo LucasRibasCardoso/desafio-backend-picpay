@@ -7,6 +7,7 @@ import com.picpaydesafio.demopicpaydesafio.domain.user.User;
 import com.picpaydesafio.demopicpaydesafio.dtos.TransactionDTO;
 import com.picpaydesafio.demopicpaydesafio.repositories.TransactionRepository;
 import com.picpaydesafio.demopicpaydesafio.services.exceptions.UnauthorizedTransaction;
+import com.picpaydesafio.demopicpaydesafio.services.notification.NotificationService;
 import java.math.BigDecimal;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +20,12 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class TransactionService {
 
-  private UserService userService;
-  private TransactionRepository repository;
-  private NotificationService notificationService;
-  private RestTemplate restTemplate;
-
+  private final UserService userService;
+  private final TransactionRepository repository;
+  private final NotificationService notificationService;
+  private final RestTemplate restTemplate;
   private TransactionFactory transactionFactor;
+
   @Autowired
   public TransactionService(
       NotificationService notificationService,
