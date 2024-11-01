@@ -6,6 +6,9 @@ import com.picpaydesafio.demopicpaydesafio.services.exceptions.OfflineService;
 import com.picpaydesafio.demopicpaydesafio.services.exceptions.UnauthorizedTransaction;
 import com.picpaydesafio.demopicpaydesafio.services.exceptions.UserAlreadyExists;
 import com.picpaydesafio.demopicpaydesafio.services.exceptions.UserNotFound;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -40,13 +43,36 @@ public class ControllerExceptionHandler {
     return buildErrorResponse(e.getMessage(), HttpStatus.NOT_FOUND);
   }
 
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity ConstraintViolationException(ConstraintViolationException e) {
+    String field = extractFieldFromMessage(e);
+    String errorMessage = "Esse " + field + " ja foi cadastrado.";
 
+    return buildErrorResponse(errorMessage, HttpStatus.BAD_REQUEST);
+  }
+
+  private String extractFieldFromMessage(ConstraintViolationException e) {
+    String message = e.getSQLException().getMessage();
+    String field = "desconhecido";
+
+    Pattern pattern = Pattern.compile("ON PUBLIC\\.\\w+\\((\\w+)");
+    Matcher matcher = pattern.matcher(message);
+
+    if (matcher.find()) {
+      field = matcher.group(1);
+    }
+
+    return field;
+  }
 
 
   private ResponseEntity<ExceptionDTO> buildErrorResponse(
-      String message, HttpStatus status) {
+      String message, HttpStatus status
+  ) {
 
     ExceptionDTO newExceptionDTO = new ExceptionDTO(message, status);
-    return ResponseEntity.status(status).body(newExceptionDTO);
+    return ResponseEntity.status(status)
+        .body(newExceptionDTO);
   }
+
 }
