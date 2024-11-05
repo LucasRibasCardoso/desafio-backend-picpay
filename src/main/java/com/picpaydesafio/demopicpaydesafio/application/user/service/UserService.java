@@ -19,9 +19,10 @@ public class UserService {
         .orElseThrow(() -> new UserNotFound("Usuário com id " + id + " não encontrado."));
   }
 
-  public void updateBalances(User sender, User receiver) {
+  public void saveUsersWithNewBalances(User sender, User receiver) {
     userRepository.save(sender);
     userRepository.save(receiver);
   }
+
 
 }
