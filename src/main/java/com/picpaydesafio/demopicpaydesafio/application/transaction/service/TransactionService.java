@@ -23,18 +23,23 @@ public class TransactionService {
   private final TransactionFactory transactionFactory;
   private final TransactionRepository transactionRepository;
   private final TransactionValidator validator;
-  private final UserService userService;
-
-  private final EmailService emailService;
   private final TransactionDTOMapper mapper;
 
+  private final UserService userService;
+  private final EmailService emailService;
 
+    /**
+   * Creates a new transaction and processes it, updating the balances of the sender and receiver, saving the transaction, and sending a transaction email.
+   *
+   * @param request the {@link TransactionRequestDTO} containing the details of the transaction to be created
+   * @return the saved {@link Transaction} object
+   */
   public Transaction createTransaction(TransactionRequestDTO request) {
     Transaction transaction = transactionFactory.createDomain(request);
     validator.validate(transaction);
 
     Transaction transactionProcessed = transaction.process(transactionFactory);
-    userService.updateBalances(transactionProcessed.getSender(), transactionProcessed.getReceiver());
+    userService.saveUsersWithNewBalances(transactionProcessed.getSender(), transactionProcessed.getReceiver());
 
     Transaction savedTransaction = transactionRepository.save(transactionProcessed);
     emailService.sendTransactionEmail(transactionProcessed);
@@ -42,9 +47,16 @@ public class TransactionService {
     return savedTransaction;
   }
 
+
+  /**
+   * Retrieves a list of all transactions.
+   *
+   * @return a list of {@link TransactionResponseDTO} representing all transactions
+   */
   public List<TransactionResponseDTO> getAllTransactions() {
     return transactionRepository.findAll().stream()
         .map(mapper::toDTO)
         .toList();
   }
+
 }
