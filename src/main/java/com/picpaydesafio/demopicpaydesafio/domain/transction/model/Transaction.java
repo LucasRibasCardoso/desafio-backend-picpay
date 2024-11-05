@@ -31,11 +31,10 @@ public class Transaction {
   User receiver;
   LocalDateTime timestamp;
 
-
-  public Transaction process(TransactionFactory transactionFactory) {
+  public Transaction process() {
     User updatedSender = this.sender.debit(this.amount);
-    User updateReceiver = this.receiver.credit(this.amount);
+    User updatedReceiver = this.receiver.credit(this.amount);
 
-    return transactionFactory.craeteDomain(id, amount, updatedSender, updateReceiver, timestamp);
+    return new Transaction(this.id, this.amount, updatedSender, updatedReceiver, this.timestamp);
   }
 }
