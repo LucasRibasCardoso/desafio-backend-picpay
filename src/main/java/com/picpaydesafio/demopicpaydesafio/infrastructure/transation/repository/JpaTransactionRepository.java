@@ -4,7 +4,7 @@ import com.picpaydesafio.demopicpaydesafio.domain.transction.model.Transaction;
 import com.picpaydesafio.demopicpaydesafio.domain.transction.repository.TransactionRepository;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.transation.entity.TransactionEntity;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.transation.mapper.TransactionMapper;
-import java.util.Optional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -23,8 +23,8 @@ public class JpaTransactionRepository implements TransactionRepository {
   }
 
   @Override
-  public Optional<Transaction> findById(Long id) {
-    return jpaRepository.findById(id).map(mapper::toDomain);
+  public List<Transaction> findAll() {
+    return jpaRepository.findAll().stream().map(mapper::toDomain).toList();
   }
 
 }

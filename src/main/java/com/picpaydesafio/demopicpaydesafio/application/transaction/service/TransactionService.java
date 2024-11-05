@@ -7,6 +7,9 @@ import com.picpaydesafio.demopicpaydesafio.domain.transction.factory.Transaction
 import com.picpaydesafio.demopicpaydesafio.domain.transction.model.Transaction;
 import com.picpaydesafio.demopicpaydesafio.domain.transction.repository.TransactionRepository;
 import com.picpaydesafio.demopicpaydesafio.web.transaction.dtos.TransactionRequestDTO;
+import com.picpaydesafio.demopicpaydesafio.web.transaction.dtos.TransactionResponseDTO;
+import com.picpaydesafio.demopicpaydesafio.web.transaction.mapper.TransactionDTOMapper;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +26,7 @@ public class TransactionService {
   private final UserService userService;
 
   private final EmailService emailService;
+  private final TransactionDTOMapper mapper;
 
 
   public Transaction createTransaction(TransactionRequestDTO request) {
@@ -38,4 +42,9 @@ public class TransactionService {
     return savedTransaction;
   }
 
+  public List<TransactionResponseDTO> getAllTransactions() {
+    return transactionRepository.findAll().stream()
+        .map(mapper::toDTO)
+        .toList();
+  }
 }
