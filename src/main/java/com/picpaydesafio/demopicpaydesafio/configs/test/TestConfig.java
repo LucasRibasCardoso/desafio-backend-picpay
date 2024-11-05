@@ -2,7 +2,7 @@ package com.picpaydesafio.demopicpaydesafio.configs.test;
 
 import com.picpaydesafio.demopicpaydesafio.infrastructure.user.entity.UserEntity;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.user.entity.enums.UserType;
-import com.picpaydesafio.demopicpaydesafio.web.user.dtos.UserDTO;
+import com.picpaydesafio.demopicpaydesafio.web.user.dtos.UserResponseDTO;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.user.repository.UserJpaRepository;
 import java.math.BigDecimal;
 import java.util.List;
@@ -19,7 +19,7 @@ public class TestConfig implements CommandLineRunner {
   @Override
   public void run(String... args) {
 
-    UserDTO user1 = new UserDTO(
+    UserResponseDTO user1 = new UserResponseDTO(
         "João",
         "Silva",
         "12345678900",
@@ -27,9 +27,10 @@ public class TestConfig implements CommandLineRunner {
         "lucas.ribas.card@gmail.com",
         "password123",
         UserType.COMMON
+
     );
 
-    UserDTO user2 = new UserDTO(
+    UserResponseDTO user2 = new UserResponseDTO(
         "Maria",
         "Santos",
         "98765432100",
@@ -39,7 +40,7 @@ public class TestConfig implements CommandLineRunner {
         UserType.COMMON
     );
 
-    UserDTO user3 = new UserDTO(
+    UserResponseDTO user3 = new UserResponseDTO(
         "Carlos",
         "Oliveira",
         "56789012345",
