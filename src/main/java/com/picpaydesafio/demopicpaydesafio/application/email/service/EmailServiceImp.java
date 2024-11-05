@@ -21,7 +21,7 @@ public class EmailServiceImp implements EmailService {
   private final EmailMapper emailMapper;
 
 
-  public void sendTransactionEmail(Transaction transaction) {
+  public void sendEmail(Transaction transaction) {
     sendEmailToSender(transaction);
     sendEmailToReceiver(transaction);
   }
