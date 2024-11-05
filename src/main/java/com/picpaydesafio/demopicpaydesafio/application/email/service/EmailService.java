@@ -4,5 +4,5 @@ import com.picpaydesafio.demopicpaydesafio.domain.transction.model.Transaction;
 
 public interface EmailService {
 
-  void sendTransactionEmail(Transaction transaction);
+  void sendEmail(Transaction transaction);
 }
