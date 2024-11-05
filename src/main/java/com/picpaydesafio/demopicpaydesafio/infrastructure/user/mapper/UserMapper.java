@@ -2,11 +2,13 @@ package com.picpaydesafio.demopicpaydesafio.infrastructure.user.mapper;
 
 import com.picpaydesafio.demopicpaydesafio.domain.user.model.User;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.user.entity.UserEntity;
+import com.picpaydesafio.demopicpaydesafio.web.user.dtos.UserResponseDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class UserMapper {
-
 
   public User toDomain(UserEntity entity) {
     return new User(
@@ -33,4 +35,17 @@ public class UserMapper {
         domain.getUserType()
     );
   }
+
+  public UserResponseDTO toResponseDTO(User user) {
+    return new UserResponseDTO(
+        user.getFirstName(),
+        user.getLastName(),
+        user.getDocument(),
+        user.getBalance(),
+        user.getEmail(),
+        user.getPassword(),
+        user.getUserType()
+    );
+  }
+
 }

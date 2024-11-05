@@ -1,10 +1,8 @@
 package com.picpaydesafio.demopicpaydesafio.web.transaction.controller;
 
 import com.picpaydesafio.demopicpaydesafio.application.transaction.service.TransactionService;
-import com.picpaydesafio.demopicpaydesafio.domain.transction.model.Transaction;
 import com.picpaydesafio.demopicpaydesafio.web.transaction.dtos.TransactionRequestDTO;
 import com.picpaydesafio.demopicpaydesafio.web.transaction.dtos.TransactionResponseDTO;
-import com.picpaydesafio.demopicpaydesafio.web.transaction.mapper.TransactionDTOMapper;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -22,20 +20,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class TransactionController {
 
   private final TransactionService transactionService;
-  private final TransactionDTOMapper dtoMapper;
 
   @PostMapping
   public ResponseEntity<TransactionResponseDTO> createTransaction(
       @RequestBody @Valid TransactionRequestDTO request
   ) {
-    Transaction transaction = transactionService.createTransaction(request);
-
-    TransactionResponseDTO transactionResponse = dtoMapper.toDTO(transaction);
-    return new ResponseEntity<>(transactionResponse, HttpStatus.CREATED);
+    TransactionResponseDTO transaction = transactionService.createTransaction(request);
+    return new ResponseEntity<>(transaction, HttpStatus.CREATED);
   }
 
   @GetMapping
   public List<TransactionResponseDTO> findAllTransactions() {
     return transactionService.getAllTransactions();
   }
+
 }

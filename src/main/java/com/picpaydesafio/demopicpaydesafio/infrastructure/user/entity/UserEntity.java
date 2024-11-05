@@ -1,7 +1,7 @@
 package com.picpaydesafio.demopicpaydesafio.infrastructure.user.entity;
 
 import com.picpaydesafio.demopicpaydesafio.infrastructure.user.entity.enums.UserType;
-import com.picpaydesafio.demopicpaydesafio.web.user.dtos.UserDTO;
+import com.picpaydesafio.demopicpaydesafio.web.user.dtos.UserResponseDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -43,7 +43,9 @@ public class UserEntity {
   @Enumerated(EnumType.STRING)
   private UserType userType;
 
-  public UserEntity(UserDTO data) {
+
+  // usado no teste config
+  public UserEntity(UserResponseDTO data) {
     this.firstName = data.firstName();
     this.lastName = data.lastName();
     this.balance = data.balance();

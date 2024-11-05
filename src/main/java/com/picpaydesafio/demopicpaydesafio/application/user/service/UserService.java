@@ -1,18 +1,22 @@
 package com.picpaydesafio.demopicpaydesafio.application.user.service;
 
 import com.picpaydesafio.demopicpaydesafio.application.user.exceptions.UserNotFound;
+import com.picpaydesafio.demopicpaydesafio.domain.user.factory.UserFactory;
 import com.picpaydesafio.demopicpaydesafio.domain.user.model.User;
 import com.picpaydesafio.demopicpaydesafio.domain.user.repository.UserRepository;
+import com.picpaydesafio.demopicpaydesafio.infrastructure.user.mapper.UserMapper;
+import com.picpaydesafio.demopicpaydesafio.web.user.dtos.UserRequestDTO;
+import com.picpaydesafio.demopicpaydesafio.web.user.dtos.UserResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class UserService {
 
   private final UserRepository userRepository;
+  private final UserFactory userFactory;
+  private final UserMapper userMapper;
 
   public User findUserById(Long id) {
     return userRepository.findById(id)
@@ -24,5 +28,11 @@ public class UserService {
     userRepository.save(receiver);
   }
 
+
+  public UserResponseDTO saveNewUser(UserRequestDTO user) {
+    User newUser = userFactory.createDomain(user);
+    User savedUser = userRepository.save(newUser);
+    return userMapper.toResponseDTO(savedUser);
+  }
 
 }
