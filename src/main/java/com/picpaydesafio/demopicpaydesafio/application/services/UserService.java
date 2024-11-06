@@ -29,8 +29,8 @@ public class UserService {
   }
 
 
-  public UserResponseDTO saveNewUser(UserRequestDTO user) {
-    User newUser = userFactory.createDomain(user);
+  public UserResponseDTO saveNewUser(UserRequestDTO userRequest) {
+    User newUser = userFactory.createDomain(userRequest);
     User savedUser = userRepository.save(newUser);
     return userMapper.toResponseDTO(savedUser);
   }
