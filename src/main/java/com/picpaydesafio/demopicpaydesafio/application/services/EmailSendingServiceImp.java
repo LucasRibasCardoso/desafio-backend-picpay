@@ -1,7 +1,7 @@
 package com.picpaydesafio.demopicpaydesafio.application.services;
 
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidSendEmail;
-import com.picpaydesafio.demopicpaydesafio.application.services.interfaces.EmailService;
+import com.picpaydesafio.demopicpaydesafio.application.services.interfaces.EmailSendingService;
 import com.picpaydesafio.demopicpaydesafio.domain.factories.interfaces.EmailFactory;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.mappers.EmailMapper;
 import com.picpaydesafio.demopicpaydesafio.domain.models.Email;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class EmailServiceImp implements EmailService {
+public class EmailSendingServiceImp implements EmailSendingService {
 
   private final JavaMailSender emailSender;
   private final EmailFactory emailFactory;
