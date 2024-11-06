@@ -30,8 +30,9 @@ public class TransactionController {
   }
 
   @GetMapping
-  public List<TransactionResponseDTO> findAllTransactions() {
-    return transactionService.getAllTransactions();
+  public ResponseEntity<List<TransactionResponseDTO>> findAllTransactions() {
+    List<TransactionResponseDTO> transactions = transactionService.getAllTransactions();
+    return new ResponseEntity<>(transactions, HttpStatus.OK);
   }
 
 }
