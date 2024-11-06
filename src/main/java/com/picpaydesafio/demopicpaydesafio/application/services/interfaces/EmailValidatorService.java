@@ -2,5 +2,5 @@ package com.picpaydesafio.demopicpaydesafio.application.services.interfaces;
 
 public interface EmailValidatorService {
 
-  void validate(String email);
+  boolean isValid(String email);
 }
