@@ -1,7 +1,5 @@
-package com.picpaydesafio.demopicpaydesafio.domain.transction.model;
+package com.picpaydesafio.demopicpaydesafio.domain.models;
 
-import com.picpaydesafio.demopicpaydesafio.domain.user.model.User;
-import com.picpaydesafio.demopicpaydesafio.domain.transction.factory.TransactionFactory;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.Value;

@@ -1,6 +1,6 @@
-package com.picpaydesafio.demopicpaydesafio.domain.user.factory;
+package com.picpaydesafio.demopicpaydesafio.domain.factories.interfaces;
 
-import com.picpaydesafio.demopicpaydesafio.domain.user.model.User;
+import com.picpaydesafio.demopicpaydesafio.domain.models.User;
 import com.picpaydesafio.demopicpaydesafio.web.user.dtos.UserRequestDTO;
 
 public interface UserFactory {

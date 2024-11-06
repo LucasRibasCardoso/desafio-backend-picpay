@@ -1,7 +1,7 @@
-package com.picpaydesafio.demopicpaydesafio.domain.user.model;
+package com.picpaydesafio.demopicpaydesafio.domain.models;
 
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.InsufficientFoundsException;
-import com.picpaydesafio.demopicpaydesafio.infrastructure.user.entity.enums.UserType;
+import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserType;
 import java.math.BigDecimal;
 import lombok.Value;
 

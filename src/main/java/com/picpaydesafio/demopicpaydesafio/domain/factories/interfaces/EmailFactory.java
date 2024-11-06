@@ -1,6 +1,6 @@
-package com.picpaydesafio.demopicpaydesafio.domain.email.factory;
+package com.picpaydesafio.demopicpaydesafio.domain.factories.interfaces;
 
-import com.picpaydesafio.demopicpaydesafio.domain.email.model.Email;
+import com.picpaydesafio.demopicpaydesafio.domain.models.Email;
 import java.time.LocalDateTime;
 
 public interface EmailFactory {

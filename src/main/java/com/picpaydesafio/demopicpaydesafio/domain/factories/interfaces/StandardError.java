@@ -1,4 +1,4 @@
-package com.picpaydesafio.demopicpaydesafio.domain.error.factory;
+package com.picpaydesafio.demopicpaydesafio.domain.factories.interfaces;
 
 import java.util.Map;
 

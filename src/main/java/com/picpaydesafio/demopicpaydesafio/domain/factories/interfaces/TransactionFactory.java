@@ -1,6 +1,6 @@
-package com.picpaydesafio.demopicpaydesafio.domain.transction.factory;
+package com.picpaydesafio.demopicpaydesafio.domain.factories.interfaces;
 
-import com.picpaydesafio.demopicpaydesafio.domain.transction.model.Transaction;
+import com.picpaydesafio.demopicpaydesafio.domain.models.Transaction;
 import com.picpaydesafio.demopicpaydesafio.web.transaction.dtos.TransactionRequestDTO;
 
 public interface TransactionFactory {

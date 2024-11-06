@@ -1,7 +1,8 @@
-package com.picpaydesafio.demopicpaydesafio.domain.user.factory;
+package com.picpaydesafio.demopicpaydesafio.domain.factories;
 
-import com.picpaydesafio.demopicpaydesafio.domain.user.model.User;
-import com.picpaydesafio.demopicpaydesafio.infrastructure.user.entity.enums.UserType;
+import com.picpaydesafio.demopicpaydesafio.domain.factories.interfaces.UserFactory;
+import com.picpaydesafio.demopicpaydesafio.domain.models.User;
+import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserType;
 import com.picpaydesafio.demopicpaydesafio.web.user.dtos.UserRequestDTO;
 import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;

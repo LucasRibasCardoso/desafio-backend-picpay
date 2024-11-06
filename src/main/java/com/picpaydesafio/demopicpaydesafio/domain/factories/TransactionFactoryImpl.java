@@ -1,8 +1,9 @@
-package com.picpaydesafio.demopicpaydesafio.domain.transction.factory;
+package com.picpaydesafio.demopicpaydesafio.domain.factories;
 
 import com.picpaydesafio.demopicpaydesafio.application.services.UserService;
-import com.picpaydesafio.demopicpaydesafio.domain.transction.model.Transaction;
-import com.picpaydesafio.demopicpaydesafio.domain.user.model.User;
+import com.picpaydesafio.demopicpaydesafio.domain.factories.interfaces.TransactionFactory;
+import com.picpaydesafio.demopicpaydesafio.domain.models.Transaction;
+import com.picpaydesafio.demopicpaydesafio.domain.models.User;
 import com.picpaydesafio.demopicpaydesafio.web.transaction.dtos.TransactionRequestDTO;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;

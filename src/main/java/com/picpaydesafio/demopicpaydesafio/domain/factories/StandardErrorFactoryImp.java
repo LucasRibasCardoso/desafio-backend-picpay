@@ -1,12 +1,13 @@
-package com.picpaydesafio.demopicpaydesafio.domain.error.factory;
+package com.picpaydesafio.demopicpaydesafio.domain.factories;
 
-import com.picpaydesafio.demopicpaydesafio.domain.error.DefaultError;
+import com.picpaydesafio.demopicpaydesafio.domain.factories.interfaces.StandardError;
+import com.picpaydesafio.demopicpaydesafio.domain.models.DefaultError;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 @Component
-public class StandardErrorFactory {
+public class StandardErrorFactoryImp {
 
   public StandardError create(String message, HttpStatus status) {
     return new DefaultError(message, status.value());

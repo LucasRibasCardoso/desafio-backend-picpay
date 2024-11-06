@@ -1,4 +1,4 @@
-package com.picpaydesafio.demopicpaydesafio.domain.email.model;
+package com.picpaydesafio.demopicpaydesafio.domain.models;
 
 import java.time.LocalDateTime;
 import lombok.Value;

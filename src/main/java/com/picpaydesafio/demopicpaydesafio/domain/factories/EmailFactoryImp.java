@@ -1,6 +1,7 @@
-package com.picpaydesafio.demopicpaydesafio.domain.email.factory;
+package com.picpaydesafio.demopicpaydesafio.domain.factories;
 
-import com.picpaydesafio.demopicpaydesafio.domain.email.model.Email;
+import com.picpaydesafio.demopicpaydesafio.domain.factories.interfaces.EmailFactory;
+import com.picpaydesafio.demopicpaydesafio.domain.models.Email;
 import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
