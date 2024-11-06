@@ -1,9 +1,9 @@
 package com.picpaydesafio.demopicpaydesafio.application.services;
 
+import com.picpaydesafio.demopicpaydesafio.application.services.interfaces.EmailSendingService;
 import com.picpaydesafio.demopicpaydesafio.application.usecases.CreateTransactionUseCase;
-import com.picpaydesafio.demopicpaydesafio.application.usecases.FindAllTransactionsUseCase;
-import com.picpaydesafio.demopicpaydesafio.application.usecases.SendEmailUseCase;
 import com.picpaydesafio.demopicpaydesafio.domain.models.Transaction;
+import com.picpaydesafio.demopicpaydesafio.domain.repositoriesInterfaces.TransactionRepository;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.mappers.TransactionMapper;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.TransactionRequestDTO;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.TransactionResponseDTO;
@@ -17,24 +17,26 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class TransactionService {
 
+  private final TransactionRepository transactionRepository;
   private final TransactionMapper transactionMapper;
 
   private final CreateTransactionUseCase createTransactionUseCase;
-  private final FindAllTransactionsUseCase findAllTransactionsUseCase;
-  private final SendEmailUseCase sendEmailUseCase;
+  private final EmailSendingService emailService;
 
   @Transactional
   public TransactionResponseDTO createTransaction(TransactionRequestDTO request) {
     Transaction transaction = createTransactionUseCase.execute(request);
 
-    sendEmailUseCase.execute(transaction);
+    emailService.sendEmail(transaction);
 
     return transactionMapper.toResponseDTO(transaction);
   }
 
   public List<TransactionResponseDTO> getAllTransactions() {
-    List<Transaction> transactions = findAllTransactionsUseCase.execute();
-    return transactions.stream().map(transactionMapper::toResponseDTO).toList();
+    return transactionRepository.findAll()
+        .stream()
+        .map(transactionMapper::toResponseDTO)
+        .toList();
   }
 
 }
