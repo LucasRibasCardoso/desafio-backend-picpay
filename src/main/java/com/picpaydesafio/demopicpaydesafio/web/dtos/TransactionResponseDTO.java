@@ -1,4 +1,4 @@
-package com.picpaydesafio.demopicpaydesafio.web.transaction.dtos;
+package com.picpaydesafio.demopicpaydesafio.web.dtos;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

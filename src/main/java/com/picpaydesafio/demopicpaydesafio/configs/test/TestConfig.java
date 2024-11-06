@@ -2,7 +2,7 @@ package com.picpaydesafio.demopicpaydesafio.configs.test;
 
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.UserEntity;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserType;
-import com.picpaydesafio.demopicpaydesafio.web.user.dtos.UserResponseDTO;
+import com.picpaydesafio.demopicpaydesafio.web.dtos.UserResponseDTO;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.repositories.interfaces.UserJpaRepository;
 import java.math.BigDecimal;
 import java.util.List;

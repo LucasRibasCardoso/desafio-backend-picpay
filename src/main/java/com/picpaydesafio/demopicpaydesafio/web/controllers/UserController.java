@@ -1,8 +1,8 @@
-package com.picpaydesafio.demopicpaydesafio.web.user.controller;
+package com.picpaydesafio.demopicpaydesafio.web.controllers;
 
 import com.picpaydesafio.demopicpaydesafio.application.services.UserService;
-import com.picpaydesafio.demopicpaydesafio.web.user.dtos.UserRequestDTO;
-import com.picpaydesafio.demopicpaydesafio.web.user.dtos.UserResponseDTO;
+import com.picpaydesafio.demopicpaydesafio.web.dtos.UserRequestDTO;
+import com.picpaydesafio.demopicpaydesafio.web.dtos.UserResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

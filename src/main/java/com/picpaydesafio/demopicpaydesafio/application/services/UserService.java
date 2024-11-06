@@ -5,8 +5,8 @@ import com.picpaydesafio.demopicpaydesafio.domain.factories.interfaces.UserFacto
 import com.picpaydesafio.demopicpaydesafio.domain.models.User;
 import com.picpaydesafio.demopicpaydesafio.domain.repositoriesInterfaces.UserRepository;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.mappers.UserMapper;
-import com.picpaydesafio.demopicpaydesafio.web.user.dtos.UserRequestDTO;
-import com.picpaydesafio.demopicpaydesafio.web.user.dtos.UserResponseDTO;
+import com.picpaydesafio.demopicpaydesafio.web.dtos.UserRequestDTO;
+import com.picpaydesafio.demopicpaydesafio.web.dtos.UserResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

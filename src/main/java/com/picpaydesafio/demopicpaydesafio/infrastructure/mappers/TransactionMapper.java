@@ -2,7 +2,7 @@ package com.picpaydesafio.demopicpaydesafio.infrastructure.mappers;
 
 import com.picpaydesafio.demopicpaydesafio.domain.models.Transaction;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.TransactionEntity;
-import com.picpaydesafio.demopicpaydesafio.web.transaction.dtos.TransactionResponseDTO;
+import com.picpaydesafio.demopicpaydesafio.web.dtos.TransactionResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -4,7 +4,7 @@ import com.picpaydesafio.demopicpaydesafio.application.services.UserService;
 import com.picpaydesafio.demopicpaydesafio.domain.factories.interfaces.TransactionFactory;
 import com.picpaydesafio.demopicpaydesafio.domain.models.Transaction;
 import com.picpaydesafio.demopicpaydesafio.domain.models.User;
-import com.picpaydesafio.demopicpaydesafio.web.transaction.dtos.TransactionRequestDTO;
+import com.picpaydesafio.demopicpaydesafio.web.dtos.TransactionRequestDTO;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

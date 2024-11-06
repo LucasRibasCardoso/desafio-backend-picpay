@@ -1,8 +1,8 @@
-package com.picpaydesafio.demopicpaydesafio.web.transaction.controller;
+package com.picpaydesafio.demopicpaydesafio.web.controllers;
 
 import com.picpaydesafio.demopicpaydesafio.application.services.TransactionService;
-import com.picpaydesafio.demopicpaydesafio.web.transaction.dtos.TransactionRequestDTO;
-import com.picpaydesafio.demopicpaydesafio.web.transaction.dtos.TransactionResponseDTO;
+import com.picpaydesafio.demopicpaydesafio.web.dtos.TransactionRequestDTO;
+import com.picpaydesafio.demopicpaydesafio.web.dtos.TransactionResponseDTO;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

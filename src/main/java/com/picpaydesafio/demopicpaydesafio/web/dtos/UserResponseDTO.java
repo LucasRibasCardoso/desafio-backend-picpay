@@ -1,4 +1,4 @@
-package com.picpaydesafio.demopicpaydesafio.web.user.dtos;
+package com.picpaydesafio.demopicpaydesafio.web.dtos;
 
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserType;
 import java.math.BigDecimal;

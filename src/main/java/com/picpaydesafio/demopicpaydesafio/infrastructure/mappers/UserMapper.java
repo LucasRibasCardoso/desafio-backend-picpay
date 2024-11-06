@@ -2,7 +2,7 @@ package com.picpaydesafio.demopicpaydesafio.infrastructure.mappers;
 
 import com.picpaydesafio.demopicpaydesafio.domain.models.User;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.UserEntity;
-import com.picpaydesafio.demopicpaydesafio.web.user.dtos.UserResponseDTO;
+import com.picpaydesafio.demopicpaydesafio.web.dtos.UserResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

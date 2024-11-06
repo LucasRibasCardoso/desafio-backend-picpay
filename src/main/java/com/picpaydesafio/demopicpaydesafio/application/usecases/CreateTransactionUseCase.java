@@ -4,7 +4,7 @@ import com.picpaydesafio.demopicpaydesafio.application.services.TransactionValid
 import com.picpaydesafio.demopicpaydesafio.domain.factories.interfaces.TransactionFactory;
 import com.picpaydesafio.demopicpaydesafio.domain.models.Transaction;
 import com.picpaydesafio.demopicpaydesafio.domain.repositoriesInterfaces.TransactionRepository;
-import com.picpaydesafio.demopicpaydesafio.web.transaction.dtos.TransactionRequestDTO;
+import com.picpaydesafio.demopicpaydesafio.web.dtos.TransactionRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

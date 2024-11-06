@@ -1,4 +1,4 @@
-package com.picpaydesafio.demopicpaydesafio.web.transaction.dtos;
+package com.picpaydesafio.demopicpaydesafio.web.dtos;
 
 
 import jakarta.validation.constraints.NotNull;

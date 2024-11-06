@@ -3,7 +3,7 @@ package com.picpaydesafio.demopicpaydesafio.domain.factories;
 import com.picpaydesafio.demopicpaydesafio.domain.factories.interfaces.UserFactory;
 import com.picpaydesafio.demopicpaydesafio.domain.models.User;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserType;
-import com.picpaydesafio.demopicpaydesafio.web.user.dtos.UserRequestDTO;
+import com.picpaydesafio.demopicpaydesafio.web.dtos.UserRequestDTO;
 import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

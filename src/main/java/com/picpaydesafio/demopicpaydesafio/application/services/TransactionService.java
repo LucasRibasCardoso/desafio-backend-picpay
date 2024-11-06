@@ -5,8 +5,8 @@ import com.picpaydesafio.demopicpaydesafio.application.usecases.FindAllTransacti
 import com.picpaydesafio.demopicpaydesafio.application.usecases.SendEmailUseCase;
 import com.picpaydesafio.demopicpaydesafio.domain.models.Transaction;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.mappers.TransactionMapper;
-import com.picpaydesafio.demopicpaydesafio.web.transaction.dtos.TransactionRequestDTO;
-import com.picpaydesafio.demopicpaydesafio.web.transaction.dtos.TransactionResponseDTO;
+import com.picpaydesafio.demopicpaydesafio.web.dtos.TransactionRequestDTO;
+import com.picpaydesafio.demopicpaydesafio.web.dtos.TransactionResponseDTO;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
