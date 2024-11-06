@@ -18,7 +18,7 @@ public record UserRequestDTO(
     String document,
 
     @NotBlank(message = "O campo email é obrigatório.")
-    @Email(message = "Email informado é inválido.")
+    @Email(message = "Email informado possuí um formato inválido.")
     String email,
 
     @NotBlank(message = "O campo senha é obrigatório.")
