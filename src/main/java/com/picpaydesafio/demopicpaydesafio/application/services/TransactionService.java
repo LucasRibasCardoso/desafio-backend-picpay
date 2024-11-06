@@ -1,4 +1,4 @@
-package com.picpaydesafio.demopicpaydesafio.application.transaction.service;
+package com.picpaydesafio.demopicpaydesafio.application.services;
 
 import com.picpaydesafio.demopicpaydesafio.application.usecases.CreateTransactionUseCase;
 import com.picpaydesafio.demopicpaydesafio.application.usecases.FindAllTransactionsUseCase;

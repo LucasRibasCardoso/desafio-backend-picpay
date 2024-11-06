@@ -1,11 +1,11 @@
-package com.picpaydesafio.demopicpaydesafio.application.transaction.validators;
+package com.picpaydesafio.demopicpaydesafio.application.services;
 
-import com.picpaydesafio.demopicpaydesafio.application.transaction.exceptions.UnauthorizedTransactionException;
+import com.picpaydesafio.demopicpaydesafio.application.exceptions.UnauthorizedTransactionException;
 import com.picpaydesafio.demopicpaydesafio.domain.transction.model.Transaction;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TransactionValidator {
+public class TransactionValidatorService {
 
   public void validate(Transaction transaction) {
     if (transaction.getSender().equals(transaction.getReceiver())) {

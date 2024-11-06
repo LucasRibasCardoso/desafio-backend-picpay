@@ -1,4 +1,4 @@
-package com.picpaydesafio.demopicpaydesafio.application.transaction.exceptions;
+package com.picpaydesafio.demopicpaydesafio.application.exceptions;
 
 public class InsufficientFoundsException extends RuntimeException {
 

@@ -1,6 +1,6 @@
 package com.picpaydesafio.demopicpaydesafio.web.user.controller;
 
-import com.picpaydesafio.demopicpaydesafio.application.user.service.UserService;
+import com.picpaydesafio.demopicpaydesafio.application.services.UserService;
 import com.picpaydesafio.demopicpaydesafio.web.user.dtos.UserRequestDTO;
 import com.picpaydesafio.demopicpaydesafio.web.user.dtos.UserResponseDTO;
 import jakarta.validation.Valid;

@@ -1,6 +1,6 @@
 package com.picpaydesafio.demopicpaydesafio.application.usecases;
 
-import com.picpaydesafio.demopicpaydesafio.application.transaction.validators.TransactionValidator;
+import com.picpaydesafio.demopicpaydesafio.application.services.TransactionValidatorService;
 import com.picpaydesafio.demopicpaydesafio.domain.transction.factory.TransactionFactory;
 import com.picpaydesafio.demopicpaydesafio.domain.transction.model.Transaction;
 import com.picpaydesafio.demopicpaydesafio.domain.transction.repository.TransactionRepository;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class CreateTransactionUseCase {
 
   private final TransactionFactory transactionFactory;
-  private final TransactionValidator validator;
+  private final TransactionValidatorService validator;
   private final TransactionRepository transactionRepository;
   private final UpdateUserBalancesAfterTransactionUseCase updateUserBalanceUseCase;
 

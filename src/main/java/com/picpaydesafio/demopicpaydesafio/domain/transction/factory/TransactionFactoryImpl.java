@@ -1,6 +1,6 @@
 package com.picpaydesafio.demopicpaydesafio.domain.transction.factory;
 
-import com.picpaydesafio.demopicpaydesafio.application.user.service.UserService;
+import com.picpaydesafio.demopicpaydesafio.application.services.UserService;
 import com.picpaydesafio.demopicpaydesafio.domain.transction.model.Transaction;
 import com.picpaydesafio.demopicpaydesafio.domain.user.model.User;
 import com.picpaydesafio.demopicpaydesafio.web.transaction.dtos.TransactionRequestDTO;

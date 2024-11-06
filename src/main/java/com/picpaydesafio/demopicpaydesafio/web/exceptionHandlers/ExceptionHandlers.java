@@ -1,11 +1,11 @@
 package com.picpaydesafio.demopicpaydesafio.web.exceptionHandlers;
 
-import com.picpaydesafio.demopicpaydesafio.application.email.exceptions.InvalidSendEmail;
-import com.picpaydesafio.demopicpaydesafio.application.transaction.exceptions.InvalidTransactionException;
-import com.picpaydesafio.demopicpaydesafio.application.transaction.exceptions.InsufficientFoundsException;
-import com.picpaydesafio.demopicpaydesafio.application.transaction.exceptions.UnauthorizedTransactionException;
-import com.picpaydesafio.demopicpaydesafio.application.user.exceptions.UserAlreadyExists;
-import com.picpaydesafio.demopicpaydesafio.application.user.exceptions.UserNotFound;
+import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidSendEmail;
+import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidTransactionException;
+import com.picpaydesafio.demopicpaydesafio.application.exceptions.InsufficientFoundsException;
+import com.picpaydesafio.demopicpaydesafio.application.exceptions.UnauthorizedTransactionException;
+import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserAlreadyExists;
+import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserNotFound;
 import com.picpaydesafio.demopicpaydesafio.domain.error.factory.StandardError;
 import com.picpaydesafio.demopicpaydesafio.domain.error.factory.StandardErrorFactory;
 import java.util.HashMap;
@@ -25,7 +25,7 @@ public class ExceptionHandlers {
   private final StandardErrorFactory errorFactory;
 
   @ExceptionHandler(DataIntegrityViolationException.class)
-  public ResponseEntity<StandardError> DataIntegrityViolationException(DataIntegrityViolationException e) {
+  public ResponseEntity<StandardError> DataIntegrityViolationException() {
     StandardError error = errorFactory.create("Usuário já cadastrado.", HttpStatus.BAD_REQUEST);
     return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
   }

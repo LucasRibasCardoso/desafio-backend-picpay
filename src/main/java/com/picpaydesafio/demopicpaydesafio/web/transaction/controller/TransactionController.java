@@ -1,6 +1,6 @@
 package com.picpaydesafio.demopicpaydesafio.web.transaction.controller;
 
-import com.picpaydesafio.demopicpaydesafio.application.transaction.service.TransactionService;
+import com.picpaydesafio.demopicpaydesafio.application.services.TransactionService;
 import com.picpaydesafio.demopicpaydesafio.web.transaction.dtos.TransactionRequestDTO;
 import com.picpaydesafio.demopicpaydesafio.web.transaction.dtos.TransactionResponseDTO;
 import jakarta.validation.Valid;

@@ -1,4 +1,4 @@
-package com.picpaydesafio.demopicpaydesafio.application.user.exceptions;
+package com.picpaydesafio.demopicpaydesafio.application.exceptions;
 
 public class UserAlreadyExists extends RuntimeException {
 

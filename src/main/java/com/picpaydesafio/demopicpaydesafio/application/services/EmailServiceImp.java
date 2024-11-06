@@ -1,6 +1,7 @@
-package com.picpaydesafio.demopicpaydesafio.application.email.service;
+package com.picpaydesafio.demopicpaydesafio.application.services;
 
-import com.picpaydesafio.demopicpaydesafio.application.email.exceptions.InvalidSendEmail;
+import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidSendEmail;
+import com.picpaydesafio.demopicpaydesafio.application.services.interfaces.EmailService;
 import com.picpaydesafio.demopicpaydesafio.domain.email.factory.EmailFactory;
 import com.picpaydesafio.demopicpaydesafio.domain.email.mapper.EmailMapper;
 import com.picpaydesafio.demopicpaydesafio.domain.email.model.Email;

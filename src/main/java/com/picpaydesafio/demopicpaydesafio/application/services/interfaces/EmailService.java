@@ -1,4 +1,4 @@
-package com.picpaydesafio.demopicpaydesafio.application.email.service;
+package com.picpaydesafio.demopicpaydesafio.application.services.interfaces;
 
 import com.picpaydesafio.demopicpaydesafio.domain.transction.model.Transaction;
 

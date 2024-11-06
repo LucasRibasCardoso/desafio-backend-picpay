@@ -1,4 +1,4 @@
-package com.picpaydesafio.demopicpaydesafio.application.email.exceptions;
+package com.picpaydesafio.demopicpaydesafio.application.exceptions;
 
 public class InvalidSendEmail extends RuntimeException {
 

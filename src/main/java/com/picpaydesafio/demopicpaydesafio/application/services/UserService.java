@@ -1,6 +1,6 @@
-package com.picpaydesafio.demopicpaydesafio.application.user.service;
+package com.picpaydesafio.demopicpaydesafio.application.services;
 
-import com.picpaydesafio.demopicpaydesafio.application.user.exceptions.UserNotFound;
+import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserNotFound;
 import com.picpaydesafio.demopicpaydesafio.domain.user.factory.UserFactory;
 import com.picpaydesafio.demopicpaydesafio.domain.user.model.User;
 import com.picpaydesafio.demopicpaydesafio.domain.user.repository.UserRepository;
