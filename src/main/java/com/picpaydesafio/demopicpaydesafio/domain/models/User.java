@@ -5,10 +5,7 @@ import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserTyp
 import java.math.BigDecimal;
 import lombok.Value;
 
-/**
- * Represents a user in the system, with various properties such as name, email, balance, and user type.
- * Provides methods to credit and debit the user's balance, with validation to ensure sufficient funds.
- */
+
 @Value
 public class User {
 

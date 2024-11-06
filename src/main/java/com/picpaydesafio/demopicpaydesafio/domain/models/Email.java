@@ -6,7 +6,6 @@ import lombok.Value;
 @Value
 public class Email {
 
-
   private Long id;
   private String ownerRef;
   private String emailFrom;
