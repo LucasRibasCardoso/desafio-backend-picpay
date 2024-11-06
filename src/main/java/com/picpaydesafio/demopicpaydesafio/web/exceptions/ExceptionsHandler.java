@@ -63,8 +63,7 @@ public class ExceptionsHandler {
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<StandardError> MethodArgumentNotValidException(MethodArgumentNotValidException e) {
     Map<String, String> errors = new HashMap<>();
-    for (var error : e.getBindingResult()
-        .getFieldErrors()) {
+    for (var error : e.getBindingResult().getFieldErrors()) {
       errors.put(error.getField(), error.getDefaultMessage());
     }
 
