@@ -1,8 +1,10 @@
 package com.picpaydesafio.demopicpaydesafio.infrastructure.repositories.interfaces;
 
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.UserEntity;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserJpaRepository extends JpaRepository<UserEntity, Long> {
-  UserEntity findUserById(Long id);
+  Optional<UserEntity> findByDocument(String document);
+  Optional<UserEntity> findByEmail(String email);
 }
