@@ -1,15 +1,16 @@
-package com.picpaydesafio.demopicpaydesafio.infrastructure.user.repository;
+package com.picpaydesafio.demopicpaydesafio.infrastructure.repositories;
 
-import com.picpaydesafio.demopicpaydesafio.domain.user.model.User;
-import com.picpaydesafio.demopicpaydesafio.domain.user.repository.UserRepository;
-import com.picpaydesafio.demopicpaydesafio.infrastructure.user.mapper.UserMapper;
+import com.picpaydesafio.demopicpaydesafio.domain.models.User;
+import com.picpaydesafio.demopicpaydesafio.domain.repositoriesInterfaces.UserRepository;
+import com.picpaydesafio.demopicpaydesafio.infrastructure.mappers.UserMapper;
+import com.picpaydesafio.demopicpaydesafio.infrastructure.repositories.interfaces.UserJpaRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class JpaUserRepository implements UserRepository {
+public class UserJpaRepositoryImp implements UserRepository {
 
   private final UserJpaRepository jpaRepository;
   private final UserMapper mapper;

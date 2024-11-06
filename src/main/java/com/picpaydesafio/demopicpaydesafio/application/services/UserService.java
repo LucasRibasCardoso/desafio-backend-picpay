@@ -1,10 +1,10 @@
 package com.picpaydesafio.demopicpaydesafio.application.services;
 
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserNotFound;
-import com.picpaydesafio.demopicpaydesafio.domain.user.factory.UserFactory;
-import com.picpaydesafio.demopicpaydesafio.domain.user.model.User;
-import com.picpaydesafio.demopicpaydesafio.domain.user.repository.UserRepository;
-import com.picpaydesafio.demopicpaydesafio.infrastructure.user.mapper.UserMapper;
+import com.picpaydesafio.demopicpaydesafio.domain.factories.interfaces.UserFactory;
+import com.picpaydesafio.demopicpaydesafio.domain.models.User;
+import com.picpaydesafio.demopicpaydesafio.domain.repositoriesInterfaces.UserRepository;
+import com.picpaydesafio.demopicpaydesafio.infrastructure.mappers.UserMapper;
 import com.picpaydesafio.demopicpaydesafio.web.user.dtos.UserRequestDTO;
 import com.picpaydesafio.demopicpaydesafio.web.user.dtos.UserResponseDTO;
 import lombok.RequiredArgsConstructor;

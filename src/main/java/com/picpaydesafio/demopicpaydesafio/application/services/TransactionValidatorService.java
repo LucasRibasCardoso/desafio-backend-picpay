@@ -1,7 +1,7 @@
 package com.picpaydesafio.demopicpaydesafio.application.services;
 
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.UnauthorizedTransactionException;
-import com.picpaydesafio.demopicpaydesafio.domain.transction.model.Transaction;
+import com.picpaydesafio.demopicpaydesafio.domain.models.Transaction;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -1,6 +1,6 @@
-package com.picpaydesafio.demopicpaydesafio.domain.email.mapper;
+package com.picpaydesafio.demopicpaydesafio.infrastructure.mappers;
 
-import com.picpaydesafio.demopicpaydesafio.domain.email.model.Email;
+import com.picpaydesafio.demopicpaydesafio.domain.models.Email;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
 

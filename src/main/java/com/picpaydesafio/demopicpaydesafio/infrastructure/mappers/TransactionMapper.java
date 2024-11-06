@@ -1,8 +1,7 @@
-package com.picpaydesafio.demopicpaydesafio.infrastructure.transation.mapper;
+package com.picpaydesafio.demopicpaydesafio.infrastructure.mappers;
 
-import com.picpaydesafio.demopicpaydesafio.domain.transction.model.Transaction;
-import com.picpaydesafio.demopicpaydesafio.infrastructure.transation.entity.TransactionEntity;
-import com.picpaydesafio.demopicpaydesafio.infrastructure.user.mapper.UserMapper;
+import com.picpaydesafio.demopicpaydesafio.domain.models.Transaction;
+import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.TransactionEntity;
 import com.picpaydesafio.demopicpaydesafio.web.transaction.dtos.TransactionResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

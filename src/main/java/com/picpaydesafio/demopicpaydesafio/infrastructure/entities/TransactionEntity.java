@@ -1,6 +1,5 @@
-package com.picpaydesafio.demopicpaydesafio.infrastructure.transation.entity;
+package com.picpaydesafio.demopicpaydesafio.infrastructure.entities;
 
-import com.picpaydesafio.demopicpaydesafio.infrastructure.user.entity.UserEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

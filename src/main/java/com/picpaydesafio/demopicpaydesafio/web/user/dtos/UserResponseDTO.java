@@ -1,6 +1,6 @@
 package com.picpaydesafio.demopicpaydesafio.web.user.dtos;
 
-import com.picpaydesafio.demopicpaydesafio.infrastructure.user.entity.enums.UserType;
+import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserType;
 import java.math.BigDecimal;
 
 public record UserResponseDTO(

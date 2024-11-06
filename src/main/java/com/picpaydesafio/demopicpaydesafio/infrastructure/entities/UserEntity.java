@@ -1,6 +1,6 @@
-package com.picpaydesafio.demopicpaydesafio.infrastructure.user.entity;
+package com.picpaydesafio.demopicpaydesafio.infrastructure.entities;
 
-import com.picpaydesafio.demopicpaydesafio.infrastructure.user.entity.enums.UserType;
+import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserType;
 import com.picpaydesafio.demopicpaydesafio.web.user.dtos.UserResponseDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

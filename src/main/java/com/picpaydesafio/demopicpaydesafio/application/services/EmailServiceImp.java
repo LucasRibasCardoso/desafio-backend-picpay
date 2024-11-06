@@ -2,10 +2,10 @@ package com.picpaydesafio.demopicpaydesafio.application.services;
 
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidSendEmail;
 import com.picpaydesafio.demopicpaydesafio.application.services.interfaces.EmailService;
-import com.picpaydesafio.demopicpaydesafio.domain.email.factory.EmailFactory;
-import com.picpaydesafio.demopicpaydesafio.domain.email.mapper.EmailMapper;
-import com.picpaydesafio.demopicpaydesafio.domain.email.model.Email;
-import com.picpaydesafio.demopicpaydesafio.domain.transction.model.Transaction;
+import com.picpaydesafio.demopicpaydesafio.domain.factories.interfaces.EmailFactory;
+import com.picpaydesafio.demopicpaydesafio.infrastructure.mappers.EmailMapper;
+import com.picpaydesafio.demopicpaydesafio.domain.models.Email;
+import com.picpaydesafio.demopicpaydesafio.domain.models.Transaction;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailException;
