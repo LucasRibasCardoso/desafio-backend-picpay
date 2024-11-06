@@ -1,5 +1,6 @@
 package com.picpaydesafio.demopicpaydesafio.web.exceptions;
 
+import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidEmailException;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidSendEmail;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidTransactionException;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.InsufficientFoundsException;
@@ -73,6 +74,12 @@ public class ExceptionsHandler {
 
   @ExceptionHandler(InvalidSendEmail.class)
   public ResponseEntity<StandardError> InvalidSendEmail(InvalidSendEmail e) {
+    StandardError error = errorFactory.create(e.getMessage(), HttpStatus.BAD_REQUEST);
+    return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(InvalidEmailException.class)
+  public ResponseEntity<StandardError> InvalidEmailException(InvalidEmailException e) {
     StandardError error = errorFactory.create(e.getMessage(), HttpStatus.BAD_REQUEST);
     return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
   }
