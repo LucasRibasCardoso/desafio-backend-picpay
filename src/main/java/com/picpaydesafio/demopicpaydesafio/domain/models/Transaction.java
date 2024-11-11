@@ -2,10 +2,12 @@ package com.picpaydesafio.demopicpaydesafio.domain.models;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 
 @Value
+@EqualsAndHashCode(of = "id")
 public class Transaction {
 
   Long id;

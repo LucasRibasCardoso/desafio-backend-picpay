@@ -11,13 +11,15 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity()
 @Table(name = "tb_transactions")
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Data()
+@EqualsAndHashCode(of = "id")
 public class TransactionEntity {
 
   @Id
