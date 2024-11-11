@@ -1,6 +1,6 @@
-package com.picpaydesafio.demopicpaydesafio.domain.factories;
+package com.picpaydesafio.demopicpaydesafio.domain.factories.imp;
 
-import com.picpaydesafio.demopicpaydesafio.domain.factories.interfaces.EmailFactory;
+import com.picpaydesafio.demopicpaydesafio.domain.factories.EmailFactory;
 import com.picpaydesafio.demopicpaydesafio.domain.models.Email;
 import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Value;

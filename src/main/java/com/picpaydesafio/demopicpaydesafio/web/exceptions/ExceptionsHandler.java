@@ -7,8 +7,8 @@ import com.picpaydesafio.demopicpaydesafio.application.exceptions.InsufficientFo
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.UnauthorizedTransactionException;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserAlreadyExists;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserNotFound;
-import com.picpaydesafio.demopicpaydesafio.domain.factories.StandardErrorFactoryImp;
-import com.picpaydesafio.demopicpaydesafio.domain.factories.interfaces.StandardError;
+import com.picpaydesafio.demopicpaydesafio.domain.factories.imp.StandardErrorFactoryImp;
+import com.picpaydesafio.demopicpaydesafio.domain.factories.StandardError;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;

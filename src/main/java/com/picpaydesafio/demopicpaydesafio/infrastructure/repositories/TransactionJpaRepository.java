@@ -1,4 +1,4 @@
-package com.picpaydesafio.demopicpaydesafio.infrastructure.repositories.interfaces;
+package com.picpaydesafio.demopicpaydesafio.infrastructure.repositories;
 
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.TransactionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

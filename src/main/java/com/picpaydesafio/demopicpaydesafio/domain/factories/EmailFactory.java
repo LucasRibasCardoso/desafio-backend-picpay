@@ -1,4 +1,4 @@
-package com.picpaydesafio.demopicpaydesafio.domain.factories.interfaces;
+package com.picpaydesafio.demopicpaydesafio.domain.factories;
 
 import com.picpaydesafio.demopicpaydesafio.domain.models.Email;
 import java.time.LocalDateTime;

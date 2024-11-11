@@ -1,6 +1,6 @@
 package com.picpaydesafio.demopicpaydesafio.domain.models;
 
-import com.picpaydesafio.demopicpaydesafio.domain.factories.interfaces.StandardError;
+import com.picpaydesafio.demopicpaydesafio.domain.factories.StandardError;
 import java.util.HashMap;
 import java.util.Map;
 

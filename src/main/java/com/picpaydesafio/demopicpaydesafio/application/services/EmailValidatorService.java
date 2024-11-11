@@ -1,4 +1,4 @@
-package com.picpaydesafio.demopicpaydesafio.application.services.interfaces;
+package com.picpaydesafio.demopicpaydesafio.application.services;
 
 public interface EmailValidatorService {
 

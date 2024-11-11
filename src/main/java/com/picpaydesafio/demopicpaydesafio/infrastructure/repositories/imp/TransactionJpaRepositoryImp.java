@@ -1,10 +1,10 @@
-package com.picpaydesafio.demopicpaydesafio.infrastructure.repositories;
+package com.picpaydesafio.demopicpaydesafio.infrastructure.repositories.imp;
 
 import com.picpaydesafio.demopicpaydesafio.domain.models.Transaction;
-import com.picpaydesafio.demopicpaydesafio.domain.repositoriesInterfaces.TransactionRepository;
+import com.picpaydesafio.demopicpaydesafio.domain.repositoriesDomain.TransactionRepository;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.TransactionEntity;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.mappers.TransactionMapper;
-import com.picpaydesafio.demopicpaydesafio.infrastructure.repositories.interfaces.TransactionJpaRepository;
+import com.picpaydesafio.demopicpaydesafio.infrastructure.repositories.TransactionJpaRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

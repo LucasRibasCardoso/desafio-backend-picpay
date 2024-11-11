@@ -1,9 +1,9 @@
 package com.picpaydesafio.demopicpaydesafio.application.usecases;
 
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidEmailException;
-import com.picpaydesafio.demopicpaydesafio.application.services.interfaces.EmailValidatorService;
+import com.picpaydesafio.demopicpaydesafio.application.services.EmailValidatorService;
 import com.picpaydesafio.demopicpaydesafio.domain.models.User;
-import com.picpaydesafio.demopicpaydesafio.domain.repositoriesInterfaces.UserRepository;
+import com.picpaydesafio.demopicpaydesafio.domain.repositoriesDomain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

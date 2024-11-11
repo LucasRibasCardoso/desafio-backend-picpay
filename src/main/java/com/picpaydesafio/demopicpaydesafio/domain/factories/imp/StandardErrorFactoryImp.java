@@ -1,6 +1,6 @@
-package com.picpaydesafio.demopicpaydesafio.domain.factories;
+package com.picpaydesafio.demopicpaydesafio.domain.factories.imp;
 
-import com.picpaydesafio.demopicpaydesafio.domain.factories.interfaces.StandardError;
+import com.picpaydesafio.demopicpaydesafio.domain.factories.StandardError;
 import com.picpaydesafio.demopicpaydesafio.domain.models.DefaultError;
 import java.util.Map;
 import org.springframework.http.HttpStatus;

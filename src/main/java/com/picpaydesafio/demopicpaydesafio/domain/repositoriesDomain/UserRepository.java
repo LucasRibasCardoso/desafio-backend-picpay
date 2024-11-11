@@ -1,4 +1,4 @@
-package com.picpaydesafio.demopicpaydesafio.domain.repositoriesInterfaces;
+package com.picpaydesafio.demopicpaydesafio.domain.repositoriesDomain;
 
 import com.picpaydesafio.demopicpaydesafio.domain.models.User;
 import java.util.List;

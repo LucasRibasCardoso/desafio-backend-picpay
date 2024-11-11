@@ -1,4 +1,4 @@
-package com.picpaydesafio.demopicpaydesafio.infrastructure.repositories.interfaces;
+package com.picpaydesafio.demopicpaydesafio.infrastructure.repositories;
 
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.UserEntity;
 import java.util.Optional;

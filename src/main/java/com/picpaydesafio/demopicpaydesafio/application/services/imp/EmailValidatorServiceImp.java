@@ -1,6 +1,6 @@
-package com.picpaydesafio.demopicpaydesafio.application.services;
+package com.picpaydesafio.demopicpaydesafio.application.services.imp;
 
-import com.picpaydesafio.demopicpaydesafio.application.services.interfaces.EmailValidatorService;
+import com.picpaydesafio.demopicpaydesafio.application.services.EmailValidatorService;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.EmailValidationResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

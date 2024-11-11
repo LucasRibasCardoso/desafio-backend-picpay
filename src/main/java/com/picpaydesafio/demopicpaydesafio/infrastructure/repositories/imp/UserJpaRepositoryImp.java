@@ -1,9 +1,9 @@
-package com.picpaydesafio.demopicpaydesafio.infrastructure.repositories;
+package com.picpaydesafio.demopicpaydesafio.infrastructure.repositories.imp;
 
 import com.picpaydesafio.demopicpaydesafio.domain.models.User;
-import com.picpaydesafio.demopicpaydesafio.domain.repositoriesInterfaces.UserRepository;
+import com.picpaydesafio.demopicpaydesafio.domain.repositoriesDomain.UserRepository;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.mappers.UserMapper;
-import com.picpaydesafio.demopicpaydesafio.infrastructure.repositories.interfaces.UserJpaRepository;
+import com.picpaydesafio.demopicpaydesafio.infrastructure.repositories.UserJpaRepository;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
