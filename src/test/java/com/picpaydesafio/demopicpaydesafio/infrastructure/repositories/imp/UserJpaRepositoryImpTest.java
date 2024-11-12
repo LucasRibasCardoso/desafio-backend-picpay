@@ -59,10 +59,17 @@ class UserJpaRepositoryImpTest {
 
     // Assert
     assertTrue(userResult.isPresent());
-    assertEquals(userDomain, userResult.get());
+    assertEquals(Optional.class, userResult.getClass());
+
+    assertEquals(ID, userResult.get().getId());
+    assertEquals(JOAO, userResult.get().getFirstName());
+    assertEquals(CARVALHO, userResult.get().getLastName());
+    assertEquals(DOCUMENT_JOAO, userResult.get().getDocument());
+    assertEquals(EMAIL_JOAO, userResult.get().getEmail());
+    assertEquals(PASSWORD_JOAO, userResult.get().getPassword());
+
     verify(jpaRepository).findById(ID);
     verify(mapper).toDomain(userEntity);
-    assertEquals(Optional.class, userResult.getClass());
   }
 
   @Test
@@ -75,8 +82,9 @@ class UserJpaRepositoryImpTest {
 
     // Assert
     assertTrue(userResult.isEmpty());
-    verify(jpaRepository).findById(ID);
     assertEquals(Optional.class, userResult.getClass());
+
+    verify(jpaRepository).findById(ID);
   }
 
   @Test
@@ -91,7 +99,15 @@ class UserJpaRepositoryImpTest {
 
     // Assert
     assertNotNull(userResult);
-    assertEquals(userDomain, userResult);
+    assertEquals(User.class, userResult.getClass());
+
+    assertEquals(ID, userResult.getId());
+    assertEquals(JOAO, userResult.getFirstName());
+    assertEquals(CARVALHO, userResult.getLastName());
+    assertEquals(DOCUMENT_JOAO, userResult.getDocument());
+    assertEquals(EMAIL_JOAO, userResult.getEmail());
+    assertEquals(PASSWORD_JOAO, userResult.getPassword());
+
     verify(jpaRepository).save(userEntity);
     verify(mapper).toEntity(userResult);
   }
@@ -107,10 +123,17 @@ class UserJpaRepositoryImpTest {
 
     //assert
     assertTrue(userResult.isPresent());
-    assertEquals(userDomain, userResult.get());
+    assertEquals(Optional.class, userResult.getClass());
+
+    assertEquals(ID, userResult.get().getId());
+    assertEquals(JOAO, userResult.get().getFirstName());
+    assertEquals(CARVALHO, userResult.get().getLastName());
+    assertEquals(DOCUMENT_JOAO, userResult.get().getDocument());
+    assertEquals(EMAIL_JOAO, userResult.get().getEmail());
+    assertEquals(PASSWORD_JOAO, userResult.get().getPassword());
+
     verify(jpaRepository).findByDocument(DOCUMENT_JOAO);
     verify(mapper).toDomain(userEntity);
-    assertEquals(Optional.class, userResult.getClass());
   }
 
   @Test
@@ -123,8 +146,9 @@ class UserJpaRepositoryImpTest {
 
     // Assert
     assertTrue(userResult.isEmpty());
-    verify(jpaRepository).findByDocument(DOCUMENT_JOAO);
     assertEquals(Optional.class, userResult.getClass());
+
+    verify(jpaRepository).findByDocument(DOCUMENT_JOAO);
   }
 
   @Test
@@ -138,10 +162,17 @@ class UserJpaRepositoryImpTest {
 
     // Assert
     assertTrue(userResult.isPresent());
-    assertEquals(userDomain, userResult.get());
+    assertEquals(Optional.class, userResult.getClass());
+
+    assertEquals(ID, userResult.get().getId());
+    assertEquals(JOAO, userResult.get().getFirstName());
+    assertEquals(CARVALHO, userResult.get().getLastName());
+    assertEquals(DOCUMENT_JOAO, userResult.get().getDocument());
+    assertEquals(EMAIL_JOAO, userResult.get().getEmail());
+    assertEquals(PASSWORD_JOAO, userResult.get().getPassword());
+
     verify(jpaRepository).findByEmail(EMAIL_JOAO);
     verify(mapper).toDomain(userEntity);
-    assertEquals(Optional.class, userResult.getClass());
   }
 
   @Test
@@ -154,13 +185,15 @@ class UserJpaRepositoryImpTest {
 
     // Assert
     assertTrue(userResult.isEmpty());
-    verify(jpaRepository).findByEmail(EMAIL_JOAO);
     assertEquals(Optional.class, userResult.getClass());
+
+    verify(jpaRepository).findByEmail(EMAIL_JOAO);
   }
 
   @Test
   void findAll() {
   }
+
 
   private void initializeTestObjects() {
     userEntity = new UserEntity(ID, JOAO, CARVALHO, DOCUMENT_JOAO, EMAIL_JOAO, PASSWORD_JOAO, BALANCE, USER_TYPE);
