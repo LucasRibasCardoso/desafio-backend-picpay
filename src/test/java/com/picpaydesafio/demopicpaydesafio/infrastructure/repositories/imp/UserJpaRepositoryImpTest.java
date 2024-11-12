@@ -62,7 +62,7 @@ class UserJpaRepositoryImpTest {
     assertEquals(userDomain, userResult.get());
     verify(jpaRepository).findById(ID);
     verify(mapper).toDomain(userEntity);
-
+    assertEquals(Optional.class, userResult.getClass());
   }
 
   @Test
@@ -74,9 +74,9 @@ class UserJpaRepositoryImpTest {
     Optional<User> userResult = userJpaRepositoryImp.findById(ID);
 
     // Assert
-    assertFalse(userResult.isPresent());
+    assertTrue(userResult.isEmpty());
     verify(jpaRepository).findById(ID);
-
+    assertEquals(Optional.class, userResult.getClass());
   }
 
   @Test
@@ -110,6 +110,7 @@ class UserJpaRepositoryImpTest {
     assertEquals(userDomain, userResult.get());
     verify(jpaRepository).findByDocument(DOCUMENT_JOAO);
     verify(mapper).toDomain(userEntity);
+    assertEquals(Optional.class, userResult.getClass());
   }
 
   @Test
@@ -121,8 +122,9 @@ class UserJpaRepositoryImpTest {
     Optional<User> userResult = userJpaRepositoryImp.findByDocument(DOCUMENT_JOAO);
 
     // Assert
-    assertFalse(userResult.isPresent());
+    assertTrue(userResult.isEmpty());
     verify(jpaRepository).findByDocument(DOCUMENT_JOAO);
+    assertEquals(Optional.class, userResult.getClass());
   }
 
   @Test
@@ -139,10 +141,21 @@ class UserJpaRepositoryImpTest {
     assertEquals(userDomain, userResult.get());
     verify(jpaRepository).findByEmail(EMAIL_JOAO);
     verify(mapper).toDomain(userEntity);
+    assertEquals(Optional.class, userResult.getClass());
   }
 
   @Test
-  void findByEmail() {
+  void findByEmail_ShouldReturnEmpty_WhenUserDoesNotExist() {
+    // Arrange
+    when(jpaRepository.findByEmail(EMAIL_JOAO)).thenReturn(Optional.empty());
+
+    // Act
+    Optional<User> userResult = userJpaRepositoryImp.findByEmail(EMAIL_JOAO);
+
+    // Assert
+    assertTrue(userResult.isEmpty());
+    verify(jpaRepository).findByEmail(EMAIL_JOAO);
+    assertEquals(Optional.class, userResult.getClass());
   }
 
   @Test
