@@ -113,6 +113,19 @@ class UserJpaRepositoryImpTest {
   }
 
   @Test
+  void findByDocument_ShouldReturnEmpty_WhenUserDoesNotExist() {
+    // Arrange
+    when(jpaRepository.findByDocument(DOCUMENT_JOAO)).thenReturn(Optional.empty());
+
+    // Act
+    Optional<User> userResult = userJpaRepositoryImp.findByDocument(DOCUMENT_JOAO);
+
+    // Assert
+    assertFalse(userResult.isPresent());
+    verify(jpaRepository).findByDocument(DOCUMENT_JOAO);
+  }
+
+  @Test
   void findByEmail() {
   }
 
