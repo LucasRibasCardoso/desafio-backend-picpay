@@ -19,6 +19,7 @@ import com.picpaydesafio.demopicpaydesafio.web.dtos.UserRequestDTO;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.UserResponseDTO;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -108,7 +109,26 @@ class UserServiceImpTest {
   }
 
   @Test
-  void findUserById() {
+  void findUserById_ShouldReturnUser_whenUserExists() {
+    // Arrange
+    when(userRepository.findById(ID)).thenReturn(Optional.of(user));
+
+    // act
+    User user = userServiceImp.findUserById(ID);
+
+    // assert
+    assertInstanceOf(User.class, user);
+
+    assertEquals(ID, user.getId());
+    assertEquals(JOAO, user.getFirstName());
+    assertEquals(CARVALHO, user.getLastName());
+    assertEquals(DOCUMENT, user.getDocument());
+    assertEquals(EMAIL, user.getEmail());
+    assertEquals(PASSWORD, user.getPassword());
+    assertEquals(USER_TYPE, user.getUserType());
+    assertEquals(BALANCE, user.getBalance());
+
+    verify(userRepository).findById(ID);
   }
 
   @Test
