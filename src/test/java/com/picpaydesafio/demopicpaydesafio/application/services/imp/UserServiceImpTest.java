@@ -2,12 +2,15 @@ package com.picpaydesafio.demopicpaydesafio.application.services.imp;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserNotFound;
 import com.picpaydesafio.demopicpaydesafio.application.services.UserService;
 import com.picpaydesafio.demopicpaydesafio.application.usecases.ValidateUserUseCase;
 import com.picpaydesafio.demopicpaydesafio.domain.factories.UserFactory;
@@ -19,6 +22,7 @@ import com.picpaydesafio.demopicpaydesafio.web.dtos.UserRequestDTO;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.UserResponseDTO;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -129,6 +133,21 @@ class UserServiceImpTest {
     assertEquals(BALANCE, user.getBalance());
 
     verify(userRepository).findById(ID);
+  }
+
+  @Test
+  void findUserById_shouldThrowException_whenUserDoesNotExist() {
+    // Arrange
+    when(userRepository.findById(ID)).thenThrow(new UserNotFound("Usuário com id " + ID + " não encontrado."));
+
+    // act
+    UserNotFound exception = assertThrows(UserNotFound.class, () -> userServiceImp.findUserById(ID));
+
+    // assert
+    assertEquals("Usuário com id " + ID + " não encontrado.", exception.getMessage());
+
+    verify(userRepository).findById(ID);
+
   }
 
   @Test
