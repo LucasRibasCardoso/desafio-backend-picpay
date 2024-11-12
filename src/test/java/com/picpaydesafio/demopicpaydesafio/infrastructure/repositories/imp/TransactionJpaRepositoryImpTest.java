@@ -1,6 +1,7 @@
 package com.picpaydesafio.demopicpaydesafio.infrastructure.repositories.imp;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
@@ -11,6 +12,7 @@ import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.UserEntity;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserType;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.mappers.TransactionMapper;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.repositories.TransactionJpaRepository;
+import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -81,21 +83,21 @@ class TransactionJpaRepositoryImpTest {
     verify(mapper).toEntity(transaction);
     verify(jpaRepository).save(transactionEntity);
     verify(mapper).toDomain(transactionEntity);
-
   }
 
   @Test
-  void findAll_ShouldReturnListOfTransactions_WhenTransactionsIsSaved() {
+  void findAll_ShouldReturnListOfTransactions_WhenTransactionsExist() {
     // Arrange
-    when(jpaRepository.findAll()).thenReturn(Collections.singletonList(transactionEntity));
+    when(jpaRepository.findAll()).thenReturn(List.of(transactionEntity));
     when(mapper.toDomain(transactionEntity)).thenReturn(transaction);
 
     // Act
     List<Transaction> transactions = repository.findAll();
 
     // Assert
-    assertEquals(Transaction.class, transactions.get(0).getClass());
+    assertInstanceOf(List.class, transactions);
     assertEquals(1, transactions.size());
+    assertEquals(Transaction.class, transactions.get(0).getClass());
 
     assertEquals(transaction.getId(), transactions.get(0).getId());
     assertEquals(transaction.getAmount(), transactions.get(0).getAmount());
@@ -105,18 +107,18 @@ class TransactionJpaRepositoryImpTest {
 
     verify(jpaRepository).findAll();
     verify(mapper).toDomain(transactionEntity);
-
   }
 
   @Test
   void findAll_ShouldReturnEmptyList_WhenNoTransactionsExist() {
     // Arrange
-    when(jpaRepository.findAll()).thenReturn(Collections.emptyList());
+    when(jpaRepository.findAll()).thenReturn(List.of());
 
     // Act
     List<Transaction> transactions = repository.findAll();
 
     // Assert
+    assertInstanceOf(List.class, transactions);
     assertTrue(transactions.isEmpty());
 
     verify(jpaRepository).findAll();

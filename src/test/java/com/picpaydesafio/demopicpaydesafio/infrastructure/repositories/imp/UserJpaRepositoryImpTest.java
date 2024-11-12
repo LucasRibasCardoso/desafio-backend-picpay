@@ -2,6 +2,7 @@ package com.picpaydesafio.demopicpaydesafio.infrastructure.repositories.imp;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -11,6 +12,7 @@ import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserTyp
 import com.picpaydesafio.demopicpaydesafio.infrastructure.mappers.UserMapper;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.repositories.UserJpaRepository;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -85,6 +87,7 @@ class UserJpaRepositoryImpTest {
     assertEquals(Optional.class, userResult.getClass());
 
     verify(jpaRepository).findById(ID);
+    verify(mapper, never()).toDomain(any());
   }
 
   @Test
@@ -149,6 +152,7 @@ class UserJpaRepositoryImpTest {
     assertEquals(Optional.class, userResult.getClass());
 
     verify(jpaRepository).findByDocument(DOCUMENT_JOAO);
+    verify(mapper, never()).toDomain(any());
   }
 
   @Test
@@ -184,16 +188,53 @@ class UserJpaRepositoryImpTest {
     Optional<User> userResult = userJpaRepositoryImp.findByEmail(EMAIL_JOAO);
 
     // Assert
+    assertInstanceOf(Optional.class, userResult);
     assertTrue(userResult.isEmpty());
-    assertEquals(Optional.class, userResult.getClass());
 
     verify(jpaRepository).findByEmail(EMAIL_JOAO);
+    verify(mapper, never()).toDomain(any());
   }
 
   @Test
-  void findAll() {
+  void findAll_ShouldReturnListOfUsers_WhenUsersExist() {
+    // Arrange
+    when(jpaRepository.findAll()).thenReturn(List.of(userEntity));
+    when(mapper.toDomain(userEntity)).thenReturn(userDomain);
+
+    // Act
+    List<User> usersResult = userJpaRepositoryImp.findAll();
+
+    // Assert
+    assertInstanceOf(List.class, usersResult);
+    assertEquals(1 ,usersResult.size());
+    assertEquals(User.class, usersResult.get(0).getClass());
+
+    assertEquals(ID, usersResult.get(0).getId());
+    assertEquals(JOAO, usersResult.get(0).getFirstName());
+    assertEquals(CARVALHO, usersResult.get(0).getLastName());
+    assertEquals(DOCUMENT_JOAO, usersResult.get(0).getDocument());
+    assertEquals(EMAIL_JOAO, usersResult.get(0).getEmail());
+    assertEquals(PASSWORD_JOAO, usersResult.get(0).getPassword());
+
+    verify(jpaRepository).findAll();
+    verify(mapper).toDomain(userEntity);
   }
 
+  @Test
+  void findAll_ShouldReturnEmptyList_WhenNoUsersExist() {
+    // Arrange
+    when(jpaRepository.findAll()).thenReturn(List.of());
+
+    // Act
+    List<User> users = userJpaRepositoryImp.findAll();
+
+    // Assert
+    assertInstanceOf(List.class, users);
+    assertTrue(users.isEmpty());
+
+    verify(jpaRepository).findAll();
+    verify(mapper, never()).toDomain(any());
+  }
 
   private void initializeTestObjects() {
     userEntity = new UserEntity(ID, JOAO, CARVALHO, DOCUMENT_JOAO, EMAIL_JOAO, PASSWORD_JOAO, BALANCE, USER_TYPE);
