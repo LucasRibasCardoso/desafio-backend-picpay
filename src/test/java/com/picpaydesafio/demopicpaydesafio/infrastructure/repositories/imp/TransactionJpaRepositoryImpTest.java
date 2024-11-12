@@ -59,11 +59,11 @@ class TransactionJpaRepositoryImpTest {
 
   @BeforeEach
   void setUp() {
-    initializeTestEntities();
+    initializeTestObjects();
   }
 
   @Test
-  void whenTransactionSaveThenReturnTransaction() {
+  void save_ShouldReturnSavedTransaction_WhenTransactionIsValid() {
     // Arrange
     when(mapper.toEntity(transaction)).thenReturn(transactionEntity);
     when(jpaRepository.save(transactionEntity)).thenReturn(transactionEntity);
@@ -77,10 +77,11 @@ class TransactionJpaRepositoryImpTest {
     verify(mapper).toEntity(transaction);
     verify(jpaRepository).save(transactionEntity);
     verify(mapper).toDomain(transactionEntity);
+
   }
 
   @Test
-  void findAll_ShouldReturnListOfTransactions_WhenTransactionsExist() {
+  void findAll_ShouldReturnListOfTransactions_WhenTransactionsIsSaved() {
     // Arrange
     when(jpaRepository.findAll()).thenReturn(Collections.singletonList(transactionEntity));
     when(mapper.toDomain(transactionEntity)).thenReturn(transaction);
@@ -93,9 +94,25 @@ class TransactionJpaRepositoryImpTest {
     assertEquals(transaction, transactions.get(0));
     verify(jpaRepository).findAll();
     verify(mapper).toDomain(transactionEntity);
+
   }
 
-  private void initializeTestEntities() {
+  @Test
+  void findAll_ShouldReturnEmptyList_WhenNoTransactionsExist() {
+    // Arrange
+    when(jpaRepository.findAll()).thenReturn(Collections.emptyList());
+
+    // Act
+    List<Transaction> transactions = repository.findAll();
+
+    // Assert
+    assertEquals(0, transactions.size());
+    verify(jpaRepository).findAll();
+    verify(mapper, never()).toDomain(any());
+  }
+
+
+  private void initializeTestObjects() {
     senderDomain = new User(ID1, MARIA, SILVA, DOCUMENT_MARIA, EMAIL_MARIA, PASSWORD_MARIA, BALANCE, USER_TYPE);
     senderEntity = new UserEntity(ID1, MARIA, SILVA, DOCUMENT_MARIA, EMAIL_MARIA, PASSWORD_MARIA, BALANCE, USER_TYPE);
 
