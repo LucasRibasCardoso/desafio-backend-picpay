@@ -1,6 +1,7 @@
 package com.picpaydesafio.demopicpaydesafio.infrastructure.repositories.imp;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 import com.picpaydesafio.demopicpaydesafio.domain.models.Transaction;
@@ -43,10 +44,6 @@ class TransactionJpaRepositoryImpTest {
 
   private Transaction transaction;
   private TransactionEntity transactionEntity;
-  private User senderDomain;
-  private User receiverDomain;
-  private UserEntity senderEntity;
-  private UserEntity receiverEntity;
 
   @InjectMocks
   private TransactionJpaRepositoryImp repository;
@@ -73,7 +70,14 @@ class TransactionJpaRepositoryImpTest {
     Transaction savedTransaction = repository.save(transaction);
 
     // Assert
-    assertEquals(transaction, savedTransaction);
+    assertEquals(Transaction.class, savedTransaction.getClass());
+
+    assertEquals(transaction.getId(), savedTransaction.getId());
+    assertEquals(transaction.getAmount(), savedTransaction.getAmount());
+    assertEquals(transaction.getTimestamp(), savedTransaction.getTimestamp());
+    assertEquals(transaction.getSender().getId(), savedTransaction.getSender().getId());
+    assertEquals(transaction.getReceiver().getId(), savedTransaction.getReceiver().getId());
+
     verify(mapper).toEntity(transaction);
     verify(jpaRepository).save(transactionEntity);
     verify(mapper).toDomain(transactionEntity);
@@ -90,8 +94,15 @@ class TransactionJpaRepositoryImpTest {
     List<Transaction> transactions = repository.findAll();
 
     // Assert
+    assertEquals(Transaction.class, transactions.get(0).getClass());
     assertEquals(1, transactions.size());
-    assertEquals(transaction, transactions.get(0));
+
+    assertEquals(transaction.getId(), transactions.get(0).getId());
+    assertEquals(transaction.getAmount(), transactions.get(0).getAmount());
+    assertEquals(transaction.getTimestamp(), transactions.get(0).getTimestamp());
+    assertEquals(transaction.getSender().getId(), transactions.get(0).getSender().getId());
+    assertEquals(transaction.getReceiver().getId(), transactions.get(0).getReceiver().getId());
+
     verify(jpaRepository).findAll();
     verify(mapper).toDomain(transactionEntity);
 
@@ -106,18 +117,27 @@ class TransactionJpaRepositoryImpTest {
     List<Transaction> transactions = repository.findAll();
 
     // Assert
-    assertEquals(0, transactions.size());
+    assertTrue(transactions.isEmpty());
+
     verify(jpaRepository).findAll();
     verify(mapper, never()).toDomain(any());
   }
 
 
   private void initializeTestObjects() {
-    senderDomain = new User(ID1, MARIA, SILVA, DOCUMENT_MARIA, EMAIL_MARIA, PASSWORD_MARIA, BALANCE, USER_TYPE);
-    senderEntity = new UserEntity(ID1, MARIA, SILVA, DOCUMENT_MARIA, EMAIL_MARIA, PASSWORD_MARIA, BALANCE, USER_TYPE);
+    User senderDomain = new User(
+        ID1, MARIA, SILVA, DOCUMENT_MARIA, EMAIL_MARIA, PASSWORD_MARIA, BALANCE, USER_TYPE
+    );
+    UserEntity senderEntity = new UserEntity(
+        ID1, MARIA, SILVA, DOCUMENT_MARIA, EMAIL_MARIA, PASSWORD_MARIA, BALANCE, USER_TYPE
+    );
 
-    receiverDomain = new User(ID2, JOAO, CARVALHO, DOCUMENT_JOAO, EMAIL_JOAO, PASSWORD_JOAO, BALANCE, USER_TYPE);
-    receiverEntity = new UserEntity(ID2, JOAO, CARVALHO, DOCUMENT_JOAO, EMAIL_JOAO, PASSWORD_JOAO, BALANCE, USER_TYPE);
+    User receiverDomain = new User(
+        ID2, JOAO, CARVALHO, DOCUMENT_JOAO, EMAIL_JOAO, PASSWORD_JOAO, BALANCE, USER_TYPE
+    );
+    UserEntity receiverEntity = new UserEntity(
+        ID2, JOAO, CARVALHO, DOCUMENT_JOAO, EMAIL_JOAO, PASSWORD_JOAO, BALANCE, USER_TYPE
+    );
 
     transaction = new Transaction(ID1, BALANCE, senderDomain, receiverDomain, TIMESTAMP);
     transactionEntity = new TransactionEntity(ID1, BALANCE, senderEntity, receiverEntity, TIMESTAMP);
