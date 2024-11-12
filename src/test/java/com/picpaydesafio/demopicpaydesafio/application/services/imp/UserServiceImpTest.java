@@ -11,7 +11,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserNotFound;
-import com.picpaydesafio.demopicpaydesafio.application.services.UserService;
 import com.picpaydesafio.demopicpaydesafio.application.usecases.ValidateUserUseCase;
 import com.picpaydesafio.demopicpaydesafio.domain.factories.UserFactory;
 import com.picpaydesafio.demopicpaydesafio.domain.models.User;
@@ -22,7 +21,6 @@ import com.picpaydesafio.demopicpaydesafio.web.dtos.UserRequestDTO;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.UserResponseDTO;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,12 +39,21 @@ class UserServiceImpTest {
   private static final String EMAIL = "joao@gmail.com";
   private static final String PASSWORD = "joao123";
   private static final BigDecimal BALANCE = BigDecimal.valueOf(500);
+
+  private static final String MARIA = "Maria";
+  private static final String SILVA = "Silva";
+  private static final String DOCUMENT_MARIA = "98765432130";
+  private static final String EMAIL_MARIA = "maria@gmail.com";
+  private static final String PASSWORD_MARIA = "maria123";
+  private static final long ID_MARIA = 2L;
+
   private static final String USER_TYPE_STRING = "COMMON";
   private static final UserType USER_TYPE = UserType.COMMON;
 
   private UserRequestDTO userRequestDTO;
   private UserResponseDTO userResponseDTO;
-  private User user;
+  private User user1;
+  private User user2;
 
 
   @InjectMocks
@@ -72,8 +79,8 @@ class UserServiceImpTest {
   @Test
   void findAllUsers_shouldReturnListOfUsers_whenUsersExist() {
     // Arrange
-    when(userRepository.findAll()).thenReturn(List.of(user));
-    when(userMapper.toResponseDTO(user)).thenReturn(userResponseDTO);
+    when(userRepository.findAll()).thenReturn(List.of(user1));
+    when(userMapper.toResponseDTO(user1)).thenReturn(userResponseDTO);
 
     // act
     List<UserResponseDTO> users = userServiceImp.findAllUsers();
@@ -92,7 +99,7 @@ class UserServiceImpTest {
     assertEquals(USER_TYPE, users.get(0).userType());
 
     verify(userRepository).findAll();
-    verify(userMapper).toResponseDTO(user);
+    verify(userMapper).toResponseDTO(user1);
 
   }
 
@@ -115,7 +122,7 @@ class UserServiceImpTest {
   @Test
   void findUserById_ShouldReturnUser_whenUserExists() {
     // Arrange
-    when(userRepository.findById(ID)).thenReturn(Optional.of(user));
+    when(userRepository.findById(ID)).thenReturn(Optional.of(user1));
 
     // act
     User user = userServiceImp.findUserById(ID);
@@ -151,7 +158,13 @@ class UserServiceImpTest {
   }
 
   @Test
-  void saveUsersWithNewBalances() {
+  void saveUsersWithNewBalances_shouldSaveSenderAndReceiver() {
+    // act
+    userServiceImp.saveUsersWithNewBalances(user1, user2);
+
+    // assert
+    verify(userRepository).save(user1);
+    verify(userRepository).save(user2);
   }
 
   @Test
@@ -167,8 +180,12 @@ class UserServiceImpTest {
         JOAO, CARVALHO, DOCUMENT, BALANCE, EMAIL, PASSWORD, USER_TYPE
     );
 
-    user = new User(
+    user1 = new User(
         ID, JOAO, CARVALHO, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE
+    );
+
+    user2 = new User(
+        ID_MARIA, MARIA, SILVA, DOCUMENT_MARIA, EMAIL_MARIA, PASSWORD_MARIA, BALANCE, USER_TYPE
     );
   }
 }
