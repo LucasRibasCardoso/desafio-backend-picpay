@@ -126,6 +126,22 @@ class UserJpaRepositoryImpTest {
   }
 
   @Test
+  void findByEmail_ShouldReturnUser_WhenUserExists() {
+    // Arrange
+    when(jpaRepository.findByEmail(EMAIL_JOAO)).thenReturn(Optional.of(userEntity));
+    when(mapper.toDomain(userEntity)).thenReturn(userDomain);
+
+    // Act
+    Optional<User> userResult = userJpaRepositoryImp.findByEmail(EMAIL_JOAO);
+
+    // Assert
+    assertTrue(userResult.isPresent());
+    assertEquals(userDomain, userResult.get());
+    verify(jpaRepository).findByEmail(EMAIL_JOAO);
+    verify(mapper).toDomain(userEntity);
+  }
+
+  @Test
   void findByEmail() {
   }
 
