@@ -57,6 +57,7 @@ class UserServiceImpTest {
 
   public static final String MESSAGE_ERROR_EMAIL_ALREADY_EXISTS = "O e-mail informado já está cadastrado. Tente utilizar outro e-mail.";
   public static final String MESSAGE_ERROR_DOCUMENT_ALREADY_EXISTS = "O documento informado já está cadastrado. Tente utilizar outro documento.";
+  public static final String MESSAGE_ERROR_INVALID_EMAIL = "O e-mail informado é inválido. Tente utilizar outro e-mail.";
 
 
   private UserRequestDTO userRequestDTO;
@@ -252,6 +253,27 @@ class UserServiceImpTest {
     assertEquals(
         MESSAGE_ERROR_DOCUMENT_ALREADY_EXISTS, exception.getMessage()
     );
+
+    verify(userFactory).createDomain(userRequestDTO);
+    verify(validateUserUseCase).execute(user1);
+    verifyNoInteractions(userRepository, userMapper);
+  }
+
+  @Test
+  void saveNewUser_shouldThrowInvalidEmailException_whenEmailIsInvalid() {
+    // Arrange
+    when(userFactory.createDomain(userRequestDTO)).thenReturn(user1);
+    doThrow(new InvalidEmailException(MESSAGE_ERROR_INVALID_EMAIL))
+        .when(validateUserUseCase).execute(user1);
+
+    // act
+    InvalidEmailException exception = assertThrows(InvalidEmailException.class,
+        () -> userServiceImp.saveNewUser(userRequestDTO)
+    );
+
+    // assert
+    assertInstanceOf(InvalidEmailException.class, exception);
+    assertEquals(MESSAGE_ERROR_INVALID_EMAIL, exception.getMessage());
 
     verify(userFactory).createDomain(userRequestDTO);
     verify(validateUserUseCase).execute(user1);
