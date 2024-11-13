@@ -7,10 +7,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
+import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidEmailException;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserNotFound;
 import com.picpaydesafio.demopicpaydesafio.application.usecases.ValidateUserUseCase;
 import com.picpaydesafio.demopicpaydesafio.domain.factories.UserFactory;
@@ -91,13 +94,27 @@ class UserServiceImpTest {
     assertEquals(1, users.size());
     assertInstanceOf(UserResponseDTO.class, users.get(0));
 
-    assertEquals(JOAO, users.get(0).firstName());
-    assertEquals(CARVALHO, users.get(0).lastName());
-    assertEquals(DOCUMENT, users.get(0).document());
-    assertEquals(BALANCE, users.get(0).balance());
-    assertEquals(EMAIL, users.get(0).email());
-    assertEquals(PASSWORD, users.get(0).password());
-    assertEquals(USER_TYPE, users.get(0).userType());
+    assertEquals(
+        JOAO, users.get(0)
+            .firstName());
+    assertEquals(
+        CARVALHO, users.get(0)
+            .lastName());
+    assertEquals(
+        DOCUMENT, users.get(0)
+            .document());
+    assertEquals(
+        BALANCE, users.get(0)
+            .balance());
+    assertEquals(
+        EMAIL, users.get(0)
+            .email());
+    assertEquals(
+        PASSWORD, users.get(0)
+            .password());
+    assertEquals(
+        USER_TYPE, users.get(0)
+            .userType());
 
     verify(userRepository).findAll();
     verify(userMapper).toResponseDTO(user1);
@@ -146,7 +163,8 @@ class UserServiceImpTest {
   @Test
   void findUserById_shouldThrowException_whenUserDoesNotExist() {
     // Arrange
-    when(userRepository.findById(ID)).thenThrow(new UserNotFound("Usuário com id " + ID + " não encontrado."));
+    when(userRepository.findById(ID)).thenThrow(
+        new UserNotFound("Usuário com id " + ID + " não encontrado."));
 
     // act
     UserNotFound exception = assertThrows(UserNotFound.class, () -> userServiceImp.findUserById(ID));
@@ -172,7 +190,8 @@ class UserServiceImpTest {
   void saveNewUser_shouldSaveUser() {
     // arrange
     when(userFactory.createDomain(userRequestDTO)).thenReturn(user1);
-    doNothing().when(validateUserUseCase).execute(user1);
+    doNothing().when(validateUserUseCase)
+        .execute(user1);
     when(userRepository.save(user1)).thenReturn(user1);
     when(userMapper.toResponseDTO(user1)).thenReturn(userResponseDTO);
 
@@ -188,21 +207,38 @@ class UserServiceImpTest {
     verify(userMapper).toResponseDTO(user1);
   }
 
-  private void initializeTestObjects() {
-    userRequestDTO = new UserRequestDTO(
-        JOAO, CARVALHO, DOCUMENT, EMAIL, PASSWORD, USER_TYPE_STRING
+  @Test
+  void saveNewUser_shouldThrowInvalidEmailException_whenEmailAlreadyExists() {
+    // Arrange
+    when(userFactory.createDomain(userRequestDTO)).thenReturn(user1);
+    doThrow(new InvalidEmailException(
+        "O documento informado já está cadastrado. Tente utilizar outro documento."))
+        .when(validateUserUseCase).execute(user1);
+
+    // act
+    InvalidEmailException exception = assertThrows(InvalidEmailException.class,
+        () -> userServiceImp.saveNewUser(userRequestDTO)
     );
 
-    userResponseDTO = new UserResponseDTO(
-        JOAO, CARVALHO, DOCUMENT, BALANCE, EMAIL, PASSWORD, USER_TYPE
+    // assert
+    assertInstanceOf(InvalidEmailException.class, exception);
+    assertEquals(
+        "O documento informado já está cadastrado. Tente utilizar outro documento.", exception.getMessage()
     );
 
-    user1 = new User(
-        ID, JOAO, CARVALHO, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE
-    );
-
-    user2 = new User(
-        ID_MARIA, MARIA, SILVA, DOCUMENT_MARIA, EMAIL_MARIA, PASSWORD_MARIA, BALANCE, USER_TYPE
-    );
+    verify(userFactory).createDomain(userRequestDTO);
+    verify(validateUserUseCase).execute(user1);
+    verifyNoInteractions(userRepository, userMapper);
   }
+
+  private void initializeTestObjects() {
+    userRequestDTO = new UserRequestDTO(JOAO, CARVALHO, DOCUMENT, EMAIL, PASSWORD, USER_TYPE_STRING);
+
+    userResponseDTO = new UserResponseDTO(JOAO, CARVALHO, DOCUMENT, BALANCE, EMAIL, PASSWORD, USER_TYPE);
+
+    user1 = new User(ID, JOAO, CARVALHO, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE);
+
+    user2 = new User(ID_MARIA, MARIA, SILVA, DOCUMENT_MARIA, EMAIL_MARIA, PASSWORD_MARIA, BALANCE, USER_TYPE);
+  }
+
 }
