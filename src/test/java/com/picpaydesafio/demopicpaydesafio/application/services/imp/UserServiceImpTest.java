@@ -14,6 +14,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidEmailException;
+import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserAlreadyExists;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserNotFound;
 import com.picpaydesafio.demopicpaydesafio.application.usecases.ValidateUserUseCase;
 import com.picpaydesafio.demopicpaydesafio.domain.factories.UserFactory;
@@ -55,6 +56,7 @@ class UserServiceImpTest {
   private static final UserType USER_TYPE = UserType.COMMON;
 
   public static final String MESSAGE_ERROR_EMAIL_ALREADY_EXISTS = "O e-mail informado já está cadastrado. Tente utilizar outro e-mail.";
+  public static final String MESSAGE_ERROR_DOCUMENT_ALREADY_EXISTS = "O documento informado já está cadastrado. Tente utilizar outro documento.";
 
 
   private UserRequestDTO userRequestDTO;
@@ -234,7 +236,27 @@ class UserServiceImpTest {
   }
 
   @Test
+  void saveNewUser_shouldThrowUserAlreadyExists_whenDocumentAlreadyExists() {
+    // Arrange
+    when(userFactory.createDomain(userRequestDTO)).thenReturn(user1);
+    doThrow(new UserAlreadyExists(MESSAGE_ERROR_DOCUMENT_ALREADY_EXISTS))
+        .when(validateUserUseCase).execute(user1);
 
+    // act
+    UserAlreadyExists exception = assertThrows(UserAlreadyExists.class,
+        () -> userServiceImp.saveNewUser(userRequestDTO)
+    );
+
+    // assert
+    assertInstanceOf(UserAlreadyExists.class, exception);
+    assertEquals(
+        MESSAGE_ERROR_DOCUMENT_ALREADY_EXISTS, exception.getMessage()
+    );
+
+    verify(userFactory).createDomain(userRequestDTO);
+    verify(validateUserUseCase).execute(user1);
+    verifyNoInteractions(userRepository, userMapper);
+  }
 
   private void initializeTestObjects() {
     userRequestDTO = new UserRequestDTO(JOAO, CARVALHO, DOCUMENT, EMAIL, PASSWORD, USER_TYPE_STRING);
