@@ -1,6 +1,7 @@
 package com.picpaydesafio.demopicpaydesafio.application.usecases;
 
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidEmailException;
+import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserAlreadyExists;
 import com.picpaydesafio.demopicpaydesafio.application.services.EmailValidatorService;
 import com.picpaydesafio.demopicpaydesafio.domain.models.User;
 import com.picpaydesafio.demopicpaydesafio.domain.repositoriesDomain.UserRepository;
@@ -22,7 +23,7 @@ public class ValidateUserUseCase {
 
   private void validateUniqueDocument(String document) {
     if (userRepository.findByDocument(document).isPresent()) {
-      throw new InvalidEmailException("O documento informado já está cadastrado. Tente utilizar outro documento.");
+      throw new UserAlreadyExists("O documento informado já está cadastrado. Tente utilizar outro documento.");
     }
   }
 
