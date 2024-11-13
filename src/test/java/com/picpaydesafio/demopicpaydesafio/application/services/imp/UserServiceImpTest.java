@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -168,7 +169,23 @@ class UserServiceImpTest {
   }
 
   @Test
-  void saveNewUser() {
+  void saveNewUser_shouldSaveUser() {
+    // arrange
+    when(userFactory.createDomain(userRequestDTO)).thenReturn(user1);
+    doNothing().when(validateUserUseCase).execute(user1);
+    when(userRepository.save(user1)).thenReturn(user1);
+    when(userMapper.toResponseDTO(user1)).thenReturn(userResponseDTO);
+
+    // act
+    UserResponseDTO savedUser = userServiceImp.saveNewUser(userRequestDTO);
+
+    // assert
+    assertInstanceOf(UserResponseDTO.class, savedUser);
+
+    verify(userFactory).createDomain(userRequestDTO);
+    verify(validateUserUseCase).execute(user1);
+    verify(userRepository).save(user1);
+    verify(userMapper).toResponseDTO(user1);
   }
 
   private void initializeTestObjects() {
