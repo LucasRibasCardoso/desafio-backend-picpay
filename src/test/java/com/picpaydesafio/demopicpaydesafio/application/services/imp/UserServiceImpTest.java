@@ -54,9 +54,13 @@ class UserServiceImpTest {
   private static final String USER_TYPE_STRING = "COMMON";
   private static final UserType USER_TYPE = UserType.COMMON;
 
-  public static final String MESSAGE_ERROR_EMAIL_ALREADY_EXISTS = "O e-mail informado já está cadastrado. Tente utilizar outro e-mail.";
-  public static final String MESSAGE_ERROR_DOCUMENT_ALREADY_EXISTS = "O documento informado já está cadastrado. Tente utilizar outro documento.";
-  public static final String MESSAGE_ERROR_INVALID_EMAIL = "O e-mail informado é inválido. Tente utilizar outro e-mail.";
+  public static final String MESSAGE_ERROR_EMAIL_ALREADY_EXISTS = "O e-mail informado já está cadastrado. "
+                                                                  + "Tente utilizar outro e-mail.";
+  public static final String MESSAGE_ERROR_DOCUMENT_ALREADY_EXISTS = "O documento informado já está "
+                                                                     + "cadastrado. Tente utilizar outro "
+                                                                     + "documento.";
+  public static final String MESSAGE_ERROR_INVALID_EMAIL = "O e-mail informado é inválido. Tente utilizar "
+                                                           + "outro e-mail.";
 
 
   private UserRequestDTO userRequestDTO;
@@ -100,25 +104,25 @@ class UserServiceImpTest {
     assertInstanceOf(UserResponseDTO.class, users.get(0));
 
     assertEquals(
-        JOAO, users.get(0)
+        user1.getFirstName(), users.get(0)
             .firstName());
     assertEquals(
-        CARVALHO, users.get(0)
+        user1.getLastName(), users.get(0)
             .lastName());
     assertEquals(
-        DOCUMENT, users.get(0)
+        user1.getDocument(), users.get(0)
             .document());
     assertEquals(
-        BALANCE, users.get(0)
+        user1.getBalance(), users.get(0)
             .balance());
     assertEquals(
-        EMAIL, users.get(0)
+        user1.getEmail(), users.get(0)
             .email());
     assertEquals(
-        PASSWORD, users.get(0)
+        user1.getPassword(), users.get(0)
             .password());
     assertEquals(
-        USER_TYPE, users.get(0)
+        user1.getUserType(), users.get(0)
             .userType());
 
     verify(userRepository).findAll();
@@ -153,14 +157,14 @@ class UserServiceImpTest {
     // assert
     assertInstanceOf(User.class, user);
 
-    assertEquals(ID, user.getId());
-    assertEquals(JOAO, user.getFirstName());
-    assertEquals(CARVALHO, user.getLastName());
-    assertEquals(DOCUMENT, user.getDocument());
-    assertEquals(EMAIL, user.getEmail());
-    assertEquals(PASSWORD, user.getPassword());
-    assertEquals(USER_TYPE, user.getUserType());
-    assertEquals(BALANCE, user.getBalance());
+    assertEquals(user1.getId(), user.getId());
+    assertEquals(user1.getFirstName(), user.getFirstName());
+    assertEquals(user1.getLastName(), user.getLastName());
+    assertEquals(user1.getDocument(), user.getDocument());
+    assertEquals(user1.getEmail(), user.getEmail());
+    assertEquals(user1.getPassword(), user.getPassword());
+    assertEquals(user1.getUserType(), user.getUserType());
+    assertEquals(user1.getBalance(), user.getBalance());
 
     verify(userRepository).findById(ID);
   }
@@ -216,8 +220,8 @@ class UserServiceImpTest {
   void saveNewUser_shouldThrowInvalidEmailException_whenEmailAlreadyExists() {
     // Arrange
     when(userFactory.createDomain(userRequestDTO)).thenReturn(user1);
-    doThrow(new InvalidEmailException(MESSAGE_ERROR_EMAIL_ALREADY_EXISTS))
-        .when(validateUserUseCase).execute(user1);
+    doThrow(new InvalidEmailException(MESSAGE_ERROR_EMAIL_ALREADY_EXISTS)).when(validateUserUseCase)
+        .execute(user1);
 
     // act
     InvalidEmailException exception = assertThrows(InvalidEmailException.class,
@@ -226,9 +230,7 @@ class UserServiceImpTest {
 
     // assert
     assertInstanceOf(InvalidEmailException.class, exception);
-    assertEquals(
-        MESSAGE_ERROR_EMAIL_ALREADY_EXISTS, exception.getMessage()
-    );
+    assertEquals(MESSAGE_ERROR_EMAIL_ALREADY_EXISTS, exception.getMessage());
 
     verify(userFactory).createDomain(userRequestDTO);
     verify(validateUserUseCase).execute(user1);
@@ -239,8 +241,8 @@ class UserServiceImpTest {
   void saveNewUser_shouldThrowUserAlreadyExists_whenDocumentAlreadyExists() {
     // Arrange
     when(userFactory.createDomain(userRequestDTO)).thenReturn(user1);
-    doThrow(new UserAlreadyExists(MESSAGE_ERROR_DOCUMENT_ALREADY_EXISTS))
-        .when(validateUserUseCase).execute(user1);
+    doThrow(new UserAlreadyExists(MESSAGE_ERROR_DOCUMENT_ALREADY_EXISTS)).when(validateUserUseCase)
+        .execute(user1);
 
     // act
     UserAlreadyExists exception = assertThrows(UserAlreadyExists.class,
@@ -249,9 +251,7 @@ class UserServiceImpTest {
 
     // assert
     assertInstanceOf(UserAlreadyExists.class, exception);
-    assertEquals(
-        MESSAGE_ERROR_DOCUMENT_ALREADY_EXISTS, exception.getMessage()
-    );
+    assertEquals(MESSAGE_ERROR_DOCUMENT_ALREADY_EXISTS, exception.getMessage());
 
     verify(userFactory).createDomain(userRequestDTO);
     verify(validateUserUseCase).execute(user1);
@@ -262,8 +262,8 @@ class UserServiceImpTest {
   void saveNewUser_shouldThrowInvalidEmailException_whenEmailIsInvalid() {
     // Arrange
     when(userFactory.createDomain(userRequestDTO)).thenReturn(user1);
-    doThrow(new InvalidEmailException(MESSAGE_ERROR_INVALID_EMAIL))
-        .when(validateUserUseCase).execute(user1);
+    doThrow(new InvalidEmailException(MESSAGE_ERROR_INVALID_EMAIL)).when(validateUserUseCase)
+        .execute(user1);
 
     // act
     InvalidEmailException exception = assertThrows(InvalidEmailException.class,
