@@ -126,7 +126,7 @@ class TransactionServiceImpTest {
   }
 
   @Test
-  void getAllTransaction_ThenReturnEmptyListOfTransactionResponseDTO() {
+  void getAllTransaction_ThenReturnEmptyList_WhenDoesNotExistTransactions() {
     // arrange
     when(transactionRepository.findAll()).thenReturn(List.of());
 
