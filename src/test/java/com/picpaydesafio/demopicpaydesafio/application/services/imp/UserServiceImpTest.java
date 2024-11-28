@@ -51,8 +51,8 @@ class UserServiceImpTest {
   private static final String PASSWORD_MARIA = "maria123";
   private static final long ID_MARIA = 2L;
 
-  private static final String USER_TYPE_STRING = "COMMON";
   private static final UserType USER_TYPE = UserType.COMMON;
+  private static final String USER_TYPE_STRING = "COMMON";
 
   public static final String MESSAGE_ERROR_EMAIL_ALREADY_EXISTS = "O e-mail informado já está cadastrado. "
                                                                   + "Tente utilizar outro e-mail.";
