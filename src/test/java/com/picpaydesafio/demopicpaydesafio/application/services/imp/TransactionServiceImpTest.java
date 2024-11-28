@@ -18,6 +18,7 @@ import com.picpaydesafio.demopicpaydesafio.web.dtos.TransactionRequestDTO;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.TransactionResponseDTO;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -99,7 +100,46 @@ class TransactionServiceImpTest {
   }
 
   @Test
-  void getAllTransactions() {
+  void getAllTransactions_ThenReturnListOfTransactionResponseDTO() {
+    // Arrange
+    when(transactionRepository.findAll()).thenReturn(List.of(transactionDomain));
+    when(transactionMapper.toResponseDTO(transactionDomain)).thenReturn(responseDTO);
+
+    // act
+    List<TransactionResponseDTO> transactionsDTO = transactionServiceImp.getAllTransactions();
+
+    // assert
+    assertNotNull(transactionsDTO);
+    assertFalse(transactionsDTO.isEmpty());
+    assertInstanceOf(List.class, transactionsDTO);
+
+    assertEquals(responseDTO.id(), transactionsDTO.get(0).id());
+    assertEquals(responseDTO.senderId(), transactionsDTO.get(0).senderId());
+    assertEquals(responseDTO.senderName(), transactionsDTO.get(0).senderName());
+    assertEquals(responseDTO.receiverId(), transactionsDTO.get(0).receiverId());
+    assertEquals(responseDTO.receiverName(), transactionsDTO.get(0).receiverName());
+    assertEquals(responseDTO.amount(), transactionsDTO.get(0).amount());
+    assertEquals(responseDTO.timestamp(), transactionsDTO.get(0).timestamp());
+
+    verify(transactionRepository).findAll();
+    verify(transactionMapper).toResponseDTO(transactionDomain);
+  }
+
+  @Test
+  void getAllTransaction_ThenReturnEmptyListOfTransactionResponseDTO() {
+    // arrange
+    when(transactionRepository.findAll()).thenReturn(List.of());
+
+    // act
+    List<TransactionResponseDTO> transactionsDTO = transactionServiceImp.getAllTransactions();
+
+    // arrange
+    assertNotNull(transactionsDTO);
+    assertInstanceOf(List.class, transactionsDTO);
+    assertTrue(transactionsDTO.isEmpty());
+
+    verify(transactionRepository).findAll();
+    verifyNoInteractions(transactionMapper);
   }
 
   private void initializeTestObjects() {
