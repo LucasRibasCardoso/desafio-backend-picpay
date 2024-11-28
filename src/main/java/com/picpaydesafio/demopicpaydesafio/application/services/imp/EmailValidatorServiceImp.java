@@ -32,5 +32,4 @@ public class EmailValidatorServiceImp implements EmailValidatorService {
     return response != null && response.isEmailValid();
   }
 
-
 }
