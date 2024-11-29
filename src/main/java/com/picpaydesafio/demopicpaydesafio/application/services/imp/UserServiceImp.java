@@ -28,10 +28,6 @@ public class UserServiceImp implements UserService {
     return userRepository.findAll().stream().map(userMapper::toResponseDTO).toList();
   }
 
-  /**
-   * Método usado internamente para buscar um usuário pelo id.
-   * Sendo assim, não possui implementação na camada de controllers.
-   */
   @Override
   public User findUserById(Long id) {
     return userRepository.findById(id)
