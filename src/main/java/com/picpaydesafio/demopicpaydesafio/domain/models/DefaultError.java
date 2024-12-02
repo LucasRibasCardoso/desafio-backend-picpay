@@ -8,18 +8,18 @@ import lombok.Getter;
 @Getter
 public class DefaultError implements StandardError {
   private final String message;
-  private final int statusCode;
+  private final int code;
   private final Map<String, String> fieldErrors;
 
   public DefaultError(String message, int statusCode) {
     this.message = message;
-    this.statusCode = statusCode;
+    this.code = statusCode;
     this.fieldErrors = new HashMap<>();
   }
 
   public DefaultError(String message, int statusCode, Map<String, String> fieldErrors) {
     this.message = message;
-    this.statusCode = statusCode;
+    this.code = statusCode;
     this.fieldErrors = fieldErrors;
   }
 

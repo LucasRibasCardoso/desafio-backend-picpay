@@ -22,7 +22,7 @@ class DefaultErrorTest {
 
     // Assert
     assertEquals(message, error.getMessage());
-    assertEquals(statusCode, error.getStatusCode());
+    assertEquals(statusCode, error.getCode());
     assertEquals(fieldErrors, error.getFieldErrors());
   }
 
@@ -37,7 +37,7 @@ class DefaultErrorTest {
 
     // Assert
     assertEquals(message, error.getMessage());
-    assertEquals(statusCode, error.getStatusCode());
+    assertEquals(statusCode, error.getCode());
     assertNotNull(error.getFieldErrors());
     assertTrue(error.getFieldErrors().isEmpty());
   }
