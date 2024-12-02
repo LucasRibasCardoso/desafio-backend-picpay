@@ -2,7 +2,6 @@ package com.picpaydesafio.demopicpaydesafio.web.exceptions;
 
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidEmailException;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidSendEmail;
-import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidTransactionException;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.InsufficientFoundsException;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.UnauthorizedTransactionException;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserAlreadyExists;
@@ -53,12 +52,6 @@ public class ExceptionsHandler {
   public ResponseEntity<StandardError> UserNotFoundException(UserNotFound e) {
     StandardError error = errorFactory.create(e.getMessage(), HttpStatus.NOT_FOUND);
     return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-  }
-
-  @ExceptionHandler(InvalidTransactionException.class)
-  public ResponseEntity<StandardError> InvalidTransactionException(InvalidTransactionException e) {
-    StandardError error = errorFactory.create(e.getMessage(), HttpStatus.BAD_REQUEST);
-    return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)

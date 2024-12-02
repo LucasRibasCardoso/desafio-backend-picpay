@@ -3,7 +3,9 @@ package com.picpaydesafio.demopicpaydesafio.domain.models;
 import com.picpaydesafio.demopicpaydesafio.domain.factories.StandardError;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Getter;
 
+@Getter
 public class DefaultError implements StandardError {
   private final String message;
   private final int statusCode;
@@ -19,21 +21,6 @@ public class DefaultError implements StandardError {
     this.message = message;
     this.statusCode = statusCode;
     this.fieldErrors = fieldErrors;
-  }
-
-  @Override
-  public Map<String, String> getFieldErrors() {
-    return fieldErrors;
-  }
-
-  @Override
-  public String getMessage() {
-    return message;
-  }
-
-  @Override
-  public int getStatusCode() {
-    return statusCode;
   }
 
 }
