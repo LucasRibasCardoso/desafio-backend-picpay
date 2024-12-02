@@ -36,15 +36,15 @@ public class UserMapper {
     );
   }
 
-  public UserResponseDTO toResponseDTO(User user) {
+  public UserResponseDTO toResponseDTO(User domain) {
     return new UserResponseDTO(
-        user.getFirstName(),
-        user.getLastName(),
-        user.getDocument(),
-        user.getBalance(),
-        user.getEmail(),
-        user.getPassword(),
-        user.getUserType()
+        domain.getFirstName(),
+        domain.getLastName(),
+        domain.getDocument(),
+        domain.getBalance(),
+        domain.getEmail(),
+        domain.getPassword(),
+        domain.getUserType()
     );
   }
 
