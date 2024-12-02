@@ -12,15 +12,15 @@ public class TransactionMapper {
 
   private final UserMapper userMapper;
 
-  public Transaction toDomain(TransactionEntity entity) {
-    return new Transaction(
-        entity.getId(),
-        entity.getAmount(),
-        userMapper.toDomain(entity.getSender()),
-        userMapper.toDomain(entity.getReceiver()),
-        entity.getTimestamp()
-    );
-  }
+    public Transaction toDomain(TransactionEntity entity) {
+      return new Transaction(
+          entity.getId(),
+          entity.getAmount(),
+          userMapper.toDomain(entity.getSender()),
+          userMapper.toDomain(entity.getReceiver()),
+          entity.getTimestamp()
+      );
+    }
 
   public TransactionResponseDTO toResponseDTO(Transaction transaction) {
     return new TransactionResponseDTO(
