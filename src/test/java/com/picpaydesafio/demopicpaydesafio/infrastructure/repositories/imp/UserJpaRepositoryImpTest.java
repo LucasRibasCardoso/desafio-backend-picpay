@@ -24,17 +24,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class UserJpaRepositoryImpTest {
 
-  private static final long ID = 1L;
-  private static final String JOAO = "João";
-  private static final String CARVALHO = "Carvalho";
-  private static final String DOCUMENT_JOAO = "98515432130";
-  private static final String EMAIL_JOAO = "joao@gmail.com";
-  private static final String PASSWORD_JOAO = "joao123";
-  private static final BigDecimal BALANCE = BigDecimal.valueOf(500);
-  private static final UserType USER_TYPE = UserType.COMMON;
-
-  private UserEntity userEntity;
-  private User userDomain;
+  // User
+  public static final long ID = 1L;
+  public static final String FIRSTNAME = "teste";
+  public static final String LASTNAME = "example";
+  public static final String DOCUMENT = "12312312312";
+  public static final String EMAIL = "example@gmail.com";
+  public static final UserType USER_TYPE = UserType.COMMON;
+  public static final String PASSWORD = "password";
+  public static final BigDecimal BALANCE = new BigDecimal("100.00");
 
   @InjectMocks
   private UserJpaRepositoryImp userJpaRepositoryImp;
@@ -45,33 +43,38 @@ class UserJpaRepositoryImpTest {
   @Mock
   private UserMapper mapper;
 
+  private UserEntity mockUserEntity;
+  private User mockUserDomain;
+
   @BeforeEach
   void setUp() {
-    initializeTestObjects();
+    mockUserEntity = new UserEntity(ID, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE);
+    mockUserDomain = new User(ID, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE);
   }
 
   @Test
   void findById_ShouldReturnUser_WhenUserExists() {
     // Arrange
-    when(jpaRepository.findById(ID)).thenReturn(Optional.of(userEntity));
-    when(mapper.toDomain(any())).thenReturn(userDomain);
+    when(jpaRepository.findById(ID)).thenReturn(Optional.of(mockUserEntity));
+    when(mapper.toDomain(any())).thenReturn(mockUserDomain);
 
     // Act
     Optional<User> userResult = userJpaRepositoryImp.findById(ID);
 
     // Assert
-    assertTrue(userResult.isPresent());
-    assertEquals(Optional.class, userResult.getClass());
-
-    assertEquals(ID, userResult.get().getId());
-    assertEquals(JOAO, userResult.get().getFirstName());
-    assertEquals(CARVALHO, userResult.get().getLastName());
-    assertEquals(DOCUMENT_JOAO, userResult.get().getDocument());
-    assertEquals(EMAIL_JOAO, userResult.get().getEmail());
-    assertEquals(PASSWORD_JOAO, userResult.get().getPassword());
+    assertAll(
+        () -> assertTrue(userResult.isPresent()),
+        () -> assertEquals(Optional.class, userResult.getClass()),
+        () -> assertEquals(ID, userResult.get().getId()),
+        () -> assertEquals(FIRSTNAME, userResult.get().getFirstName()),
+        () -> assertEquals(LASTNAME, userResult.get().getLastName()),
+        () -> assertEquals(DOCUMENT, userResult.get().getDocument()),
+        () -> assertEquals(EMAIL, userResult.get().getEmail()),
+        () -> assertEquals(PASSWORD, userResult.get().getPassword())
+    );
 
     verify(jpaRepository).findById(ID);
-    verify(mapper).toDomain(userEntity);
+    verify(mapper).toDomain(mockUserEntity);
   }
 
   @Test
@@ -83,8 +86,10 @@ class UserJpaRepositoryImpTest {
     Optional<User> userResult = userJpaRepositoryImp.findById(ID);
 
     // Assert
-    assertTrue(userResult.isEmpty());
-    assertEquals(Optional.class, userResult.getClass());
+    assertAll(
+        () -> assertTrue(userResult.isEmpty()),
+        () -> assertEquals(Optional.class, userResult.getClass())
+    );
 
     verify(jpaRepository).findById(ID);
     verify(mapper, never()).toDomain(any());
@@ -93,131 +98,139 @@ class UserJpaRepositoryImpTest {
   @Test
   void save_ShouldReturnUser_WhenUserIsSaved() {
     // Arrange
-    when(mapper.toEntity(userDomain)).thenReturn(userEntity);
-    when(jpaRepository.save(userEntity)).thenReturn(userEntity);
-    when(mapper.toDomain(userEntity)).thenReturn(userDomain);
+    when(mapper.toEntity(mockUserDomain)).thenReturn(mockUserEntity);
+    when(jpaRepository.save(mockUserEntity)).thenReturn(mockUserEntity);
+    when(mapper.toDomain(mockUserEntity)).thenReturn(mockUserDomain);
 
     // Act
-    User userResult = userJpaRepositoryImp.save(userDomain);
+    User userResult = userJpaRepositoryImp.save(mockUserDomain);
 
     // Assert
-    assertNotNull(userResult);
-    assertEquals(User.class, userResult.getClass());
+    assertAll(
+        () -> assertNotNull(userResult),
+        () -> assertEquals(User.class, userResult.getClass()),
+        () -> assertEquals(ID, userResult.getId()),
+        () -> assertEquals(FIRSTNAME, userResult.getFirstName()),
+        () -> assertEquals(LASTNAME, userResult.getLastName()),
+        () -> assertEquals(DOCUMENT, userResult.getDocument()),
+        () -> assertEquals(EMAIL, userResult.getEmail()),
+        () -> assertEquals(PASSWORD, userResult.getPassword())
+    );
 
-    assertEquals(ID, userResult.getId());
-    assertEquals(JOAO, userResult.getFirstName());
-    assertEquals(CARVALHO, userResult.getLastName());
-    assertEquals(DOCUMENT_JOAO, userResult.getDocument());
-    assertEquals(EMAIL_JOAO, userResult.getEmail());
-    assertEquals(PASSWORD_JOAO, userResult.getPassword());
-
-    verify(jpaRepository).save(userEntity);
+    verify(jpaRepository).save(mockUserEntity);
     verify(mapper).toEntity(userResult);
   }
 
   @Test
   void findByDocument_ShouldReturnUser_WhenUserExists() {
     // Arrange
-    when(jpaRepository.findByDocument(DOCUMENT_JOAO)).thenReturn(Optional.of(userEntity));
-    when(mapper.toDomain(userEntity)).thenReturn(userDomain);
+    when(jpaRepository.findByDocument(DOCUMENT)).thenReturn(Optional.of(mockUserEntity));
+    when(mapper.toDomain(mockUserEntity)).thenReturn(mockUserDomain);
 
     // act
-    Optional<User> userResult = userJpaRepositoryImp.findByDocument(DOCUMENT_JOAO);
+    Optional<User> userResult = userJpaRepositoryImp.findByDocument(DOCUMENT);
 
     //assert
-    assertTrue(userResult.isPresent());
-    assertEquals(Optional.class, userResult.getClass());
+    assertAll(
+        () -> assertTrue(userResult.isPresent()),
+        () -> assertEquals(Optional.class, userResult.getClass()),
+        () -> assertEquals(ID, userResult.get().getId()),
+        () -> assertEquals(FIRSTNAME, userResult.get().getFirstName()),
+        () -> assertEquals(LASTNAME, userResult.get().getLastName()),
+        () -> assertEquals(DOCUMENT, userResult.get().getDocument()),
+        () -> assertEquals(EMAIL, userResult.get().getEmail()),
+        () -> assertEquals(PASSWORD, userResult.get().getPassword())
+    );
 
-    assertEquals(ID, userResult.get().getId());
-    assertEquals(JOAO, userResult.get().getFirstName());
-    assertEquals(CARVALHO, userResult.get().getLastName());
-    assertEquals(DOCUMENT_JOAO, userResult.get().getDocument());
-    assertEquals(EMAIL_JOAO, userResult.get().getEmail());
-    assertEquals(PASSWORD_JOAO, userResult.get().getPassword());
-
-    verify(jpaRepository).findByDocument(DOCUMENT_JOAO);
-    verify(mapper).toDomain(userEntity);
+    verify(jpaRepository).findByDocument(DOCUMENT);
+    verify(mapper).toDomain(mockUserEntity);
   }
 
   @Test
   void findByDocument_ShouldReturnEmpty_WhenUserDoesNotExist() {
     // Arrange
-    when(jpaRepository.findByDocument(DOCUMENT_JOAO)).thenReturn(Optional.empty());
+    when(jpaRepository.findByDocument(DOCUMENT)).thenReturn(Optional.empty());
 
     // Act
-    Optional<User> userResult = userJpaRepositoryImp.findByDocument(DOCUMENT_JOAO);
+    Optional<User> userResult = userJpaRepositoryImp.findByDocument(DOCUMENT);
 
     // Assert
-    assertTrue(userResult.isEmpty());
-    assertEquals(Optional.class, userResult.getClass());
+    assertAll(
+        () -> assertTrue(userResult.isEmpty()),
+        () -> assertEquals(Optional.class, userResult.getClass())
+    );
 
-    verify(jpaRepository).findByDocument(DOCUMENT_JOAO);
+    verify(jpaRepository).findByDocument(DOCUMENT);
     verify(mapper, never()).toDomain(any());
   }
 
   @Test
   void findByEmail_ShouldReturnUser_WhenUserExists() {
     // Arrange
-    when(jpaRepository.findByEmail(EMAIL_JOAO)).thenReturn(Optional.of(userEntity));
-    when(mapper.toDomain(userEntity)).thenReturn(userDomain);
+    when(jpaRepository.findByEmail(EMAIL)).thenReturn(Optional.of(mockUserEntity));
+    when(mapper.toDomain(mockUserEntity)).thenReturn(mockUserDomain);
 
     // Act
-    Optional<User> userResult = userJpaRepositoryImp.findByEmail(EMAIL_JOAO);
+    Optional<User> userResult = userJpaRepositoryImp.findByEmail(EMAIL);
 
     // Assert
-    assertTrue(userResult.isPresent());
-    assertEquals(Optional.class, userResult.getClass());
+    assertAll(
+        () -> assertTrue(userResult.isPresent()),
+        () -> assertEquals(Optional.class, userResult.getClass()),
+        () -> assertEquals(ID, userResult.get().getId()),
+        () -> assertEquals(FIRSTNAME, userResult.get().getFirstName()),
+        () -> assertEquals(LASTNAME, userResult.get().getLastName()),
+        () -> assertEquals(DOCUMENT, userResult.get().getDocument()),
+        () -> assertEquals(EMAIL, userResult.get().getEmail()),
+        () -> assertEquals(PASSWORD, userResult.get().getPassword())
+    );
 
-    assertEquals(ID, userResult.get().getId());
-    assertEquals(JOAO, userResult.get().getFirstName());
-    assertEquals(CARVALHO, userResult.get().getLastName());
-    assertEquals(DOCUMENT_JOAO, userResult.get().getDocument());
-    assertEquals(EMAIL_JOAO, userResult.get().getEmail());
-    assertEquals(PASSWORD_JOAO, userResult.get().getPassword());
-
-    verify(jpaRepository).findByEmail(EMAIL_JOAO);
-    verify(mapper).toDomain(userEntity);
+    verify(jpaRepository).findByEmail(EMAIL);
+    verify(mapper).toDomain(mockUserEntity);
   }
 
   @Test
   void findByEmail_ShouldReturnEmpty_WhenUserDoesNotExist() {
     // Arrange
-    when(jpaRepository.findByEmail(EMAIL_JOAO)).thenReturn(Optional.empty());
+    when(jpaRepository.findByEmail(EMAIL)).thenReturn(Optional.empty());
 
     // Act
-    Optional<User> userResult = userJpaRepositoryImp.findByEmail(EMAIL_JOAO);
+    Optional<User> userResult = userJpaRepositoryImp.findByEmail(EMAIL);
 
     // Assert
-    assertInstanceOf(Optional.class, userResult);
-    assertTrue(userResult.isEmpty());
+    assertAll(
+        () -> assertInstanceOf(Optional.class, userResult),
+        () -> assertTrue(userResult.isEmpty())
+    );
 
-    verify(jpaRepository).findByEmail(EMAIL_JOAO);
+    verify(jpaRepository).findByEmail(EMAIL);
     verify(mapper, never()).toDomain(any());
   }
 
   @Test
   void findAll_ShouldReturnListOfUsers_WhenUsersExist() {
     // Arrange
-    when(jpaRepository.findAll()).thenReturn(List.of(userEntity));
-    when(mapper.toDomain(userEntity)).thenReturn(userDomain);
+    when(jpaRepository.findAll()).thenReturn(List.of(mockUserEntity));
+    when(mapper.toDomain(mockUserEntity)).thenReturn(mockUserDomain);
 
     // Act
     List<User> usersResult = userJpaRepositoryImp.findAll();
 
     // Assert
-    assertInstanceOf(List.class, usersResult);
-    assertEquals(1 ,usersResult.size());
-    assertEquals(User.class, usersResult.get(0).getClass());
-
-    assertEquals(ID, usersResult.get(0).getId());
-    assertEquals(JOAO, usersResult.get(0).getFirstName());
-    assertEquals(CARVALHO, usersResult.get(0).getLastName());
-    assertEquals(DOCUMENT_JOAO, usersResult.get(0).getDocument());
-    assertEquals(EMAIL_JOAO, usersResult.get(0).getEmail());
-    assertEquals(PASSWORD_JOAO, usersResult.get(0).getPassword());
+    assertAll(
+        () -> assertInstanceOf(List.class, usersResult),
+        () -> assertEquals(1 ,usersResult.size()),
+        () -> assertEquals(User.class, usersResult.get(0).getClass()),
+        () -> assertEquals(ID, usersResult.get(0).getId()),
+        () -> assertEquals(FIRSTNAME, usersResult.get(0).getFirstName()),
+        () -> assertEquals(LASTNAME, usersResult.get(0).getLastName()),
+        () -> assertEquals(DOCUMENT, usersResult.get(0).getDocument()),
+        () -> assertEquals(EMAIL, usersResult.get(0).getEmail()),
+        () -> assertEquals(PASSWORD, usersResult.get(0).getPassword())
+    );
 
     verify(jpaRepository).findAll();
-    verify(mapper).toDomain(userEntity);
+    verify(mapper).toDomain(mockUserEntity);
   }
 
   @Test
@@ -229,17 +242,13 @@ class UserJpaRepositoryImpTest {
     List<User> users = userJpaRepositoryImp.findAll();
 
     // Assert
-    assertInstanceOf(List.class, users);
-    assertTrue(users.isEmpty());
+    assertAll(
+        () -> assertInstanceOf(List.class, users),
+        () -> assertTrue(users.isEmpty())
+    );
 
     verify(jpaRepository).findAll();
     verify(mapper, never()).toDomain(any());
-  }
-
-  private void initializeTestObjects() {
-    userEntity = new UserEntity(ID, JOAO, CARVALHO, DOCUMENT_JOAO, EMAIL_JOAO, PASSWORD_JOAO, BALANCE, USER_TYPE);
-
-    userDomain = new User(ID, JOAO, CARVALHO, DOCUMENT_JOAO, EMAIL_JOAO, PASSWORD_JOAO, BALANCE, USER_TYPE);
   }
 
 }

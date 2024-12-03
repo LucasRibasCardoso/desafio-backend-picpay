@@ -1,5 +1,6 @@
 package com.picpaydesafio.demopicpaydesafio.infrastructure.repositories.imp;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -12,7 +13,6 @@ import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.UserEntity;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserType;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.mappers.TransactionMapper;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.repositories.TransactionJpaRepository;
-import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,24 +27,25 @@ import java.util.List;
 @ExtendWith(MockitoExtension.class)
 class TransactionJpaRepositoryImpTest {
 
-  private static final BigDecimal BALANCE = BigDecimal.valueOf(500);
-  private static final UserType USER_TYPE = UserType.COMMON;
-  private static final LocalDateTime TIMESTAMP = LocalDateTime.now();
-  private static final String MARIA = "Maria";
-  private static final String SILVA = "Silva";
-  private static final String DOCUMENT_MARIA = "98765432130";
-  private static final String EMAIL_MARIA = "maria@gmail.com";
-  private static final String PASSWORD_MARIA = "maria123";
-  private static final String JOAO = "João";
-  private static final String CARVALHO = "Carvalho";
-  private static final String DOCUMENT_JOAO = "98515432130";
-  private static final String EMAIL_JOAO = "joao@gmail.com";
-  private static final String PASSWORD_JOAO = "joao123";
-  private static final long ID1 = 1L;
-  private static final long ID2 = 2L;
+  // User
+  public static final long ID = 1L;
+  public static final String FIRSTNAME = "teste";
+  public static final String LASTNAME = "example";
+  public static final String DOCUMENT = "12312312312";
+  public static final String EMAIL = "example@gmail.com";
+  public static final UserType USER_TYPE = UserType.COMMON;
+  public static final String PASSWORD = "password";
+  public static final BigDecimal BALANCE = new BigDecimal("100.00");
+  public static final LocalDateTime TIMESTAMP = LocalDateTime.now();
 
-  private Transaction transaction;
-  private TransactionEntity transactionEntity;
+  private TransactionEntity mockTransactionEntity;
+  private Transaction mockTransactionDomain;
+
+  private UserEntity mockSenderEntity;
+  private User mockSenderDomain;
+
+  private User mockReceiverDomain;
+  private UserEntity mockReceiverEntity;
 
   @InjectMocks
   private TransactionJpaRepositoryImp repository;
@@ -57,55 +58,101 @@ class TransactionJpaRepositoryImpTest {
 
   @BeforeEach
   void setUp() {
-    initializeTestObjects();
+    mockSenderDomain = new User(
+        ID,
+        FIRSTNAME,
+        LASTNAME,
+        DOCUMENT,
+        EMAIL,
+        PASSWORD,
+        BALANCE,
+        USER_TYPE
+    );
+
+    mockSenderEntity = new UserEntity(
+        ID,
+        FIRSTNAME,
+        LASTNAME,
+        DOCUMENT,
+        EMAIL,
+        PASSWORD,
+        BALANCE,
+        USER_TYPE
+    );
+
+    mockReceiverDomain = new User(
+        ID,
+        FIRSTNAME,
+        LASTNAME,
+        DOCUMENT,
+        EMAIL, PASSWORD,
+        BALANCE,
+        USER_TYPE
+    );
+
+    mockReceiverEntity = new UserEntity(
+        ID,
+        FIRSTNAME,
+        LASTNAME,
+        DOCUMENT,
+        EMAIL,
+        PASSWORD,
+        BALANCE,
+        USER_TYPE
+    );
+
+    mockTransactionDomain = new Transaction(ID, BALANCE, mockSenderDomain, mockReceiverDomain, TIMESTAMP);
+    mockTransactionEntity = new TransactionEntity(ID, BALANCE, mockSenderEntity, mockReceiverEntity, TIMESTAMP);
   }
 
   @Test
   void save_ShouldReturnSavedTransaction_WhenTransactionIsValid() {
     // Arrange
-    when(mapper.toEntity(transaction)).thenReturn(transactionEntity);
-    when(jpaRepository.save(transactionEntity)).thenReturn(transactionEntity);
-    when(mapper.toDomain(transactionEntity)).thenReturn(transaction);
+    when(mapper.toEntity(mockTransactionDomain)).thenReturn(mockTransactionEntity);
+    when(jpaRepository.save(mockTransactionEntity)).thenReturn(mockTransactionEntity);
+    when(mapper.toDomain(mockTransactionEntity)).thenReturn(mockTransactionDomain);
 
     // Act
-    Transaction savedTransaction = repository.save(transaction);
+    Transaction savedTransaction = repository.save(mockTransactionDomain);
 
     // Assert
-    assertEquals(Transaction.class, savedTransaction.getClass());
+    assertAll(
+        () ->  assertEquals(Transaction.class, savedTransaction.getClass()),
+        () ->  assertEquals(mockTransactionDomain.getId(), savedTransaction.getId()),
+        () ->  assertEquals(mockTransactionDomain.getAmount(), savedTransaction.getAmount()),
+        () ->  assertEquals(mockTransactionDomain.getTimestamp(), savedTransaction.getTimestamp()),
+        () ->  assertEquals(mockTransactionDomain.getSender().getId(), savedTransaction.getSender().getId()),
+        () ->  assertEquals(mockTransactionDomain.getReceiver().getId(), savedTransaction.getReceiver().getId())
+    );
 
-    assertEquals(transaction.getId(), savedTransaction.getId());
-    assertEquals(transaction.getAmount(), savedTransaction.getAmount());
-    assertEquals(transaction.getTimestamp(), savedTransaction.getTimestamp());
-    assertEquals(transaction.getSender().getId(), savedTransaction.getSender().getId());
-    assertEquals(transaction.getReceiver().getId(), savedTransaction.getReceiver().getId());
-
-    verify(mapper).toEntity(transaction);
-    verify(jpaRepository).save(transactionEntity);
-    verify(mapper).toDomain(transactionEntity);
+    verify(mapper).toEntity(mockTransactionDomain);
+    verify(jpaRepository).save(mockTransactionEntity);
+    verify(mapper).toDomain(mockTransactionEntity);
   }
 
   @Test
   void findAll_ShouldReturnListOfTransactions_WhenTransactionsExist() {
     // Arrange
-    when(jpaRepository.findAll()).thenReturn(List.of(transactionEntity));
-    when(mapper.toDomain(transactionEntity)).thenReturn(transaction);
+    when(jpaRepository.findAll()).thenReturn(List.of(mockTransactionEntity));
+    when(mapper.toDomain(mockTransactionEntity)).thenReturn(mockTransactionDomain);
 
     // Act
     List<Transaction> transactions = repository.findAll();
 
     // Assert
-    assertInstanceOf(List.class, transactions);
-    assertEquals(1, transactions.size());
-    assertEquals(Transaction.class, transactions.get(0).getClass());
-
-    assertEquals(transaction.getId(), transactions.get(0).getId());
-    assertEquals(transaction.getAmount(), transactions.get(0).getAmount());
-    assertEquals(transaction.getTimestamp(), transactions.get(0).getTimestamp());
-    assertEquals(transaction.getSender().getId(), transactions.get(0).getSender().getId());
-    assertEquals(transaction.getReceiver().getId(), transactions.get(0).getReceiver().getId());
+    assertAll(
+        () -> assertInstanceOf(List.class, transactions),
+        () -> assertEquals(1, transactions.size()),
+        () -> assertEquals(Transaction.class, transactions.get(0).getClass()),
+        () -> assertEquals(mockTransactionDomain.getId(), transactions.get(0).getId()),
+        () -> assertEquals(mockTransactionDomain.getAmount(), transactions.get(0).getAmount()),
+        () -> assertEquals(mockTransactionDomain.getTimestamp(), transactions.get(0).getTimestamp()),
+        () -> assertEquals(mockTransactionDomain.getSender().getId(), transactions.get(0).getSender().getId()),
+        () -> assertEquals(mockTransactionDomain.getReceiver().getId(), transactions.get(0).getReceiver().getId())
+    );
 
     verify(jpaRepository).findAll();
-    verify(mapper).toDomain(transactionEntity);
+    verify(mapper).toDomain(mockTransactionEntity);
   }
 
   @Test
@@ -117,30 +164,13 @@ class TransactionJpaRepositoryImpTest {
     List<Transaction> transactions = repository.findAll();
 
     // Assert
-    assertInstanceOf(List.class, transactions);
-    assertTrue(transactions.isEmpty());
+    assertAll(
+        () -> assertInstanceOf(List.class, transactions),
+        () -> assertTrue(transactions.isEmpty())
+    );
 
     verify(jpaRepository).findAll();
     verify(mapper, never()).toDomain(any());
   }
 
-
-  private void initializeTestObjects() {
-    User senderDomain = new User(
-        ID1, MARIA, SILVA, DOCUMENT_MARIA, EMAIL_MARIA, PASSWORD_MARIA, BALANCE, USER_TYPE
-    );
-    UserEntity senderEntity = new UserEntity(
-        ID1, MARIA, SILVA, DOCUMENT_MARIA, EMAIL_MARIA, PASSWORD_MARIA, BALANCE, USER_TYPE
-    );
-
-    User receiverDomain = new User(
-        ID2, JOAO, CARVALHO, DOCUMENT_JOAO, EMAIL_JOAO, PASSWORD_JOAO, BALANCE, USER_TYPE
-    );
-    UserEntity receiverEntity = new UserEntity(
-        ID2, JOAO, CARVALHO, DOCUMENT_JOAO, EMAIL_JOAO, PASSWORD_JOAO, BALANCE, USER_TYPE
-    );
-
-    transaction = new Transaction(ID1, BALANCE, senderDomain, receiverDomain, TIMESTAMP);
-    transactionEntity = new TransactionEntity(ID1, BALANCE, senderEntity, receiverEntity, TIMESTAMP);
-  }
 }
