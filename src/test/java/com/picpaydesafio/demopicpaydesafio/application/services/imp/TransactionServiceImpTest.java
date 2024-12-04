@@ -29,72 +29,95 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class TransactionServiceImpTest {
 
-  public static final BigDecimal AMOUNT = new BigDecimal(200);
+
+  // User Sender
+  public static final long ID_1 = 1L;
+  public static final String FIRSTNAME_1 = "teste1";
+  public static final String LASTNAME_1 = "example1";
+  public static final String FULL_NAME_1 = FIRSTNAME_1 + " " + LASTNAME_1;
+  public static final String DOCUMENT_1 = "12312312312";
+  public static final String EMAIL_1 = "example1@gmail.com";
+  public static final UserType USER_TYPE_1 = UserType.COMMON;
+  public static final String PASSWORD_1 = "password";
+  public static final BigDecimal BALANCE_1 = new BigDecimal("100.00");
+
+  // User Receiver
+  public static final long ID_2 = 2L;
+  public static final String FIRSTNAME_2 = "teste2";
+  public static final String LASTNAME_2 = "example2";
+  public static final String FULL_NAME_2 = FIRSTNAME_2 + " " + LASTNAME_2;
+  public static final String DOCUMENT_2 = "12312312312";
+  public static final String EMAIL_2 = "example2@gmail.com";
+  public static final UserType USER_TYPE_2 = UserType.COMMON;
+  public static final String PASSWORD_2 = "password";
+  public static final BigDecimal BALANCE_2 = new BigDecimal("100.00");
+
+  // Transaction
   public static final long ID_TRANSACTION = 1L;
-  public static final long SENDER_ID = ID_TRANSACTION;
-  public static final long RECEIVER_ID = 2L;
-
-  private static final String JOAO = "João";
-  private static final String CARVALHO = "Carvalho";
-  private static final String DOCUMENT = "98515432130";
-  private static final String EMAIL = "joao@gmail.com";
-  private static final String PASSWORD = "joao123";
-  private static final BigDecimal BALANCE = BigDecimal.valueOf(500);
-
-  private static final String MARIA = "Maria";
-  private static final String SILVA = "Silva";
-  private static final String DOCUMENT_MARIA = "98765432130";
-  private static final String EMAIL_MARIA = "maria@gmail.com";
-  private static final String PASSWORD_MARIA = "maria123";
-
-  private static final UserType USER_TYPE = UserType.COMMON;
+  public static final BigDecimal AMOUNT = new BigDecimal(200);
   public static final LocalDateTime TIMESTAMP = LocalDateTime.now();
-
-  private TransactionRequestDTO requestDTO;
-  private TransactionResponseDTO responseDTO;
-  private Transaction transactionDomain;
-  private User sender;
-  private User receiver;
 
   @InjectMocks
   private TransactionServiceImp transactionServiceImp;
 
   @Mock
   private TransactionRepository transactionRepository;
+
   @Mock
   private TransactionMapper transactionMapper;
+
   @Mock
   private CreateTransactionUseCase createTransactionUseCase;
+
   @Mock
   private EmailSendingService emailService;
 
+  private TransactionRequestDTO mockTransactionRequest;
+  private TransactionResponseDTO mockTransactionResponse;
+  private Transaction mockTransaction;
+  private User mockSender;
+  private User mockReceiver;
+
   @BeforeEach
   void setUp() {
-    initializeTestObjects();
+    mockSender = new User(
+        ID_1, FIRSTNAME_1, LASTNAME_1, DOCUMENT_1, EMAIL_1, PASSWORD_1, BALANCE_1, USER_TYPE_1
+    );
+    mockReceiver = new User(
+        ID_2, FIRSTNAME_2, LASTNAME_2, DOCUMENT_2, EMAIL_2, PASSWORD_2, BALANCE_2, USER_TYPE_2
+    );
+    mockTransactionResponse = new TransactionResponseDTO(
+        ID_TRANSACTION, ID_1, FULL_NAME_1, ID_2, FULL_NAME_2, AMOUNT, TIMESTAMP
+    );
+
+    mockTransaction = new Transaction(ID_TRANSACTION, AMOUNT, mockSender, mockReceiver, TIMESTAMP);
+    mockTransactionRequest = new TransactionRequestDTO(ID_1, ID_2, AMOUNT);
   }
 
   @Test
   void createTransaction_ThenReturnTransactionResponseDTO() {
     // Arrange
-    when(transactionMapper.toResponseDTO(transactionDomain)).thenReturn(responseDTO);
-    when(createTransactionUseCase.execute(any())).thenReturn(transactionDomain);
+    when(transactionMapper.toResponseDTO(mockTransaction)).thenReturn(mockTransactionResponse);
+    when(createTransactionUseCase.execute(any())).thenReturn(mockTransaction);
     doNothing().when(emailService).sendEmail(any());
+
     // Act
-    TransactionResponseDTO result = transactionServiceImp.createTransaction(requestDTO);
+    TransactionResponseDTO result = transactionServiceImp.createTransaction(mockTransactionRequest);
 
     // Assert
-    assertNotNull(result);
-    assertInstanceOf(TransactionResponseDTO.class, result);
+    assertAll(
+        () -> assertNotNull(result),
+        () -> assertInstanceOf(TransactionResponseDTO.class, result),
+        () -> assertEquals(mockTransactionResponse.id(), result.id()),
+        () -> assertEquals(mockTransactionResponse.senderId(), result.senderId()),
+        () -> assertEquals(mockTransactionResponse.senderName(), result.senderName()),
+        () -> assertEquals(mockTransactionResponse.receiverId(), result.receiverId()),
+        () -> assertEquals(mockTransactionResponse.receiverName(), result.receiverName()),
+        () -> assertEquals(mockTransactionResponse.amount(), result.amount()),
+        () -> assertEquals(mockTransactionResponse.timestamp(), result.timestamp())
+    );
 
-    assertEquals(responseDTO.id(), result.id());
-    assertEquals(responseDTO.senderId(), result.senderId());
-    assertEquals(responseDTO.senderName(), result.senderName());
-    assertEquals(responseDTO.receiverId(), result.receiverId());
-    assertEquals(responseDTO.receiverName(), result.receiverName());
-    assertEquals(responseDTO.amount(), result.amount());
-    assertEquals(responseDTO.timestamp(), result.timestamp());
-
-    verify(transactionMapper).toResponseDTO(transactionDomain);
+    verify(transactionMapper).toResponseDTO(mockTransaction);
     verify(createTransactionUseCase).execute(any());
     verify(emailService).sendEmail(any());
   }
@@ -102,59 +125,48 @@ class TransactionServiceImpTest {
   @Test
   void getAllTransactions_ThenReturnListOfTransactionResponseDTO() {
     // Arrange
-    when(transactionRepository.findAll()).thenReturn(List.of(transactionDomain));
-    when(transactionMapper.toResponseDTO(transactionDomain)).thenReturn(responseDTO);
+    when(transactionRepository.findAll()).thenReturn(List.of(mockTransaction));
+    when(transactionMapper.toResponseDTO(mockTransaction)).thenReturn(mockTransactionResponse);
 
-    // act
+    // Act
     List<TransactionResponseDTO> transactionsDTO = transactionServiceImp.getAllTransactions();
 
-    // assert
-    assertNotNull(transactionsDTO);
-    assertFalse(transactionsDTO.isEmpty());
-    assertInstanceOf(List.class, transactionsDTO);
-
-    assertEquals(responseDTO.id(), transactionsDTO.get(0).id());
-    assertEquals(responseDTO.senderId(), transactionsDTO.get(0).senderId());
-    assertEquals(responseDTO.senderName(), transactionsDTO.get(0).senderName());
-    assertEquals(responseDTO.receiverId(), transactionsDTO.get(0).receiverId());
-    assertEquals(responseDTO.receiverName(), transactionsDTO.get(0).receiverName());
-    assertEquals(responseDTO.amount(), transactionsDTO.get(0).amount());
-    assertEquals(responseDTO.timestamp(), transactionsDTO.get(0).timestamp());
+    // Assert
+    assertAll(
+        () -> assertNotNull(transactionsDTO),
+        () -> assertFalse(transactionsDTO.isEmpty()),
+        () -> assertInstanceOf(List.class, transactionsDTO),
+        () -> assertEquals(mockTransactionResponse.id(), transactionsDTO.get(0).id()),
+        () -> assertEquals(mockTransactionResponse.senderId(), transactionsDTO.get(0).senderId()),
+        () -> assertEquals(mockTransactionResponse.senderName(), transactionsDTO.get(0).senderName()),
+        () -> assertEquals(mockTransactionResponse.receiverId(), transactionsDTO.get(0).receiverId()),
+        () -> assertEquals(mockTransactionResponse.receiverName(), transactionsDTO.get(0).receiverName()),
+        () -> assertEquals(mockTransactionResponse.amount(), transactionsDTO.get(0).amount()),
+        () -> assertEquals(mockTransactionResponse.timestamp(), transactionsDTO.get(0).timestamp())
+    );
 
     verify(transactionRepository).findAll();
-    verify(transactionMapper).toResponseDTO(transactionDomain);
+    verify(transactionMapper).toResponseDTO(mockTransaction);
   }
 
   @Test
   void getAllTransaction_ThenReturnEmptyList_WhenDoesNotExistTransactions() {
-    // arrange
+    // Arrange
     when(transactionRepository.findAll()).thenReturn(List.of());
 
-    // act
+    // Act
     List<TransactionResponseDTO> transactionsDTO = transactionServiceImp.getAllTransactions();
 
-    // arrange
-    assertNotNull(transactionsDTO);
-    assertInstanceOf(List.class, transactionsDTO);
-    assertTrue(transactionsDTO.isEmpty());
+    // Arrange
+    assertAll(
+        () -> assertNotNull(transactionsDTO),
+        () -> assertInstanceOf(List.class, transactionsDTO),
+        () -> assertTrue(transactionsDTO.isEmpty())
+    );
 
     verify(transactionRepository).findAll();
     verifyNoInteractions(transactionMapper);
   }
 
-  private void initializeTestObjects() {
-    sender = new User(SENDER_ID, JOAO, CARVALHO, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE);
-
-    receiver = new User(
-        RECEIVER_ID, MARIA, SILVA, DOCUMENT_MARIA, EMAIL_MARIA, PASSWORD_MARIA, BALANCE, USER_TYPE);
-
-    requestDTO = new TransactionRequestDTO(SENDER_ID, RECEIVER_ID, AMOUNT);
-
-    transactionDomain = new Transaction(ID_TRANSACTION, AMOUNT, sender, receiver, TIMESTAMP);
-
-    responseDTO = new TransactionResponseDTO(ID_TRANSACTION, SENDER_ID, sender.fullName(), RECEIVER_ID,
-        receiver.fullName(), AMOUNT, TIMESTAMP
-    );
-  }
 
 }

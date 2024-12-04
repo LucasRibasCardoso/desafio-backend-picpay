@@ -1,6 +1,6 @@
 package com.picpaydesafio.demopicpaydesafio.application.services.imp;
 
-import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserNotFound;
+import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserNotFoundException;
 import com.picpaydesafio.demopicpaydesafio.application.services.UserService;
 import com.picpaydesafio.demopicpaydesafio.application.usecases.ValidateUserUseCase;
 import com.picpaydesafio.demopicpaydesafio.domain.factories.UserFactory;
@@ -31,7 +31,7 @@ public class UserServiceImp implements UserService {
   @Override
   public User findUserById(Long id) {
     return userRepository.findById(id)
-        .orElseThrow(() -> new UserNotFound("Usuário com id " + id + " não encontrado."));
+        .orElseThrow(() -> new UserNotFoundException("Usuário com id " + id + " não encontrado."));
   }
 
   @Override

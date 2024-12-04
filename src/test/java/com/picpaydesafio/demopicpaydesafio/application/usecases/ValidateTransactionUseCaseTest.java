@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.UnauthorizedTransactionException;
 import com.picpaydesafio.demopicpaydesafio.domain.models.Transaction;
 import com.picpaydesafio.demopicpaydesafio.domain.models.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -17,36 +18,43 @@ class ValidateTransactionUseCaseTest {
   public static final String LOJISTAS_NAO_PODEM_REALIZAR_TRANSACOES = "Lojistas não podem realizar transações.";
   public static final String USUARIO_NAO_PODE_REALIZAR_TRANSACAO_CONSIGO_MESMO = "Usuário não pode realizar transação consigo mesmo.";
 
-  private ValidateTransactionUseCase validateTransactionUseCase = new ValidateTransactionUseCase();
+  private ValidateTransactionUseCase validateTransactionUseCase;
+
+  private User mockSender;
+  private User mockReceiver;
+  private Transaction mockTransaction;
+
+  @BeforeEach
+  void setUp() {
+    validateTransactionUseCase = new ValidateTransactionUseCase();
+
+    mockSender = mock(User.class);
+    mockReceiver = mock(User.class);
+    mockTransaction = mock(Transaction.class);
+  }
 
   @Test
   void validate_ShouldNotThrowExceptionWithValidTransaction() {
     // Arrange
-    User sender = mock(User.class);
-    User receiver = mock(User.class);
-    Transaction transaction = mock(Transaction.class);
-
-    when(transaction.getSender()).thenReturn(sender);
-    when(transaction.getReceiver()).thenReturn(receiver);
-    when(sender.isMerchant()).thenReturn(false);
+    when(mockTransaction.getSender()).thenReturn(mockSender);
+    when(mockTransaction.getReceiver()).thenReturn(mockReceiver);
+    when(mockSender.isMerchant()).thenReturn(false);
 
     // Act & Assert
-    assertDoesNotThrow(() -> validateTransactionUseCase.validate(transaction));
+    assertDoesNotThrow(() -> validateTransactionUseCase.validate(mockTransaction));
   }
 
   @Test
   void validate_ShouldThrowExceptionWhenSenderAndReceiverAreSameUser() {
     // Arrange
-    User user = mock(User.class);
-    Transaction transaction = mock(Transaction.class);
-
-    when(transaction.getSender()).thenReturn(user);
-    when(transaction.getReceiver()).thenReturn(user);
+    User sameUser = mock(User.class);
+    when(mockTransaction.getSender()).thenReturn(sameUser);
+    when(mockTransaction.getReceiver()).thenReturn(sameUser);
 
     // Act & Assert
     UnauthorizedTransactionException exception = assertThrows(
         UnauthorizedTransactionException.class,
-        () -> validateTransactionUseCase.validate(transaction)
+        () -> validateTransactionUseCase.validate(mockTransaction)
     );
 
     assertEquals(USUARIO_NAO_PODE_REALIZAR_TRANSACAO_CONSIGO_MESMO, exception.getMessage());
@@ -55,18 +63,14 @@ class ValidateTransactionUseCaseTest {
   @Test
   void validate_ShouldThrowExceptionWhenSenderIsMerchant() {
     // Arrange
-    User sender = mock(User.class);
-    User receiver = mock(User.class);
-    Transaction transaction = mock(Transaction.class);
-
-    when(transaction.getSender()).thenReturn(sender);
-    when(transaction.getReceiver()).thenReturn(receiver);
-    when(sender.isMerchant()).thenReturn(true);
+    when(mockTransaction.getSender()).thenReturn(mockSender);
+    when(mockTransaction.getReceiver()).thenReturn(mockReceiver);
+    when(mockSender.isMerchant()).thenReturn(true);
 
     // Act & Assert
     UnauthorizedTransactionException exception = assertThrows(
         UnauthorizedTransactionException.class,
-        () -> validateTransactionUseCase.validate(transaction)
+        () -> validateTransactionUseCase.validate(mockTransaction)
     );
 
     assertEquals(LOJISTAS_NAO_PODEM_REALIZAR_TRANSACOES, exception.getMessage());

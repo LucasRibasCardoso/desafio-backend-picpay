@@ -1,11 +1,11 @@
 package com.picpaydesafio.demopicpaydesafio.web.exceptions;
 
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidEmailException;
-import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidSendEmail;
+import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidSendEmailException;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.InsufficientFoundsException;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.UnauthorizedTransactionException;
-import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserAlreadyExists;
-import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserNotFound;
+import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserAlreadyExistsException;
+import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserNotFoundException;
 import com.picpaydesafio.demopicpaydesafio.domain.factories.imp.StandardErrorFactoryImp;
 import com.picpaydesafio.demopicpaydesafio.domain.factories.StandardError;
 import java.util.HashMap;
@@ -30,8 +30,8 @@ public class ExceptionsHandler {
     return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
   }
 
-  @ExceptionHandler(UserAlreadyExists.class)
-  public ResponseEntity<StandardError> UserAlreadyExistsException(UserAlreadyExists e) {
+  @ExceptionHandler(UserAlreadyExistsException.class)
+  public ResponseEntity<StandardError> UserAlreadyExistsException(UserAlreadyExistsException e) {
     StandardError error = errorFactory.create(e.getMessage(), HttpStatus.BAD_REQUEST);
     return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
   }
@@ -48,8 +48,8 @@ public class ExceptionsHandler {
     return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
   }
 
-  @ExceptionHandler(UserNotFound.class)
-  public ResponseEntity<StandardError> UserNotFoundException(UserNotFound e) {
+  @ExceptionHandler(UserNotFoundException.class)
+  public ResponseEntity<StandardError> UserNotFoundException(UserNotFoundException e) {
     StandardError error = errorFactory.create(e.getMessage(), HttpStatus.NOT_FOUND);
     return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
   }
@@ -65,8 +65,8 @@ public class ExceptionsHandler {
     return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
   }
 
-  @ExceptionHandler(InvalidSendEmail.class)
-  public ResponseEntity<StandardError> InvalidSendEmail(InvalidSendEmail e) {
+  @ExceptionHandler(InvalidSendEmailException.class)
+  public ResponseEntity<StandardError> InvalidSendEmail(InvalidSendEmailException e) {
     StandardError error = errorFactory.create(e.getMessage(), HttpStatus.BAD_REQUEST);
     return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
   }

@@ -1,7 +1,6 @@
 package com.picpaydesafio.demopicpaydesafio.domain.models;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.InsufficientFoundsException;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserType;
@@ -11,41 +10,54 @@ import org.junit.jupiter.api.Test;
 
 class UserTest {
 
-  private User regularUser;
-  private User merchantUser;
+  // User
+  public static final long ID_NORMAL = 1L;
+  public static final long ID_MERCHANT = 2L;
+  public static final String FIRSTNAME = "teste";
+  public static final String LASTNAME = "example";
+  public static final String DOCUMENT = "12312312312";
+  public static final String EMAIL = "example@gmail.com";
+  public static final UserType USER_TYPE_NORMAL = UserType.COMMON;
+  public static final UserType USER_TYPE_MERCHANT = UserType.MERCHANT;
+  public static final String PASSWORD = "password";
+  public static final BigDecimal BALANCE = new BigDecimal("100.00");
+
+  private User mockRegularUser;
+  private User mockMerchantUser;
 
   @BeforeEach
   void setUp() {
-    regularUser = new User(1L, "John", "Doe", "123456789", "john.doe@example.com", "password123",
-        new BigDecimal("100.00"), UserType.COMMON
+    mockRegularUser = new User(
+        ID_NORMAL, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE_NORMAL
     );
 
-    merchantUser = new User(2L, "Jane", "Smith", "987654321", "jane.smith@example.com", "password456",
-        new BigDecimal("500.00"), UserType.MERCHANT
-    );
+    mockMerchantUser = new User(
+        ID_MERCHANT, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE_MERCHANT);
   }
 
   @Test
   void fullName_ShouldReturnFullName() {
     // Arrange
-    String expectedFullName = "John Doe";
+    String expectedFullName = FIRSTNAME + " " + LASTNAME;
 
     // Act
-    String actualFullName = regularUser.fullName();
+    String actualFullName = mockRegularUser.fullName();
 
     // Assert
-    assertNotNull(actualFullName);
-    assertEquals(expectedFullName, actualFullName);
+    assertAll(
+        () -> assertNotNull(actualFullName),
+        () -> assertEquals(expectedFullName, actualFullName)
+    );
   }
 
   @Test
-  void isMerchant_ShouldReturnTrue_WhenUserIsMerchant() {
-    assertTrue(merchantUser.isMerchant());
+  void isMerchant_ShouldReturnTrue_WhenUserTypeIsMerchant() {
+    assertTrue(mockMerchantUser.isMerchant());
   }
 
   @Test
-  void isMerchant_ShouldReturnFalse_WhenUserIsNotMerchant() {
-    assertFalse(regularUser.isMerchant());
+  void isMerchant_ShouldReturnFalse_WhenUserTypeIsNotMerchant() {
+    assertFalse(mockRegularUser.isMerchant());
   }
 
   @Test
@@ -55,11 +67,13 @@ class UserTest {
     BigDecimal expectedBalance = new BigDecimal("150.00");
 
     // Act
-    User updatedUser = regularUser.credit(creditAmount);
+    User updatedUser = mockRegularUser.credit(creditAmount);
 
     // Assert
-    assertEquals(expectedBalance, updatedUser.getBalance());
-    assertNotSame(regularUser, updatedUser);
+    assertAll(
+        () -> assertEquals(expectedBalance, updatedUser.getBalance()),
+        () -> assertNotSame(mockRegularUser, updatedUser)
+    );
   }
 
   @Test
@@ -69,11 +83,13 @@ class UserTest {
     BigDecimal expectedBalance = new BigDecimal("20.00");
 
     // Act
-    User updatedUser = regularUser.debit(debitAmount);
+    User updatedUser = mockRegularUser.debit(debitAmount);
 
     // Assert
-    assertEquals(expectedBalance, updatedUser.getBalance());
-    assertNotSame(regularUser, updatedUser);
+    assertAll(
+        () -> assertEquals(expectedBalance, updatedUser.getBalance()),
+        () -> assertNotSame(mockRegularUser, updatedUser)
+    );
   }
 
   @Test
@@ -83,9 +99,10 @@ class UserTest {
 
     // Act & Assert
     InsufficientFoundsException exception = assertThrows(InsufficientFoundsException.class,
-        () -> regularUser.debit(debitAmount)
+        () -> mockRegularUser.debit(debitAmount)
     );
 
     assertEquals("Saldo insuficiente para realizar a transação.", exception.getMessage());
   }
+
 }

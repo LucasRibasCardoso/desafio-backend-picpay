@@ -1,6 +1,6 @@
 package com.picpaydesafio.demopicpaydesafio.application.services.imp;
 
-import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidSendEmail;
+import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidSendEmailException;
 import com.picpaydesafio.demopicpaydesafio.application.services.EmailSendingService;
 import com.picpaydesafio.demopicpaydesafio.domain.factories.EmailFactory;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.mappers.EmailMapper;
@@ -43,7 +43,7 @@ public class EmailSendingServiceImp implements EmailSendingService {
       emailSender.send(message);
     }
     catch (MailException e) {
-      throw new InvalidSendEmail("Erro ao enviar email. Tente realizar a transação novamente mais tarde.");
+      throw new InvalidSendEmailException("Erro ao enviar email. Tente realizar a transação novamente mais tarde.");
     }
   }
 

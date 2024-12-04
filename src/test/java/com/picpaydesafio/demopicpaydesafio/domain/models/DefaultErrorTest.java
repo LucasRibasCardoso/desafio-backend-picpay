@@ -8,38 +8,41 @@ import org.junit.jupiter.api.Test;
 
 class DefaultErrorTest {
 
+  // DefaultError
+  public static final String MESSAGE_ERROR_TEST = "Validation error test";
+  public static final int STATUS_CODE = 422;
 
   @Test
   void testConstructorWithFieldErrors() {
     // Arrange
-    String message = "Validation error";
-    int statusCode = 422;
-    Map<String, String> fieldErrors = new HashMap<>();
-    fieldErrors.put("username", "Invalid username");
+    Map<String, String> fieldsErrors = new HashMap<>();
+    fieldsErrors.put("validation", MESSAGE_ERROR_TEST);
 
     // Act
-    DefaultError error = new DefaultError(message, statusCode, fieldErrors);
+    DefaultError mockDefaultErrorWithFieldErrors = new DefaultError(MESSAGE_ERROR_TEST, STATUS_CODE, fieldsErrors);
 
     // Assert
-    assertEquals(message, error.getMessage());
-    assertEquals(statusCode, error.getCode());
-    assertEquals(fieldErrors, error.getFieldErrors());
+    assertAll(
+        () -> assertEquals(MESSAGE_ERROR_TEST, mockDefaultErrorWithFieldErrors.getMessage()),
+        () -> assertEquals(STATUS_CODE, mockDefaultErrorWithFieldErrors.getCode()),
+        () -> assertNotNull(mockDefaultErrorWithFieldErrors.getFieldErrors()),
+        () -> assertEquals(1, mockDefaultErrorWithFieldErrors.getFieldErrors().size()),
+        () -> assertEquals(MESSAGE_ERROR_TEST, mockDefaultErrorWithFieldErrors.getFieldErrors().get("validation"))
+    );
   }
 
   @Test
   void testConstructorWithMessageAndStatusCode() {
-    // Arrange
-    String message = "Test error";
-    int statusCode = 400;
-
     // Act
-    DefaultError error = new DefaultError(message, statusCode);
+    DefaultError mockDefaultError = new DefaultError(MESSAGE_ERROR_TEST, STATUS_CODE);
 
     // Assert
-    assertEquals(message, error.getMessage());
-    assertEquals(statusCode, error.getCode());
-    assertNotNull(error.getFieldErrors());
-    assertTrue(error.getFieldErrors().isEmpty());
+   assertAll(
+       () -> assertEquals(MESSAGE_ERROR_TEST, mockDefaultError.getMessage()),
+       () -> assertEquals(STATUS_CODE, mockDefaultError.getCode()),
+       () -> assertNotNull(mockDefaultError.getFieldErrors()),
+       () -> assertTrue(mockDefaultError.getFieldErrors().isEmpty())
+   );
   }
 
 }

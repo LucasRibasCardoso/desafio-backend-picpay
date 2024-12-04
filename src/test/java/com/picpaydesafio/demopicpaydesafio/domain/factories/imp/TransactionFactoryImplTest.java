@@ -1,17 +1,14 @@
 package com.picpaydesafio.demopicpaydesafio.domain.factories.imp;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserNotFound;
-import com.picpaydesafio.demopicpaydesafio.application.services.UserService;
+import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserNotFoundException;
 import com.picpaydesafio.demopicpaydesafio.application.services.imp.UserServiceImp;
 import com.picpaydesafio.demopicpaydesafio.domain.models.Transaction;
 import com.picpaydesafio.demopicpaydesafio.domain.models.User;
+import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserType;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.TransactionRequestDTO;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,39 +21,56 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class TransactionFactoryImplTest {
 
+  // Transaction
   public static final long SENDER_ID = 1L;
   public static final long RECEIVER_ID = 2L;
   public static final BigDecimal AMOUNT = new BigDecimal(50);
 
+  // User
+  public static final long ID_SENDER = 1L;
+  public static final long ID_RECEIVER = 2L;
+  public static final String FIRSTNAME = "teste";
+  public static final String LASTNAME = "example";
+  public static final String DOCUMENT = "12312312312";
+  public static final String EMAIL = "example@gmail.com";
+  public static final UserType USER_TYPE = UserType.COMMON;
+  public static final String PASSWORD = "password";
+  public static final BigDecimal BALANCE = new BigDecimal("100.00");
+
+  @InjectMocks
   private TransactionFactoryImpl transactionFactory;
 
   @Mock
   private UserServiceImp userService;
 
+  private User mockSender;
+  private User mockReceiver;
+  private TransactionRequestDTO mockTransactionRequestDTO;
+
   @BeforeEach
   void setUp() {
-    transactionFactory = new TransactionFactoryImpl(userService);
+    mockSender = new User(ID_SENDER, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE);
+    mockReceiver = new User(ID_RECEIVER, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE);
+    mockTransactionRequestDTO = new TransactionRequestDTO(SENDER_ID, RECEIVER_ID, AMOUNT);
   }
 
   @Test
   void createDomain_ShouldCreateObjectTransaction_WhenUsersExist() {
-    User sender = mock(User.class);
-    User receiver = mock(User.class);
-    TransactionRequestDTO transactionRequestDTO = new TransactionRequestDTO(SENDER_ID, RECEIVER_ID, AMOUNT);
-
     // Arrange
-    when(userService.findUserById(SENDER_ID)).thenReturn(sender);
-    when(userService.findUserById(RECEIVER_ID)).thenReturn(receiver);
+    when(userService.findUserById(SENDER_ID)).thenReturn(mockSender);
+    when(userService.findUserById(RECEIVER_ID)).thenReturn(mockReceiver);
 
     // Act
-    Transaction result = transactionFactory.createDomain(transactionRequestDTO);
+    Transaction result = transactionFactory.createDomain(mockTransactionRequestDTO);
 
     // Assert
-    assertNotNull(result);
-    assertEquals(sender, result.getSender());
-    assertEquals(receiver, result.getReceiver());
-    assertEquals(transactionRequestDTO.amount(), result.getAmount());
-    assertNotNull(result.getTimestamp());
+    assertAll(
+        () -> assertNotNull(result),
+        () -> assertEquals(mockSender, result.getSender()),
+        () -> assertEquals(mockReceiver, result.getReceiver()),
+        () -> assertEquals(mockTransactionRequestDTO.amount(), result.getAmount()),
+        () -> assertNotNull(result.getTimestamp())
+    );
 
     verify(userService).findUserById(SENDER_ID);
     verify(userService).findUserById(RECEIVER_ID);
@@ -65,13 +79,15 @@ class TransactionFactoryImplTest {
   @Test
   void createDomain_ShouldThrowException_WhenUserDoesNotExist() {
     // Arrange
-    TransactionRequestDTO transactionRequestDTO = new TransactionRequestDTO(SENDER_ID, RECEIVER_ID, AMOUNT);
     when(userService.findUserById(SENDER_ID)).thenThrow(
-        new UserNotFound("Usuário com id " + SENDER_ID + " não encontrado."));
+        new UserNotFoundException("Usuário com id " + SENDER_ID + " não encontrado.")
+    );
 
     // Act Assert
-    UserNotFound exception = assertThrows(
-        UserNotFound.class, () -> transactionFactory.createDomain(transactionRequestDTO));
+    UserNotFoundException exception = assertThrows(
+        UserNotFoundException.class,
+        () -> transactionFactory.createDomain(mockTransactionRequestDTO)
+    );
 
     assertNotNull(exception);
     assertEquals("Usuário com id " + SENDER_ID + " não encontrado.", exception.getMessage());

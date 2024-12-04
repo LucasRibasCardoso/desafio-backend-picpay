@@ -5,11 +5,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidEmailException;
-import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserAlreadyExists;
+import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserAlreadyExistsException;
 import com.picpaydesafio.demopicpaydesafio.application.services.EmailValidatorService;
 import com.picpaydesafio.demopicpaydesafio.domain.models.User;
 import com.picpaydesafio.demopicpaydesafio.domain.repositoriesDomain.UserRepository;
 import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,10 +20,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class ValidateUserUseCaseTest {
 
-  public static final String MAIL = "valid@email.com";
-  public static final String PASSWORD = "12345";
-  public static final String DOCUMENT = "12345678911";
   public static final String INVALID_EMAIL = "invalidemail";
+  public static final String DOCUMENT = "12312312312";
+  public static final String EMAIL = "example@gmail.com";
+  public static final String PASSWORD = "password";
 
   @InjectMocks
   private ValidateUserUseCase validateUserUseCase;
@@ -33,31 +34,37 @@ class ValidateUserUseCaseTest {
   @Mock
   private UserRepository userRepository;
 
+  private User mockUser;
+
+  @BeforeEach
+  void setUp() {
+    mockUser = mock(User.class);
+  }
+
   @Test
   void validate_ShouldNotThrowExceptionWithValidUser() {
     // Arrange
-    User user = mock(User.class);
-    when(user.getDocument()).thenReturn(PASSWORD);
-    when(user.getEmail()).thenReturn(MAIL);
+    when(mockUser.getDocument()).thenReturn(PASSWORD);
+    when(mockUser.getEmail()).thenReturn(EMAIL);
+
     when(userRepository.findByDocument(PASSWORD)).thenReturn(Optional.empty());
-    when(userRepository.findByEmail(MAIL)).thenReturn(Optional.empty());
-    when(emailValidatorService.isValid(MAIL)).thenReturn(true);
+    when(userRepository.findByEmail(EMAIL)).thenReturn(Optional.empty());
+    when(emailValidatorService.isValid(EMAIL)).thenReturn(true);
 
     // Act & Assert
-    assertDoesNotThrow(() -> validateUserUseCase.execute(user));
+    assertDoesNotThrow(() -> validateUserUseCase.execute(mockUser));
   }
 
   @Test
   void validate_ShouldThrowException_WhenDocumentAlreadyExists() {
     // Arrange
-    User user = mock(User.class);
+    when(mockUser.getDocument()).thenReturn(PASSWORD);
+    when(userRepository.findByDocument(PASSWORD)).thenReturn(Optional.of(mockUser));
 
-    when(user.getDocument()).thenReturn(PASSWORD);
-    when(userRepository.findByDocument(PASSWORD)).thenReturn(Optional.of(user));
-
-    // Act Assert
-    UserAlreadyExists exception = assertThrows(
-        UserAlreadyExists.class, () -> validateUserUseCase.execute(user));
+    // Act & Assert
+    UserAlreadyExistsException exception = assertThrows(UserAlreadyExistsException.class,
+        () -> validateUserUseCase.execute(mockUser)
+    );
 
     assertEquals(
         "O documento informado já está cadastrado. Tente utilizar outro documento.", exception.getMessage());
@@ -66,14 +73,15 @@ class ValidateUserUseCaseTest {
   @Test
   void validate_ShouldThrowException_WhenEmailAlreadyExists() {
     // Arrange
-    User user = mock(User.class);
-    when(user.getDocument()).thenReturn(DOCUMENT);
-    when(user.getEmail()).thenReturn(MAIL);
-    when(userRepository.findByDocument(DOCUMENT)).thenReturn(Optional.empty());
-    when(userRepository.findByEmail(MAIL)).thenReturn(Optional.of(user));
+    when(mockUser.getDocument()).thenReturn(DOCUMENT);
+    when(mockUser.getEmail()).thenReturn(EMAIL);
 
+    when(userRepository.findByDocument(DOCUMENT)).thenReturn(Optional.empty());
+    when(userRepository.findByEmail(EMAIL)).thenReturn(Optional.of(mockUser));
+
+    // Act & Assert
     InvalidEmailException exception = assertThrows(InvalidEmailException.class,
-        () -> validateUserUseCase.execute(user)
+        () -> validateUserUseCase.execute(mockUser)
     );
 
     assertEquals(
@@ -82,22 +90,20 @@ class ValidateUserUseCaseTest {
 
   @Test
   void validate_ShouldThrowException_WhenEmailFormatIsInvalid() {
-    User user = mock(User.class);
-    when(user.getDocument()).thenReturn(PASSWORD);
-    when(user.getEmail()).thenReturn(INVALID_EMAIL);
+    when(mockUser.getDocument()).thenReturn(PASSWORD);
+    when(mockUser.getEmail()).thenReturn(INVALID_EMAIL);
+
     when(userRepository.findByDocument(PASSWORD)).thenReturn(Optional.empty());
     when(userRepository.findByEmail(INVALID_EMAIL)).thenReturn(Optional.empty());
     when(emailValidatorService.isValid(INVALID_EMAIL)).thenReturn(false);
 
     // Act & Assert
-    InvalidEmailException exception = assertThrows(
-        InvalidEmailException.class,
-        () -> validateUserUseCase.execute(user)
+    InvalidEmailException exception = assertThrows(InvalidEmailException.class,
+        () ->validateUserUseCase.execute(mockUser)
     );
 
     assertEquals(
-        "O e-mail informado é inválido. Tente utilizar outro e-mail.",
-        exception.getMessage()
+        "O e-mail informado é inválido. Tente utilizar outro e-mail.", exception.getMessage()
     );
   }
 

@@ -1,5 +1,6 @@
 package com.picpaydesafio.demopicpaydesafio.domain.models;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 
@@ -11,40 +12,49 @@ import org.junit.jupiter.api.Test;
 
 class TransactionTest {
 
-  private Transaction transaction;
-  private User sender;
-  private User receiver;
-  private LocalDateTime timestamp;
+  // User
+  public static final long ID_SENDER = 1L;
+  public static final long ID_RECEIVER = 2L;
+  public static final String FIRSTNAME = "teste";
+  public static final String LASTNAME = "example";
+  public static final String DOCUMENT = "12312312312";
+  public static final String EMAIL = "example@gmail.com";
+  public static final UserType USER_TYPE = UserType.COMMON;
+  public static final String PASSWORD = "password";
+  public static final BigDecimal BALANCE = new BigDecimal("100.00");
+  public static final LocalDateTime TIMESTAMP = LocalDateTime.now();
+
+  // Transaction
+  public static final long ID_TRANSACTION = 1L;
+  public static final BigDecimal AMOUNT = new BigDecimal("50.00");
+
+  private Transaction mockTransaction;
+  private User mockSender;
+  private User mockReceiver;
 
   @BeforeEach
   void setUp() {
-    sender = new User(1L, "John", "Doe", "123456789", "john.doe@example.com", "password123",
-        new BigDecimal("100.00"), UserType.COMMON
-    );
+    mockSender = new User(ID_SENDER, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE);
+    mockReceiver = new User(ID_RECEIVER, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE);
 
-    receiver = new User(2L, "Jane", "Smith", "987654321", "jane.smith@example.com", "password456",
-        new BigDecimal("50.00"), UserType.COMMON
-    );
-
-    timestamp = LocalDateTime.now();
-    transaction = new Transaction(1L, new BigDecimal("30.00"), sender, receiver, timestamp);
+    mockTransaction = new Transaction(ID_TRANSACTION, AMOUNT, mockSender, mockReceiver, TIMESTAMP);
   }
 
   @Test
   void process_ShouldReturnTransaction_WhenSuccessful() {
     // Act
-    Transaction processedTransaction = transaction.process();
+    Transaction processedTransaction = mockTransaction.process();
 
     // Assert
-    assertEquals(new BigDecimal("70.00"), processedTransaction.getSender().getBalance());
-    assertEquals(new BigDecimal("80.00"), processedTransaction.getReceiver().getBalance());
-
-    assertEquals(transaction.getId(), processedTransaction.getId());
-    assertEquals(transaction.getAmount(), processedTransaction.getAmount());
-    assertEquals(transaction.getTimestamp(), processedTransaction.getTimestamp());
-
-    assertNotSame(sender, processedTransaction.getSender());
-    assertNotSame(receiver, processedTransaction.getReceiver());
+    assertAll(
+        () -> assertEquals(new BigDecimal("50.00"), processedTransaction.getSender().getBalance()),
+        () -> assertEquals(new BigDecimal("150.00"), processedTransaction.getReceiver().getBalance()),
+        () -> assertEquals(mockTransaction.getId(), processedTransaction.getId()),
+        () -> assertEquals(mockTransaction.getAmount(), processedTransaction.getAmount()),
+        () -> assertEquals(mockTransaction.getTimestamp(), processedTransaction.getTimestamp()),
+        () -> assertNotSame(mockSender, processedTransaction.getSender()),
+        () -> assertNotSame(mockReceiver, processedTransaction.getReceiver())
+    );
   }
 
 }

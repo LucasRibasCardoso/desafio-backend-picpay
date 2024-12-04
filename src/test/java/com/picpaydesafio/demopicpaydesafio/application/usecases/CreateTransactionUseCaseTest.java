@@ -24,7 +24,6 @@ class CreateTransactionUseCaseTest {
   public static final String USUARIO_NAO_PODE_REALIZAR_TRANSACAO_CONSIGO_MESMO = "Usuário não pode realizar transação consigo mesmo.";
   public static final String LOJISTAS_NAO_PODEM_REALIZAR_TRANSACOES = "Lojistas não podem realizar transações.";
 
-
   @InjectMocks
   private CreateTransactionUseCase createTransactionUseCase;
 
@@ -40,51 +39,50 @@ class CreateTransactionUseCaseTest {
   @Mock
   private UpdateUserBalancesAfterTransactionUseCase updateUserBalancesAfterTransactionUseCase;
 
+  TransactionRequestDTO mockTransactionRequestDTO;
+  Transaction mockTransaction;
+  Transaction mockProcessedTransaction;
+
   @BeforeEach
   void setUp() {
-
+    mockTransactionRequestDTO = mock(TransactionRequestDTO.class);
+    mockTransaction = mock(Transaction.class);
+    mockProcessedTransaction = mock(Transaction.class);
   }
 
   @Test
   void execute_ShouldSuccessfullyCreateTransaction() {
     // Arrange
-    TransactionRequestDTO request = mock(TransactionRequestDTO.class);
-    Transaction transaction = mock(Transaction.class);
-    Transaction processedTransaction = mock(Transaction.class);
-
-    when(transactionFactory.createDomain(request)).thenReturn(transaction);
-    when(transaction.process()).thenReturn(processedTransaction);
-    when(transactionRepository.save(processedTransaction)).thenReturn(processedTransaction);
+    when(transactionFactory.createDomain(mockTransactionRequestDTO)).thenReturn(mockTransaction);
+    when(mockTransaction.process()).thenReturn(mockProcessedTransaction);
+    when(transactionRepository.save(mockProcessedTransaction)).thenReturn(mockProcessedTransaction);
 
     // Act
-    Transaction result =  createTransactionUseCase.execute(request);
+    Transaction result =  createTransactionUseCase.execute(mockTransactionRequestDTO);
 
     // Assert
     assertNotNull(result);
-    verify(transactionFactory).createDomain(request);
-    verify(transactionRepository).save(processedTransaction);
-    verify(validateTransactionUseCase).validate(transaction);
-    verify(transaction).process();
+    verify(transactionFactory).createDomain(mockTransactionRequestDTO);
+    verify(transactionRepository).save(mockProcessedTransaction);
+    verify(validateTransactionUseCase).validate(mockTransaction);
+    verify(mockTransaction).process();
     verify(updateUserBalancesAfterTransactionUseCase).execute(
-        processedTransaction.getSender(),
-        processedTransaction.getReceiver()
+        mockProcessedTransaction.getSender(),
+        mockProcessedTransaction.getReceiver()
     );
   }
 
   @Test
   void execute_ShouldThrowException_WhenUserTriesToCarryOutTransactionWithHimself() {
     // Arrange
-    TransactionRequestDTO request = mock(TransactionRequestDTO.class);
-    Transaction transaction = mock(Transaction.class);
-
-    when(transactionFactory.createDomain(request)).thenReturn(transaction);
+    when(transactionFactory.createDomain(mockTransactionRequestDTO)).thenReturn(mockTransaction);
     doThrow(new UnauthorizedTransactionException(USUARIO_NAO_PODE_REALIZAR_TRANSACAO_CONSIGO_MESMO))
-        .when(validateTransactionUseCase).validate(transaction);
+        .when(validateTransactionUseCase).validate(mockTransaction);
 
-    // act, assert
+    // Act & Assert
     UnauthorizedTransactionException exception = assertThrows(
         UnauthorizedTransactionException.class,
-        () -> createTransactionUseCase.execute(request)
+        () -> createTransactionUseCase.execute(mockTransactionRequestDTO)
     );
 
     assertEquals(USUARIO_NAO_PODE_REALIZAR_TRANSACAO_CONSIGO_MESMO, exception.getMessage());
@@ -93,15 +91,13 @@ class CreateTransactionUseCaseTest {
   @Test
   void execute_ShouldThrowException_WhenShopkeeperTriesToCarryOutTransaction() {
     // Arrange
-    TransactionRequestDTO request = mock(TransactionRequestDTO.class);
-    Transaction transaction = mock(Transaction.class);
-
-    when(transactionFactory.createDomain(request)).thenReturn(transaction);
+    when(transactionFactory.createDomain(mockTransactionRequestDTO)).thenReturn(mockTransaction);
     doThrow(new UnauthorizedTransactionException(LOJISTAS_NAO_PODEM_REALIZAR_TRANSACOES))
-        .when(validateTransactionUseCase).validate(transaction);
+        .when(validateTransactionUseCase).validate(mockTransaction);
 
+    // Act & Assert
     UnauthorizedTransactionException exception = assertThrows(UnauthorizedTransactionException.class,
-        () -> createTransactionUseCase.execute(request)
+        () -> createTransactionUseCase.execute(mockTransactionRequestDTO)
     );
 
     assertEquals(LOJISTAS_NAO_PODEM_REALIZAR_TRANSACOES, exception.getMessage());
