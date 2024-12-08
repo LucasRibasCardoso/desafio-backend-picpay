@@ -32,7 +32,7 @@ class StandardErrorFactoryImpTest {
     assertAll(
         () -> assertNotNull(result),
         () -> assertEquals(MESSAGE_OF_THE_DEFAULT_ERROR, result.getMessage()),
-        () -> assertEquals(HTTP_STATUS.value(), result.getCode())
+        () -> assertEquals(HTTP_STATUS.value(), result.getStatusCode())
     );
   }
 
@@ -49,7 +49,7 @@ class StandardErrorFactoryImpTest {
     assertAll(
         () -> assertNotNull(result),
         () -> assertEquals(MESSAGE_OF_THE_DEFAULT_ERROR, result.getMessage()),
-        () -> assertEquals(HTTP_STATUS.value(), result.getCode()),
+        () -> assertEquals(HTTP_STATUS.value(), result.getStatusCode()),
         () -> assertTrue(result.getFieldErrors().containsKey("message")),
         () -> assertEquals(VALIDATION_ERROR_TEST, result.getFieldErrors().get("message"))
     );

@@ -12,6 +12,7 @@ import com.picpaydesafio.demopicpaydesafio.application.usecases.CreateTransactio
 import com.picpaydesafio.demopicpaydesafio.domain.models.Transaction;
 import com.picpaydesafio.demopicpaydesafio.domain.models.User;
 import com.picpaydesafio.demopicpaydesafio.domain.repositoriesDomain.TransactionRepository;
+import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserRole;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserType;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.mappers.TransactionMapper;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.TransactionRequestDTO;
@@ -51,6 +52,8 @@ class TransactionServiceImpTest {
   public static final UserType USER_TYPE_2 = UserType.COMMON;
   public static final String PASSWORD_2 = "password";
   public static final BigDecimal BALANCE_2 = new BigDecimal("100.00");
+  public static final UserRole USER_ROLE = UserRole.USER;
+
 
   // Transaction
   public static final long ID_TRANSACTION = 1L;
@@ -81,10 +84,10 @@ class TransactionServiceImpTest {
   @BeforeEach
   void setUp() {
     mockSender = new User(
-        ID_1, FIRSTNAME_1, LASTNAME_1, DOCUMENT_1, EMAIL_1, PASSWORD_1, BALANCE_1, USER_TYPE_1
+        ID_1, FIRSTNAME_1, LASTNAME_1, DOCUMENT_1, EMAIL_1, PASSWORD_1, BALANCE_1, USER_TYPE_1, USER_ROLE
     );
     mockReceiver = new User(
-        ID_2, FIRSTNAME_2, LASTNAME_2, DOCUMENT_2, EMAIL_2, PASSWORD_2, BALANCE_2, USER_TYPE_2
+        ID_2, FIRSTNAME_2, LASTNAME_2, DOCUMENT_2, EMAIL_2, PASSWORD_2, BALANCE_2, USER_TYPE_2, USER_ROLE
     );
     mockTransactionResponse = new TransactionResponseDTO(
         ID_TRANSACTION, ID_1, FULL_NAME_1, ID_2, FULL_NAME_2, AMOUNT, TIMESTAMP

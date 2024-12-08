@@ -5,6 +5,6 @@ import java.util.Map;
 
 public interface StandardError {
   String getMessage();
-  int getCode();
+  int getStatusCode();
   Map<String, String> getFieldErrors();
 }

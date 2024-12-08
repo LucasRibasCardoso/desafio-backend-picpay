@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 import com.picpaydesafio.demopicpaydesafio.domain.models.User;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.UserEntity;
+import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserRole;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserType;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.mappers.UserMapper;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.repositories.UserJpaRepository;
@@ -33,6 +34,8 @@ class UserJpaRepositoryImpTest {
   public static final UserType USER_TYPE = UserType.COMMON;
   public static final String PASSWORD = "password";
   public static final BigDecimal BALANCE = new BigDecimal("100.00");
+  public static final UserRole USER_ROLE = UserRole.USER;
+
 
   @InjectMocks
   private UserJpaRepositoryImp userJpaRepositoryImp;
@@ -48,8 +51,8 @@ class UserJpaRepositoryImpTest {
 
   @BeforeEach
   void setUp() {
-    mockUserEntity = new UserEntity(ID, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE);
-    mockUserDomain = new User(ID, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE);
+    mockUserEntity = new UserEntity(ID, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE, USER_ROLE);
+    mockUserDomain = new User(ID, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE, USER_ROLE);
   }
 
   @Test

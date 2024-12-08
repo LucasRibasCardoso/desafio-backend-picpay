@@ -6,6 +6,7 @@ import com.picpaydesafio.demopicpaydesafio.application.exceptions.InsufficientFo
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.UnauthorizedTransactionException;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserAlreadyExistsException;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserNotFoundException;
+import com.picpaydesafio.demopicpaydesafio.configs.security.exeptions.GenerationTokenException;
 import com.picpaydesafio.demopicpaydesafio.domain.factories.imp.StandardErrorFactoryImp;
 import com.picpaydesafio.demopicpaydesafio.domain.factories.StandardError;
 import java.util.HashMap;
@@ -23,6 +24,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ExceptionsHandler {
 
   private final StandardErrorFactoryImp errorFactory;
+
+  public ResponseEntity<StandardError> generationTokenException(GenerationTokenException e) {
+    StandardError error = errorFactory.create(e.getMessage(), HttpStatus.UNAUTHORIZED);
+    return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+  }
 
   @ExceptionHandler(DataIntegrityViolationException.class)
   public ResponseEntity<StandardError> DataIntegrityViolationException() {

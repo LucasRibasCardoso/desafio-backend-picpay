@@ -25,6 +25,9 @@ public record UserRequestDTO(
     String password,
 
     @NotBlank(message = "O campo tipo de usuário é obrigatório.")
-    String userType
+    String userType,
+
+    @NotBlank(message = "O campo role é obrigatório.")
+    String role
 
 ) {}

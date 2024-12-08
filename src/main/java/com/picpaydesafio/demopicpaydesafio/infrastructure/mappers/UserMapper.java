@@ -19,7 +19,8 @@ public class UserMapper {
         entity.getEmail(),
         entity.getPassword(),
         entity.getBalance(),
-        entity.getUserType()
+        entity.getUserType(),
+        entity.getRole()
     );
   }
 
@@ -32,7 +33,8 @@ public class UserMapper {
         domain.getEmail(),
         domain.getPassword(),
         domain.getBalance(),
-        domain.getUserType()
+        domain.getUserType(),
+        domain.getRole()
     );
   }
 

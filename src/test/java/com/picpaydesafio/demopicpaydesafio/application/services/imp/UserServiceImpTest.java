@@ -20,6 +20,7 @@ import com.picpaydesafio.demopicpaydesafio.application.usecases.ValidateUserUseC
 import com.picpaydesafio.demopicpaydesafio.domain.factories.UserFactory;
 import com.picpaydesafio.demopicpaydesafio.domain.models.User;
 import com.picpaydesafio.demopicpaydesafio.domain.repositoriesDomain.UserRepository;
+import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserRole;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserType;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.mappers.UserMapper;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.UserRequestDTO;
@@ -57,11 +58,8 @@ class UserServiceImpTest {
   public static final String PASSWORD_2 = "password";
   public static final BigDecimal BALANCE_2 = new BigDecimal("100.00");
 
-  private static final String USER_TYPE_STRING = "COMMON";
+  public static final UserRole USER_ROLE = UserRole.USER;
 
-  public static final String MESSAGE_ERROR_EMAIL_ALREADY_EXISTS = "O e-mail informado já está cadastrado. Tente utilizar outro e-mail.";
-  public static final String MESSAGE_ERROR_DOCUMENT_ALREADY_EXISTS = "O documento informado já está cadastrado. Tente utilizar outro documento.";
-  public static final String MESSAGE_ERROR_INVALID_EMAIL = "O e-mail informado é inválido. Tente utilizar outro e-mail.";
   public static final long ID_3 = 3L;
 
 
@@ -72,32 +70,23 @@ class UserServiceImpTest {
   private UserRepository userRepository;
 
   @Mock
-  private UserFactory userFactory;
-
-  @Mock
   private UserMapper userMapper;
 
-  @Mock
-  private ValidateUserUseCase validateUserUseCase;
 
-  private UserRequestDTO mockUserRequest;
   private UserResponseDTO mockUserResponse;
   private User mockUser1;
   private User mockUser2;
 
   @BeforeEach
   void setUp() {
-    mockUserRequest = new UserRequestDTO(
-        FIRSTNAME_1, LASTNAME_1, DOCUMENT_1, EMAIL_1, PASSWORD_1, USER_TYPE_STRING
-    );
     mockUserResponse = new UserResponseDTO(
         FIRSTNAME_1, LASTNAME_1, DOCUMENT_1, BALANCE_1, EMAIL_1, PASSWORD_1, USER_TYPE_1
     );
     mockUser1 = new User(
-        ID_1, FIRSTNAME_1, LASTNAME_1, DOCUMENT_1, EMAIL_1, PASSWORD_1, BALANCE_1, USER_TYPE_1
+        ID_1, FIRSTNAME_1, LASTNAME_1, DOCUMENT_1, EMAIL_1, PASSWORD_1, BALANCE_1, USER_TYPE_1, USER_ROLE
     );
     mockUser2 = new User(
-        ID_2, FIRSTNAME_2, LASTNAME_2, DOCUMENT_2, EMAIL_2, PASSWORD_2, BALANCE_2, USER_TYPE_2
+        ID_2, FIRSTNAME_2, LASTNAME_2, DOCUMENT_2, EMAIL_2, PASSWORD_2, BALANCE_2, USER_TYPE_2, USER_ROLE
     );
   }
 
@@ -194,81 +183,5 @@ class UserServiceImpTest {
     verify(userRepository).save(mockUser2);
   }
 
-  @Test
-  void saveNewUser_shouldSaveUser() {
-    // Arrange
-    when(userFactory.createDomain(mockUserRequest)).thenReturn(mockUser1);
-    when(userRepository.save(mockUser1)).thenReturn(mockUser1);
-    when(userMapper.toResponseDTO(mockUser1)).thenReturn(mockUserResponse);
-    doNothing().when(validateUserUseCase).execute(mockUser1);
-
-    // Act
-    UserResponseDTO savedUser = userServiceImp.saveNewUser(mockUserRequest);
-
-    // Assert
-    assertInstanceOf(UserResponseDTO.class, savedUser);
-
-    verify(userFactory).createDomain(mockUserRequest);
-    verify(validateUserUseCase).execute(mockUser1);
-    verify(userRepository).save(mockUser1);
-    verify(userMapper).toResponseDTO(mockUser1);
-  }
-
-  @Test
-  void saveNewUser_shouldThrowInvalidEmailException_whenEmailAlreadyExists() {
-    // Arrange
-    when(userFactory.createDomain(mockUserRequest)).thenReturn(mockUser1);
-    doThrow(new InvalidEmailException(MESSAGE_ERROR_EMAIL_ALREADY_EXISTS))
-        .when(validateUserUseCase).execute(mockUser1);
-
-    // Act & Assert
-    InvalidEmailException exception = assertThrows(InvalidEmailException.class,
-        () -> userServiceImp.saveNewUser(mockUserRequest)
-    );
-    assertInstanceOf(InvalidEmailException.class, exception);
-    assertEquals(MESSAGE_ERROR_EMAIL_ALREADY_EXISTS, exception.getMessage());
-
-    verify(userFactory).createDomain(mockUserRequest);
-    verify(validateUserUseCase).execute(mockUser1);
-    verifyNoInteractions(userRepository, userMapper);
-  }
-
-  @Test
-  void saveNewUser_shouldThrowUserAlreadyExists_whenDocumentAlreadyExists() {
-    // Arrange
-    when(userFactory.createDomain(mockUserRequest)).thenReturn(mockUser1);
-    doThrow(new UserAlreadyExistsException(MESSAGE_ERROR_DOCUMENT_ALREADY_EXISTS)).when(validateUserUseCase)
-        .execute(mockUser1);
-
-    // Act & Assert
-    UserAlreadyExistsException exception = assertThrows(UserAlreadyExistsException.class,
-        () -> userServiceImp.saveNewUser(mockUserRequest)
-    );
-    assertInstanceOf(UserAlreadyExistsException.class, exception);
-    assertEquals(MESSAGE_ERROR_DOCUMENT_ALREADY_EXISTS, exception.getMessage());
-
-    verify(userFactory).createDomain(mockUserRequest);
-    verify(validateUserUseCase).execute(mockUser1);
-    verifyNoInteractions(userRepository, userMapper);
-  }
-
-  @Test
-  void saveNewUser_shouldThrowInvalidEmailException_whenEmailIsInvalid() {
-    // Arrange
-    when(userFactory.createDomain(mockUserRequest)).thenReturn(mockUser1);
-    doThrow(new InvalidEmailException(MESSAGE_ERROR_INVALID_EMAIL))
-        .when(validateUserUseCase).execute(mockUser1);
-
-    // Act & Assert
-    InvalidEmailException exception = assertThrows(InvalidEmailException.class,
-        () -> userServiceImp.saveNewUser(mockUserRequest)
-    );
-    assertInstanceOf(InvalidEmailException.class, exception);
-    assertEquals(MESSAGE_ERROR_INVALID_EMAIL, exception.getMessage());
-
-    verify(userFactory).createDomain(mockUserRequest);
-    verify(validateUserUseCase).execute(mockUser1);
-    verifyNoInteractions(userRepository, userMapper);
-  }
 
 }

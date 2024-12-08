@@ -8,7 +8,7 @@ public class EmailValidationResponseDTO {
   private String deliverability;
 
 
-  public boolean isEmailValid() {
+  public boolean isValidEmail() {
     return "DELIVERABLE".equalsIgnoreCase(this.deliverability != null ? this.deliverability : "");
   }
 

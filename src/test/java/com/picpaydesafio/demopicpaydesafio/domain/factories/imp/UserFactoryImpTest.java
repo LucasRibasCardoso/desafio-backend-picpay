@@ -3,6 +3,7 @@ package com.picpaydesafio.demopicpaydesafio.domain.factories.imp;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.picpaydesafio.demopicpaydesafio.domain.models.User;
+import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserRole;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserType;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.UserRequestDTO;
 import java.math.BigDecimal;
@@ -20,6 +21,8 @@ class UserFactoryImpTest {
   public static final String PASSWORD = "password";
   public static final UserType USER_TYPE_OBJECT = UserType.COMMON;
   public static final BigDecimal AMOUNT = BigDecimal.ZERO;
+  public static final String USER_ROLE = "USER";
+
 
   private UserFactoryImp userFactory;
   
@@ -28,7 +31,7 @@ class UserFactoryImpTest {
   @BeforeEach
   void setUp() {
     userFactory = new UserFactoryImp();
-    mockUserRequestDTO = new UserRequestDTO(FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, USER_TYPE);
+    mockUserRequestDTO = new UserRequestDTO(FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, USER_TYPE, USER_ROLE);
   }
 
   @Test

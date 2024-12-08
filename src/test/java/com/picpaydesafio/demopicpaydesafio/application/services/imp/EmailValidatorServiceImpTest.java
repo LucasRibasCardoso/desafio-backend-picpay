@@ -46,7 +46,7 @@ class EmailValidatorServiceImpTest {
     // Arrange
     ReflectionTestUtils.setField(mockResponse, "deliverability", "DELIVERABLE");
     when(restTemplate.getForObject(anyString(), eq(EmailValidationResponseDTO.class))).thenReturn(mockResponse);
-    when(mockResponse.isEmailValid()).thenReturn(true);
+    when(mockResponse.isValidEmail()).thenReturn(true);
 
     // Act
     boolean result = emailValidatorServiceImp.isValid(EMAIL);
@@ -61,7 +61,7 @@ class EmailValidatorServiceImpTest {
     // Arrange
     ReflectionTestUtils.setField(mockResponse, "deliverability", "UNDELIVERABLE");
     when(restTemplate.getForObject(anyString(), eq(EmailValidationResponseDTO.class))).thenReturn(mockResponse);
-    when(mockResponse.isEmailValid()).thenReturn(false);
+    when(mockResponse.isValidEmail()).thenReturn(false);
 
     // Act
     boolean result = emailValidatorServiceImp.isValid(EMAIL);

@@ -29,7 +29,7 @@ public class EmailValidatorServiceImp implements EmailValidatorService {
 
     EmailValidationResponseDTO response = restTemplate.getForObject(url, EmailValidationResponseDTO.class);
 
-    return response != null && response.isEmailValid();
+    return response != null && response.isValidEmail();
   }
 
 }

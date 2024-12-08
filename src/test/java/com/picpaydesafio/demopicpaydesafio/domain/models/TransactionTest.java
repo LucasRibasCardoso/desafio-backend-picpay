@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 
+import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserRole;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserType;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -23,6 +24,8 @@ class TransactionTest {
   public static final String PASSWORD = "password";
   public static final BigDecimal BALANCE = new BigDecimal("100.00");
   public static final LocalDateTime TIMESTAMP = LocalDateTime.now();
+  public static final UserRole USER_ROLE = UserRole.USER;
+
 
   // Transaction
   public static final long ID_TRANSACTION = 1L;
@@ -34,8 +37,8 @@ class TransactionTest {
 
   @BeforeEach
   void setUp() {
-    mockSender = new User(ID_SENDER, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE);
-    mockReceiver = new User(ID_RECEIVER, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE);
+    mockSender = new User(ID_SENDER, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE, USER_ROLE);
+    mockReceiver = new User(ID_RECEIVER, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE, USER_ROLE);
 
     mockTransaction = new Transaction(ID_TRANSACTION, AMOUNT, mockSender, mockReceiver, TIMESTAMP);
   }

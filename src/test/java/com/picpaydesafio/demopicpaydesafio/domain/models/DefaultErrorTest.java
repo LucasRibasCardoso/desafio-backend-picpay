@@ -24,7 +24,7 @@ class DefaultErrorTest {
     // Assert
     assertAll(
         () -> assertEquals(MESSAGE_ERROR_TEST, mockDefaultErrorWithFieldErrors.getMessage()),
-        () -> assertEquals(STATUS_CODE, mockDefaultErrorWithFieldErrors.getCode()),
+        () -> assertEquals(STATUS_CODE, mockDefaultErrorWithFieldErrors.getStatusCode()),
         () -> assertNotNull(mockDefaultErrorWithFieldErrors.getFieldErrors()),
         () -> assertEquals(1, mockDefaultErrorWithFieldErrors.getFieldErrors().size()),
         () -> assertEquals(MESSAGE_ERROR_TEST, mockDefaultErrorWithFieldErrors.getFieldErrors().get("validation"))
@@ -39,7 +39,7 @@ class DefaultErrorTest {
     // Assert
    assertAll(
        () -> assertEquals(MESSAGE_ERROR_TEST, mockDefaultError.getMessage()),
-       () -> assertEquals(STATUS_CODE, mockDefaultError.getCode()),
+       () -> assertEquals(STATUS_CODE, mockDefaultError.getStatusCode()),
        () -> assertNotNull(mockDefaultError.getFieldErrors()),
        () -> assertTrue(mockDefaultError.getFieldErrors().isEmpty())
    );

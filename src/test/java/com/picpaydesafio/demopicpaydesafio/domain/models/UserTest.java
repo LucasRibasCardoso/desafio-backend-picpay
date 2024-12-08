@@ -3,6 +3,7 @@ package com.picpaydesafio.demopicpaydesafio.domain.models;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.InsufficientFoundsException;
+import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserRole;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserType;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +22,7 @@ class UserTest {
   public static final UserType USER_TYPE_MERCHANT = UserType.MERCHANT;
   public static final String PASSWORD = "password";
   public static final BigDecimal BALANCE = new BigDecimal("100.00");
+  public static final UserRole USER_ROLE = UserRole.USER;
 
   private User mockRegularUser;
   private User mockMerchantUser;
@@ -28,11 +30,11 @@ class UserTest {
   @BeforeEach
   void setUp() {
     mockRegularUser = new User(
-        ID_NORMAL, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE_NORMAL
+        ID_NORMAL, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE_NORMAL, USER_ROLE
     );
 
     mockMerchantUser = new User(
-        ID_MERCHANT, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE_MERCHANT);
+        ID_MERCHANT, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE_MERCHANT, USER_ROLE);
   }
 
   @Test

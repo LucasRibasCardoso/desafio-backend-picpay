@@ -11,7 +11,7 @@ public class CPFWithMaskValidator implements ConstraintValidator<CPFWithMask, St
       return true;
     }
 
-    // Expressão regular para verificar o formato 999.999.999-99
+    // Expressão regular para aceitar o formato 999.999.999-99
     String regex = "\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}";
     return value.matches(regex);
   }

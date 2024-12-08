@@ -8,6 +8,7 @@ import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserNotFoundEx
 import com.picpaydesafio.demopicpaydesafio.application.services.imp.UserServiceImp;
 import com.picpaydesafio.demopicpaydesafio.domain.models.Transaction;
 import com.picpaydesafio.demopicpaydesafio.domain.models.User;
+import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserRole;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserType;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.TransactionRequestDTO;
 import java.math.BigDecimal;
@@ -36,6 +37,8 @@ class TransactionFactoryImplTest {
   public static final UserType USER_TYPE = UserType.COMMON;
   public static final String PASSWORD = "password";
   public static final BigDecimal BALANCE = new BigDecimal("100.00");
+  public static final UserRole USER_ROLE = UserRole.USER;
+
 
   @InjectMocks
   private TransactionFactoryImpl transactionFactory;
@@ -49,8 +52,8 @@ class TransactionFactoryImplTest {
 
   @BeforeEach
   void setUp() {
-    mockSender = new User(ID_SENDER, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE);
-    mockReceiver = new User(ID_RECEIVER, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE);
+    mockSender = new User(ID_SENDER, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE, USER_ROLE);
+    mockReceiver = new User(ID_RECEIVER, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE, USER_ROLE);
     mockTransactionRequestDTO = new TransactionRequestDTO(SENDER_ID, RECEIVER_ID, AMOUNT);
   }
 

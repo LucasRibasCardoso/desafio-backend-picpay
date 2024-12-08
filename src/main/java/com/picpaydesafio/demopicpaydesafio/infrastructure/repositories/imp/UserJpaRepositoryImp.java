@@ -14,31 +14,31 @@ import org.springframework.stereotype.Repository;
 public class UserJpaRepositoryImp implements UserRepository {
 
   private final UserJpaRepository jpaRepository;
-  private final UserMapper mapper;
+  private final UserMapper userMapper;
 
   @Override
   public Optional<User> findById(Long id) {
-    return jpaRepository.findById(id).map(mapper::toDomain);
+    return jpaRepository.findById(id).map(userMapper::toDomain);
   }
 
   @Override
   public User save(User user) {
-    return mapper.toDomain(jpaRepository.save(mapper.toEntity(user)));
+    return userMapper.toDomain(jpaRepository.save(userMapper.toEntity(user)));
   }
 
   @Override
   public Optional<User> findByDocument(String document) {
-    return jpaRepository.findByDocument(document).map(mapper::toDomain);
+    return jpaRepository.findByDocument(document).map(userMapper::toDomain);
   }
 
   @Override
   public Optional<User> findByEmail(String email) {
-    return jpaRepository.findByEmail(email).map(mapper::toDomain);
+    return jpaRepository.findByEmail(email).map(userMapper::toDomain);
   }
 
   @Override
   public List<User> findAll() {
-    return jpaRepository.findAll().stream().map(mapper::toDomain).toList();
+    return jpaRepository.findAll().stream().map(userMapper::toDomain).toList();
   }
 
 }

@@ -15,6 +15,7 @@ import com.picpaydesafio.demopicpaydesafio.domain.factories.EmailFactory;
 import com.picpaydesafio.demopicpaydesafio.domain.models.Email;
 import com.picpaydesafio.demopicpaydesafio.domain.models.Transaction;
 import com.picpaydesafio.demopicpaydesafio.domain.models.User;
+import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserRole;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserType;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.mappers.EmailMapper;
 import java.math.BigDecimal;
@@ -43,6 +44,7 @@ class EmailSendingServiceImpTest {
   public static final UserType USER_TYPE = UserType.COMMON;
   public static final String PASSWORD = "password";
   public static final BigDecimal BALANCE = new BigDecimal("100.00");
+  public static final UserRole USER_ROLE = UserRole.USER;
 
   // Transaction
   public static final long ID_TRANSACTION = 1L;
@@ -80,8 +82,8 @@ class EmailSendingServiceImpTest {
     mockEmailSender = mock(Email.class);
     mockEmailReceiver = mock(Email.class);
 
-    mockSender = new User(ID_SENDER, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL_SENDER, PASSWORD, BALANCE, USER_TYPE);
-    mockReceiver = new User(ID_RECEIVER, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL_RECEIVER, PASSWORD, BALANCE, USER_TYPE);
+    mockSender = new User(ID_SENDER, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL_SENDER, PASSWORD, BALANCE, USER_TYPE, USER_ROLE);
+    mockReceiver = new User(ID_RECEIVER, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL_RECEIVER, PASSWORD, BALANCE, USER_TYPE, USER_ROLE);
 
     mockTransaction = new Transaction(ID_TRANSACTION, AMOUNT, mockSender, mockReceiver, TIMESTAMP);
   }

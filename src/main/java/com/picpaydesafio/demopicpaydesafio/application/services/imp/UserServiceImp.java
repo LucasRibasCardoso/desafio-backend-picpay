@@ -40,14 +40,5 @@ public class UserServiceImp implements UserService {
     userRepository.save(receiver);
   }
 
-  @Override
-  public UserResponseDTO saveNewUser(UserRequestDTO userRequest) {
-    User user = userFactory.createDomain(userRequest);
-
-    validateUserUseCase.execute(user);
-
-    User savedUser = userRepository.save(user);
-    return userMapper.toResponseDTO(savedUser);
-  }
 
 }

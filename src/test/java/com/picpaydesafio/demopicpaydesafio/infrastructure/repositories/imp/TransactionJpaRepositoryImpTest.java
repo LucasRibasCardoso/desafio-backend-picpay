@@ -10,6 +10,7 @@ import com.picpaydesafio.demopicpaydesafio.domain.models.Transaction;
 import com.picpaydesafio.demopicpaydesafio.domain.models.User;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.TransactionEntity;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.UserEntity;
+import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserRole;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserType;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.mappers.TransactionMapper;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.repositories.TransactionJpaRepository;
@@ -37,6 +38,8 @@ class TransactionJpaRepositoryImpTest {
   public static final String PASSWORD = "password";
   public static final BigDecimal BALANCE = new BigDecimal("100.00");
   public static final LocalDateTime TIMESTAMP = LocalDateTime.now();
+  public static final UserRole USER_ROLE = UserRole.USER;
+
 
   private TransactionEntity mockTransactionEntity;
   private Transaction mockTransactionDomain;
@@ -66,7 +69,8 @@ class TransactionJpaRepositoryImpTest {
         EMAIL,
         PASSWORD,
         BALANCE,
-        USER_TYPE
+        USER_TYPE,
+        USER_ROLE
     );
 
     mockSenderEntity = new UserEntity(
@@ -77,7 +81,8 @@ class TransactionJpaRepositoryImpTest {
         EMAIL,
         PASSWORD,
         BALANCE,
-        USER_TYPE
+        USER_TYPE,
+        USER_ROLE
     );
 
     mockReceiverDomain = new User(
@@ -87,7 +92,8 @@ class TransactionJpaRepositoryImpTest {
         DOCUMENT,
         EMAIL, PASSWORD,
         BALANCE,
-        USER_TYPE
+        USER_TYPE,
+        USER_ROLE
     );
 
     mockReceiverEntity = new UserEntity(
@@ -98,7 +104,8 @@ class TransactionJpaRepositoryImpTest {
         EMAIL,
         PASSWORD,
         BALANCE,
-        USER_TYPE
+        USER_TYPE,
+        USER_ROLE
     );
 
     mockTransactionDomain = new Transaction(ID, BALANCE, mockSenderDomain, mockReceiverDomain, TIMESTAMP);

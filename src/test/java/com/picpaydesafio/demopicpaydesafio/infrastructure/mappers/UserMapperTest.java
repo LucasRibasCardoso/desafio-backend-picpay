@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.picpaydesafio.demopicpaydesafio.domain.models.User;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.UserEntity;
+import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserRole;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserType;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.UserResponseDTO;
 import java.math.BigDecimal;
@@ -11,10 +12,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class UserMapperTest {
-
-  /**
-   * Utilizar essa classe como padrão para as outras
-   */
 
   // User
   public static final long ID = 1L;
@@ -25,6 +22,8 @@ class UserMapperTest {
   public static final UserType USER_TYPE = UserType.COMMON;
   public static final String PASSWORD = "password";
   public static final BigDecimal BALANCE = new BigDecimal("100.00");
+  public static final UserRole USER_ROLE = UserRole.USER;
+
 
   private UserMapper userMapper;
   private UserEntity mockUserEntity;
@@ -33,8 +32,8 @@ class UserMapperTest {
   @BeforeEach
   void setUp() {
     userMapper = new UserMapper();
-    mockUserEntity = new UserEntity(ID, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE);
-    mockUserDomain = new User(ID, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE);
+    mockUserEntity = new UserEntity(ID, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE, USER_ROLE);
+    mockUserDomain = new User(ID, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE, USER_ROLE);
   }
 
   @Test
@@ -48,8 +47,10 @@ class UserMapperTest {
         () -> assertEquals(ID, result.getId()),
         () -> assertEquals(FIRSTNAME, result.getFirstName()),
         () -> assertEquals(LASTNAME, result.getLastName()),
-        () -> assertEquals(DOCUMENT, result.getDocument()), () -> assertEquals(EMAIL, result.getEmail()),
-        () -> assertEquals(PASSWORD, result.getPassword()), () -> assertEquals(BALANCE, result.getBalance()),
+        () -> assertEquals(DOCUMENT, result.getDocument()),
+        () -> assertEquals(EMAIL, result.getEmail()),
+        () -> assertEquals(PASSWORD, result.getPassword()),
+        () -> assertEquals(BALANCE, result.getBalance()),
         () -> assertEquals(USER_TYPE, result.getUserType())
     );
   }
@@ -65,8 +66,10 @@ class UserMapperTest {
         () -> assertEquals(ID, result.getId()),
         () -> assertEquals(FIRSTNAME, result.getFirstName()),
         () -> assertEquals(LASTNAME, result.getLastName()),
-        () -> assertEquals(DOCUMENT, result.getDocument()), () -> assertEquals(EMAIL, result.getEmail()),
-        () -> assertEquals(PASSWORD, result.getPassword()), () -> assertEquals(BALANCE, result.getBalance()),
+        () -> assertEquals(DOCUMENT, result.getDocument()),
+        () -> assertEquals(EMAIL, result.getEmail()),
+        () -> assertEquals(PASSWORD, result.getPassword()),
+        () -> assertEquals(BALANCE, result.getBalance()),
         () -> assertEquals(USER_TYPE, result.getUserType())
     );
   }

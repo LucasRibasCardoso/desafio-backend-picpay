@@ -6,10 +6,8 @@ import com.picpaydesafio.demopicpaydesafio.web.dtos.UserResponseDTO;
 import java.util.List;
 
 public interface UserService {
-
   List<UserResponseDTO> findAllUsers();
   User findUserById(Long id);
   void saveUsersWithNewBalances(User sender, User receiver);
-  UserResponseDTO saveNewUser(UserRequestDTO userRequest);
 
 }

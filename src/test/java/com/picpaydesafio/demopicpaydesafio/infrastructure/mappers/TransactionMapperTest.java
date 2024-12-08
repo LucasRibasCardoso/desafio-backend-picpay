@@ -7,6 +7,7 @@ import com.picpaydesafio.demopicpaydesafio.domain.models.Transaction;
 import com.picpaydesafio.demopicpaydesafio.domain.models.User;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.TransactionEntity;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.UserEntity;
+import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserRole;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserType;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.TransactionResponseDTO;
 import java.math.BigDecimal;
@@ -30,6 +31,8 @@ class TransactionMapperTest {
   private static final UserType USER_TYPE = UserType.COMMON;
   private static final String PASSWORD = "password";
   private static final BigDecimal BALANCE = new BigDecimal("100.00");
+  public static final UserRole USER_ROLE = UserRole.USER;
+
 
   // Transaction
   private static final BigDecimal AMOUNT = new BigDecimal("100");
@@ -46,26 +49,29 @@ class TransactionMapperTest {
   private User mockReceiverDomain;
   private UserEntity mockSenderEntity;
   private UserEntity mockReceiverEntity;
+  private Transaction mockTransaction;
+  private TransactionEntity mockTransactionEntity;
 
   @BeforeEach
   void setUp() {
-    mockSenderDomain = new User(ID, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE);
-    mockReceiverDomain = new User(ID, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE);
+    mockSenderDomain = new User(ID, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE, USER_ROLE);
+    mockReceiverDomain = new User(ID, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE, USER_ROLE);
 
     mockSenderEntity = new UserEntity(ID, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE);
     mockReceiverEntity = new UserEntity(ID, FIRSTNAME, LASTNAME, DOCUMENT, EMAIL, PASSWORD, BALANCE, USER_TYPE);
+
+    mockTransaction = new Transaction(ID, AMOUNT, mockSenderDomain, mockReceiverDomain, TIMESTAMP);
+    mockTransactionEntity = new TransactionEntity(ID, AMOUNT, mockSenderEntity, mockReceiverEntity, TIMESTAMP);
   }
 
   @Test
   void toDomain_ShouldReturnObjectTransactionDomain() {
     // Arrange
-    TransactionEntity transactionEntity = new TransactionEntity(ID, AMOUNT, mockSenderEntity,
-        mockReceiverEntity, TIMESTAMP);
     when(userMapper.toDomain(mockSenderEntity)).thenReturn(mockSenderDomain);
     when(userMapper.toDomain(mockReceiverEntity)).thenReturn(mockReceiverDomain);
 
     // Act
-    Transaction result = transactionMapper.toDomain(transactionEntity);
+    Transaction result = transactionMapper.toDomain(mockTransactionEntity);
 
     // Assert
     assertAll(
@@ -80,11 +86,8 @@ class TransactionMapperTest {
 
   @Test
   void toResponseDTO_ShouldReturnObjectTransactionResponseDTO() {
-    // Arrange
-    Transaction transaction = new Transaction(ID, AMOUNT, mockSenderDomain, mockReceiverDomain, TIMESTAMP);
-
     // Act
-    TransactionResponseDTO result = transactionMapper.toResponseDTO(transaction);
+    TransactionResponseDTO result = transactionMapper.toResponseDTO(mockTransaction);
 
     // Assert
     assertAll(
@@ -102,12 +105,11 @@ class TransactionMapperTest {
   @Test
   void toEntity_ShouldReturnObjectTransactionEntity() {
     // Arrange
-    Transaction transaction = new Transaction(ID, AMOUNT, mockSenderDomain, mockReceiverDomain, TIMESTAMP);
     when(userMapper.toEntity(mockSenderDomain)).thenReturn(mockSenderEntity);
     when(userMapper.toEntity(mockReceiverDomain)).thenReturn(mockReceiverEntity);
 
     // Act
-    TransactionEntity result = transactionMapper.toEntity(transaction);
+    TransactionEntity result = transactionMapper.toEntity(mockTransaction);
 
     // Assert
     assertAll(
