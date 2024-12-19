@@ -27,7 +27,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -40,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class TransactionControllerTest {
 
-  // Users
+  // Transaction
   private static final long ID_SENDER = 1L;
   public static final String FIRSTNAME_SENDER = "teste";
   private static final long ID_RECEIVER = 2L;
@@ -48,7 +50,6 @@ class TransactionControllerTest {
   private static final BigDecimal AMOUNT = new BigDecimal("100.00");
   public static final LocalDateTime TIMESTAMP = LocalDateTime.now();
 
-  // Transaction
   public static final long ID = 1L;
 
 
@@ -73,7 +74,6 @@ class TransactionControllerTest {
     mockTransactionResponse = new TransactionResponseDTO(
         ID, ID_SENDER, FIRSTNAME_SENDER, ID_RECEIVER, FIRSTNAME_RECEIVER, AMOUNT, TIMESTAMP
     );
-
   }
 
   @Test
@@ -103,9 +103,10 @@ class TransactionControllerTest {
   }
 
   @Test
+  @WithMockUser(username = "user@example.com", roles = "USER")
   void createTransaction_ShouldThrowException_WhenRequestFieldsAreInvalid() throws Exception {
     // Arrange
-    var invalidRequest = new TransactionRequestDTO(null, null, new BigDecimal("-50.00"));
+    TransactionRequestDTO invalidRequest = new TransactionRequestDTO(null, null, new BigDecimal("-50.00"));
 
     String invalidRequestJson = objectMapper.writeValueAsString(invalidRequest);
 
