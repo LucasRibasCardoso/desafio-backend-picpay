@@ -33,4 +33,7 @@ build/
 .vscode/
 
 ### Spring ###
-application.properties
+src/main/resources/application.properties
+
+### Arquivo de configuração de variáveis de ambiente
+.env
