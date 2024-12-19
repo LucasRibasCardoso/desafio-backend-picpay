@@ -1,8 +1,8 @@
 package com.picpaydesafio.demopicpaydesafio.application.exceptions;
 
-public class TokenExpiredException extends RuntimeException {
+public class CustomTokenExpiredException extends RuntimeException {
 
-  public TokenExpiredException(String message) {
+  public CustomTokenExpiredException(String message) {
     super(message);
   }
 
