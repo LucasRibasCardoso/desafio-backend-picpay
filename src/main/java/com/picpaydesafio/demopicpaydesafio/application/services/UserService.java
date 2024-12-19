@@ -9,5 +9,5 @@ public interface UserService {
   List<UserResponseDTO> findAllUsers();
   User findUserById(Long id);
   void saveUsersWithNewBalances(User sender, User receiver);
-
+  User findUserByEmail(String email);
 }

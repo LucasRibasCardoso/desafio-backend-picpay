@@ -48,6 +48,7 @@ public class UserEntity {
   @Enumerated(EnumType.STRING)
   private UserType userType;
 
+  @Enumerated(EnumType.STRING)
   private UserRole role;
 
   public UserEntity(Long id, String firstName, String lastName, String document, String email,

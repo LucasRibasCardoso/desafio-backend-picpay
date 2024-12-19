@@ -15,21 +15,6 @@ public class UserFactoryImp implements UserFactory {
 
 
   @Override
-  public User createDomain(UserRequestDTO userRequest) {
-    return new User(
-        null,
-        userRequest.firstName(),
-        userRequest.lastName(),
-        userRequest.document(),
-        userRequest.email(),
-        userRequest.password(),
-        new BigDecimal(0),
-        UserType.valueOf(userRequest.userType()),
-        UserRole.valueOf(userRequest.role())
-    );
-  }
-
-  @Override
   public User createDomain(UserRequestDTO userRequest, String encryptedPassword) {
     return new User(
         null,
@@ -38,7 +23,7 @@ public class UserFactoryImp implements UserFactory {
         userRequest.document(),
         userRequest.email(),
         encryptedPassword,
-        new BigDecimal(0),
+        userRequest.balance(),
         UserType.valueOf(userRequest.userType()),
         UserRole.valueOf(userRequest.role())
     );

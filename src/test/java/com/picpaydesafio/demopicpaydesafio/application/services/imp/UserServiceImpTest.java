@@ -3,6 +3,7 @@ package com.picpaydesafio.demopicpaydesafio.application.services.imp;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -146,6 +147,7 @@ class UserServiceImpTest {
 
     // Assert
     assertAll(
+        () -> assertNotNull(user),
         () -> assertInstanceOf(User.class, user),
         () -> assertEquals(mockUser1.getId(), user.getId()),
         () -> assertEquals(mockUser1.getFirstName(), user.getFirstName()),
@@ -183,5 +185,27 @@ class UserServiceImpTest {
     verify(userRepository).save(mockUser2);
   }
 
+  @Test
+  void findUserByEmail_ShouldReturnUser_WhenUserExists() {
+    // Arrange
+    when(userRepository.findByEmail(EMAIL_1)).thenReturn(Optional.of(mockUser1));
+
+    // Act
+    User user = userServiceImp.findUserByEmail(EMAIL_1);
+
+    // Assert
+    assertAll(
+        () -> assertNotNull(user),
+        () -> assertInstanceOf(User.class, user),
+        () -> assertEquals(mockUser1.getId(), user.getId()),
+        () -> assertEquals(mockUser1.getFirstName(), user.getFirstName()),
+        () -> assertEquals(mockUser1.getLastName(), user.getLastName()),
+        () -> assertEquals(mockUser1.getDocument(), user.getDocument()),
+        () -> assertEquals(mockUser1.getEmail(), user.getEmail()),
+        () -> assertEquals(mockUser1.getPassword(), user.getPassword()),
+        () -> assertEquals(mockUser1.getUserType(), user.getUserType()),
+        () -> assertEquals(mockUser1.getBalance(), user.getBalance())
+    );
+  }
 
 }

@@ -18,10 +18,8 @@ import org.springframework.stereotype.Service;
 public class UserServiceImp implements UserService {
 
   private final UserRepository userRepository;
-  private final UserFactory userFactory;
   private final UserMapper userMapper;
 
-  private final ValidateUserUseCase validateUserUseCase;
 
   @Override
   public List<UserResponseDTO> findAllUsers() {
@@ -40,5 +38,10 @@ public class UserServiceImp implements UserService {
     userRepository.save(receiver);
   }
 
+  @Override
+  public User findUserByEmail(String email) {
+    return userRepository.findByEmail(email)
+        .orElseThrow(() -> new UserNotFoundException("Usuário com email " + email + " não encontrado."));
+  }
 
 }

@@ -7,6 +7,5 @@ import org.springframework.stereotype.Component;
 @Component
 public interface UserFactory {
 
-  User createDomain(UserRequestDTO userRequest);
   User createDomain(UserRequestDTO userRequest, String encryptedPassword);;
 }

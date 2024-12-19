@@ -6,7 +6,6 @@ import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserTyp
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
-import lombok.NoArgsConstructor;
 import lombok.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -42,7 +41,8 @@ public class User implements UserDetails {
     if (!hasSufficientBalance(amount)) {
       throw new InsufficientFoundsException("Saldo insuficiente para realizar a transação.");
     }
-    return new User(id, firstName, lastName, document, email, password, balance.subtract(amount), userType, role);
+    return new User(
+        id, firstName, lastName, document, email, password, balance.subtract(amount), userType, role);
   }
 
   private boolean hasSufficientBalance(BigDecimal amount) {
@@ -51,12 +51,7 @@ public class User implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    if (this.role == UserRole.ADMIN) {
-      return List.of(new SimpleGrantedAuthority("ADMIN"), new SimpleGrantedAuthority("USER"));
-    }
-    else {
-      return List.of(new SimpleGrantedAuthority("USER"));
-    }
+    return List.of(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
   }
 
   @Override
@@ -83,4 +78,5 @@ public class User implements UserDetails {
   public boolean isEnabled() {
     return true;
   }
+
 }

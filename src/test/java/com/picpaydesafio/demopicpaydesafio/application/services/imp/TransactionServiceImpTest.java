@@ -3,6 +3,7 @@ package com.picpaydesafio.demopicpaydesafio.application.services.imp;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -26,6 +27,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @ExtendWith(MockitoExtension.class)
 class TransactionServiceImpTest {
@@ -81,6 +85,9 @@ class TransactionServiceImpTest {
   private User mockSender;
   private User mockReceiver;
 
+  private SecurityContext securityContext;
+  private Authentication authentication;
+
   @BeforeEach
   void setUp() {
     mockSender = new User(
@@ -95,6 +102,14 @@ class TransactionServiceImpTest {
 
     mockTransaction = new Transaction(ID_TRANSACTION, AMOUNT, mockSender, mockReceiver, TIMESTAMP);
     mockTransactionRequest = new TransactionRequestDTO(ID_1, ID_2, AMOUNT);
+
+    // Arrange de autenticação global
+    securityContext = mock(SecurityContext.class);
+    authentication = mock(Authentication.class);
+    SecurityContextHolder.setContext(securityContext);
+
+    when(authentication.getPrincipal()).thenReturn(mockSender);
+    when(securityContext.getAuthentication()).thenReturn(authentication);
   }
 
   @Test
