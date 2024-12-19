@@ -3,11 +3,10 @@ package com.picpaydesafio.demopicpaydesafio.application.services.imp;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserAlreadyExistsException;
 import com.picpaydesafio.demopicpaydesafio.application.services.AuthenticationService;
 import com.picpaydesafio.demopicpaydesafio.application.services.EmailValidatorService;
-import com.picpaydesafio.demopicpaydesafio.configs.security.TokenService;
 import com.picpaydesafio.demopicpaydesafio.domain.factories.UserFactory;
 import com.picpaydesafio.demopicpaydesafio.domain.models.User;
 import com.picpaydesafio.demopicpaydesafio.domain.repositoriesDomain.UserRepository;
-import com.picpaydesafio.demopicpaydesafio.web.dtos.AuthenticationDTO;
+import com.picpaydesafio.demopicpaydesafio.web.dtos.LoginRequestDTO;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.LoginResponseDTO;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.UserRequestDTO;
 import lombok.RequiredArgsConstructor;
@@ -23,22 +22,20 @@ public class AuthenticationServiceImp implements AuthenticationService {
 
   private final UserFactory userFactory;
   private final UserRepository userRepository;
-  private final EmailValidatorService emailValidatorService;
   private final PasswordEncoder passwordEncoder;
   private final AuthenticationManager authenticationManager;
-  private final TokenService tokenService;
+  private final TokenServiceImp tokenService;
+  private final EmailValidatorService emailValidatorService;
 
 
   @Override
-  public LoginResponseDTO login(AuthenticationDTO requestDTO) {
-    emailValidatorService.isValid(requestDTO.email());
-
+  public LoginResponseDTO login(LoginRequestDTO requestDTO) {
     var dataLogin = new UsernamePasswordAuthenticationToken(requestDTO.email(), requestDTO.password());
     var auth = this.authenticationManager.authenticate(dataLogin);
 
     User user = (User) auth.getPrincipal();
 
-    String token = tokenService.generateToken(user);
+    String token = tokenService.generateToken(user.getEmail(), user.getRole());
     return new LoginResponseDTO(token);
   }
 

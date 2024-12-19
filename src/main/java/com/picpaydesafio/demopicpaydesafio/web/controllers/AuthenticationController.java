@@ -1,7 +1,7 @@
 package com.picpaydesafio.demopicpaydesafio.web.controllers;
 
 import com.picpaydesafio.demopicpaydesafio.application.services.AuthenticationService;
-import com.picpaydesafio.demopicpaydesafio.web.dtos.AuthenticationDTO;
+import com.picpaydesafio.demopicpaydesafio.web.dtos.LoginRequestDTO;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.LoginResponseDTO;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.UserRequestDTO;
 import jakarta.validation.Valid;
@@ -20,7 +20,7 @@ public class AuthenticationController {
   private final AuthenticationService authenticationService;
 
   @PostMapping("/login")
-  public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthenticationDTO requestDTO) {
+  public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO requestDTO) {
     LoginResponseDTO responseTokenJWT = authenticationService.login(requestDTO);
     return ResponseEntity.ok(responseTokenJWT);
   }
