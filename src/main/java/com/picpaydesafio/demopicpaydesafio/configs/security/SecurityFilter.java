@@ -1,7 +1,8 @@
 package com.picpaydesafio.demopicpaydesafio.configs.security;
 
 
-import com.picpaydesafio.demopicpaydesafio.application.services.imp.AuthorizationServiceImp;
+import com.picpaydesafio.demopicpaydesafio.application.services.TokenService;
+import com.picpaydesafio.demopicpaydesafio.application.services.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class SecurityFilter extends OncePerRequestFilter {
 
   private final TokenService tokenService;
-  private final AuthorizationServiceImp authorizationService;
+  private final UserService userService;
 
   @Override
   protected void doFilterInternal(
@@ -30,7 +31,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     if (token != null) {
       String emailLogin = tokenService.validateToken(token);
-      UserDetails user = authorizationService.loadUserByUsername(emailLogin);
+      UserDetails user = userService.findUserByEmail(emailLogin);
 
       var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
       SecurityContextHolder.getContext().setAuthentication(authentication);
