@@ -1,12 +1,14 @@
 package com.picpaydesafio.demopicpaydesafio.web.exceptions;
 
+import com.picpaydesafio.demopicpaydesafio.application.exceptions.CustomTokenExpiredException;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidEmailException;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidSendEmailException;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.InsufficientFoundsException;
+import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidTokenException;
+import com.picpaydesafio.demopicpaydesafio.application.exceptions.TokenGenerationException;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.UnauthorizedTransactionException;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserAlreadyExistsException;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserNotFoundException;
-import com.picpaydesafio.demopicpaydesafio.configs.security.exeptions.GenerationTokenException;
 import com.picpaydesafio.demopicpaydesafio.domain.factories.imp.StandardErrorFactoryImp;
 import com.picpaydesafio.demopicpaydesafio.domain.factories.StandardError;
 import java.util.HashMap;
@@ -24,11 +26,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ExceptionsHandler {
 
   private final StandardErrorFactoryImp errorFactory;
-
-  public ResponseEntity<StandardError> generationTokenException(GenerationTokenException e) {
-    StandardError error = errorFactory.create(e.getMessage(), HttpStatus.UNAUTHORIZED);
-    return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-  }
 
   @ExceptionHandler(DataIntegrityViolationException.class)
   public ResponseEntity<StandardError> DataIntegrityViolationException() {
@@ -82,5 +79,36 @@ public class ExceptionsHandler {
     StandardError error = errorFactory.create(e.getMessage(), HttpStatus.BAD_REQUEST);
     return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
   }
+
+  @ExceptionHandler(CustomTokenExpiredException.class)
+  public ResponseEntity<StandardError> CustomTokenExpiredException(CustomTokenExpiredException e) {
+    StandardError error = errorFactory.create(e.getMessage(), HttpStatus.UNAUTHORIZED);
+    return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+  }
+
+  @ExceptionHandler(TokenGenerationException.class)
+  public ResponseEntity<StandardError> TokenGenerationException(TokenGenerationException e) {
+    StandardError error = errorFactory.create(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  @ExceptionHandler(InvalidTokenException.class)
+  public ResponseEntity<StandardError> InvalidTokenException(InvalidTokenException e) {
+    StandardError error = errorFactory.create(e.getMessage(), HttpStatus.UNAUTHORIZED);
+    return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+  }
+
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<StandardError> Exception(Exception e) {
+    StandardError error = errorFactory.create(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  @ExceptionHandler(RuntimeException.class)
+  public ResponseEntity<StandardError> RuntimeException(RuntimeException e) {
+    StandardError error = errorFactory.create(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
 
 }
