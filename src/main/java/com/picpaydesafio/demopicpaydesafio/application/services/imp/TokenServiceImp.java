@@ -6,6 +6,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.CustomTokenExpiredException;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidTokenException;
+import com.picpaydesafio.demopicpaydesafio.application.services.TokenService;
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserRole;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -15,11 +16,12 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 
 @Service
-public class TokenService {
+public class TokenServiceImp implements TokenService {
 
   @Value("${api.security.token.secret}")
   private String secret;
 
+  @Override
   public String generateToken(String email, UserRole role) {
     try {
       Algorithm algorithm = Algorithm.HMAC256(secret);
@@ -35,6 +37,7 @@ public class TokenService {
     }
   }
 
+  @Override
   public String validateToken(String token) {
     try {
       Algorithm algorithm = Algorithm.HMAC256(secret);
@@ -52,7 +55,7 @@ public class TokenService {
       return subject;
     }
     catch (TokenExpiredException exception) {
-      throw new CustomTokenExpiredException("O token JWT está invalido. Faça login novamente para renova-lo.");
+      throw new CustomTokenExpiredException("O token JWT está inválido. Faça login novamente para renova-lo.");
     }
     catch (JWTVerificationException exception) {
       throw new InvalidTokenException("Token JWT inválido. Motivo: " + exception.getMessage());
