@@ -3,8 +3,11 @@ package com.picpaydesafio.demopicpaydesafio.web.controllers;
 import com.picpaydesafio.demopicpaydesafio.application.services.AuthenticationService;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.LoginRequestDTO;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.LoginResponseDTO;
+import com.picpaydesafio.demopicpaydesafio.web.dtos.RegisterResponseDTO;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.UserRequestDTO;
 import jakarta.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,8 +29,9 @@ public class AuthenticationController {
   }
 
   @PostMapping("/register")
-  public ResponseEntity<Void> register(@RequestBody @Valid UserRequestDTO requestDTO) {
-    authenticationService.register(requestDTO);
-    return ResponseEntity.ok().build();
+  public ResponseEntity<RegisterResponseDTO> register(@RequestBody @Valid UserRequestDTO requestDTO) {
+    RegisterResponseDTO response = authenticationService.register(requestDTO);
+
+    return ResponseEntity.ok(response);
   }
 }

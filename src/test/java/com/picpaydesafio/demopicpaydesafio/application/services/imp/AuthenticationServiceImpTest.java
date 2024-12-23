@@ -12,6 +12,7 @@ import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserRol
 import com.picpaydesafio.demopicpaydesafio.infrastructure.entities.enums.UserType;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.LoginRequestDTO;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.LoginResponseDTO;
+import com.picpaydesafio.demopicpaydesafio.web.dtos.RegisterResponseDTO;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.UserRequestDTO;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.BeforeEach;
@@ -129,9 +130,11 @@ public class AuthenticationServiceImpTest {
     when(userRepository.save(mockUser)).thenReturn(mockUser);
 
     // Act
-    authenticationService.register(mockUserRequestDTO);
+    RegisterResponseDTO responseDTO = authenticationService.register(mockUserRequestDTO);
 
     // Assert
+    assertEquals("Usuário cadastrado com sucesso!", responseDTO.message());
+
     verify(userRepository).findByEmail(mockUserRequestDTO.email());
     verify(passwordEncoder).encode(mockUserRequestDTO.password());
     verify(userFactory).createDomain(mockUserRequestDTO, ENCRYPTED_PASSWORD);

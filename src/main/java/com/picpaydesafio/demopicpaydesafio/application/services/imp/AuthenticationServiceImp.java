@@ -8,6 +8,7 @@ import com.picpaydesafio.demopicpaydesafio.domain.models.User;
 import com.picpaydesafio.demopicpaydesafio.domain.repositoriesDomain.UserRepository;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.LoginRequestDTO;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.LoginResponseDTO;
+import com.picpaydesafio.demopicpaydesafio.web.dtos.RegisterResponseDTO;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.UserRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,7 +41,7 @@ public class AuthenticationServiceImp implements AuthenticationService {
   }
 
   @Override
-  public void register(UserRequestDTO requestDTO) {
+  public RegisterResponseDTO register(UserRequestDTO requestDTO) {
     emailValidatorService.isValid(requestDTO.email());
 
     if (this.userRepository.findByEmail(requestDTO.email()).isPresent()) {
@@ -51,5 +52,7 @@ public class AuthenticationServiceImp implements AuthenticationService {
     User newUser = userFactory.createDomain(requestDTO, encryptedPassword);
 
     this.userRepository.save(newUser);
+
+    return new RegisterResponseDTO("Usuário cadastrado com sucesso!");
   }
 }
