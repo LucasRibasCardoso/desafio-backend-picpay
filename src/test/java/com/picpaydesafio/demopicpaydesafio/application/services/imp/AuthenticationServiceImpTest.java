@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserAlreadyExistsException;
+import com.picpaydesafio.demopicpaydesafio.application.services.EmailValidatorService;
 import com.picpaydesafio.demopicpaydesafio.domain.factories.UserFactory;
 import com.picpaydesafio.demopicpaydesafio.domain.models.User;
 import com.picpaydesafio.demopicpaydesafio.domain.repositoriesDomain.UserRepository;
@@ -59,6 +60,9 @@ public class AuthenticationServiceImpTest {
   private AuthenticationManager authenticationManager;
 
   @Mock
+  private EmailValidatorService emailValidatorService;
+
+  @Mock
   private TokenServiceImp tokenService;
 
   @Mock
@@ -101,6 +105,7 @@ public class AuthenticationServiceImpTest {
   @Test
   void register_ShouldThrowException_WhenUserAlreadyExists() {
     // Arrange
+    when(emailValidatorService.isValid(mockUserRequestDTO.email())).thenReturn(true);
     when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(mockUser));
 
     // Act & Assert
@@ -117,6 +122,7 @@ public class AuthenticationServiceImpTest {
   @Test
   void registerSuccess() {
     // Arrange
+    when(emailValidatorService.isValid(mockUserRequestDTO.email())).thenReturn(true);
     when(userRepository.findByEmail(mockUserRequestDTO.email())).thenReturn(Optional.empty());
     when(passwordEncoder.encode(mockUserRequestDTO.password())).thenReturn(ENCRYPTED_PASSWORD);
     when(userFactory.createDomain(mockUserRequestDTO, ENCRYPTED_PASSWORD)).thenReturn(mockUser);
