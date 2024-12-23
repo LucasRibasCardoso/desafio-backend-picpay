@@ -1,5 +1,6 @@
 package com.picpaydesafio.demopicpaydesafio.application.services.imp;
 
+import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidCredentialsLoginException;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserAlreadyExistsException;
 import com.picpaydesafio.demopicpaydesafio.application.services.AuthenticationService;
 import com.picpaydesafio.demopicpaydesafio.application.services.EmailValidatorService;
@@ -10,8 +11,10 @@ import com.picpaydesafio.demopicpaydesafio.web.dtos.LoginRequestDTO;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.LoginResponseDTO;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.RegisterResponseDTO;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.UserRequestDTO;
+import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,13 +34,19 @@ public class AuthenticationServiceImp implements AuthenticationService {
 
   @Override
   public LoginResponseDTO login(LoginRequestDTO requestDTO) {
-    var dataLogin = new UsernamePasswordAuthenticationToken(requestDTO.email(), requestDTO.password());
-    var auth = this.authenticationManager.authenticate(dataLogin);
+    try {
+      var dataLogin = new UsernamePasswordAuthenticationToken(requestDTO.email(), requestDTO.password());
+      var auth = this.authenticationManager.authenticate(dataLogin);
 
-    User user = (User) auth.getPrincipal();
+      User user = (User) auth.getPrincipal();
 
-    String token = tokenService.generateToken(user.getEmail(), user.getRole());
-    return new LoginResponseDTO(token);
+      String token = tokenService.generateToken(user.getEmail(), user.getRole());
+      return new LoginResponseDTO(token);
+    }
+    catch (BadCredentialsException e) {
+      throw new InvalidCredentialsLoginException("Usuário ou senha incorretos.");
+    }
+
   }
 
   @Override

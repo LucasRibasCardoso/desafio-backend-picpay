@@ -6,8 +6,6 @@ import com.picpaydesafio.demopicpaydesafio.web.dtos.LoginResponseDTO;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.RegisterResponseDTO;
 import com.picpaydesafio.demopicpaydesafio.web.dtos.UserRequestDTO;
 import jakarta.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

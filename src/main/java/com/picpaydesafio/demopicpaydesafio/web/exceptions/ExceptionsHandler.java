@@ -1,6 +1,7 @@
 package com.picpaydesafio.demopicpaydesafio.web.exceptions;
 
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.CustomTokenExpiredException;
+import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidCredentialsLoginException;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidEmailException;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidSendEmailException;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.InsufficientFoundsException;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -110,5 +112,10 @@ public class ExceptionsHandler {
     return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
+  @ExceptionHandler(InvalidCredentialsLoginException.class)
+  public ResponseEntity<StandardError> RuntimeException(InvalidCredentialsLoginException e) {
+    StandardError error = errorFactory.create(e.getMessage(), HttpStatus.UNAUTHORIZED);
+    return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+  }
 
 }

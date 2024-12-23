@@ -3,6 +3,7 @@ package com.picpaydesafio.demopicpaydesafio.application.services.imp;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import com.picpaydesafio.demopicpaydesafio.application.exceptions.InvalidCredentialsLoginException;
 import com.picpaydesafio.demopicpaydesafio.application.exceptions.UserAlreadyExistsException;
 import com.picpaydesafio.demopicpaydesafio.application.services.EmailValidatorService;
 import com.picpaydesafio.demopicpaydesafio.domain.factories.UserFactory;
@@ -22,6 +23,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -101,6 +103,23 @@ public class AuthenticationServiceImpTest {
     assertEquals(FAKE_JWT_TOKEN, response.token());
     verify(authenticationManager).authenticate(dataLogin);
     verify(tokenService).generateToken(mockUser.getEmail(), mockUser.getRole());
+  }
+
+  @Test
+  void login_ShouldThrowException_WhenInvalidCredentials() {
+    // Arrange
+    var loginRequest = new LoginRequestDTO(EMAIL, "wrong_password");
+    when(authenticationManager.authenticate(any()))
+        .thenThrow(new BadCredentialsException("Invalid credentials"));
+
+    // Act & Assert
+    InvalidCredentialsLoginException exception = assertThrows(
+        InvalidCredentialsLoginException.class,
+        () -> authenticationService.login(loginRequest)
+    );
+    assertEquals("Usuário ou senha incorretos.", exception.getMessage());
+    verify(authenticationManager).authenticate(any());
+    verify(tokenService, never()).generateToken(any(), any());
   }
 
   @Test
