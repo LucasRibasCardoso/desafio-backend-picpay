@@ -92,7 +92,7 @@ Endpoint para efetuar login no sistema.
 
 **Respostas:**
 
-- `Suceso` - Caso os dados informados estejam corretos.
+- `Sucesso` - Caso os dados informados estejam corretos.
     
     ```java
     {
