@@ -2,6 +2,15 @@
 
 O sistema é uma api RESTFul que consiste em uma plataforma de pagamento simplificada. Nela é possível o usuário realizar transferências bancárias para outros usuários. Temos 2 tipos de usuários, comun e lojista, ambos possuem uma carteira.
 
+## Tecnologias utilizadas
+
+<p>
+  <img src="https://github.com/tandpfun/skill-icons/blob/main/icons/Java-Dark.svg" alt="CSS Icon" width="50" height="50">
+  <img src="https://github.com/tandpfun/skill-icons/blob/main/icons/Spring-Dark.svg" alt="HTML Icon" width="50" height="50">
+  <img src="https://github.com/tandpfun/skill-icons/blob/main/icons/MySQL-Dark.svg" alt="HTML Icon" width="50" height="50">
+  <img src="https://icon.icepanel.io/Technology/svg/JUnit.svg" alt="HTML Icon" width="50" height="50">
+</p>
+
 ## Regras de negócios
 
 - Usuários podem enviar dinheiro (efetuar transferência) para lojistas e entre usuários;
@@ -237,16 +246,6 @@ Endpoint para buscar todas as transações que o usuário efetuou. Permitido som
     ```java
     []
     ```
-    
-
-## Tecnologias utilizadas
-
-<p>
-  <img src="https://github.com/tandpfun/skill-icons/blob/main/icons/Java-Dark.svg" alt="CSS Icon" width="50" height="50">
-  <img src="https://github.com/tandpfun/skill-icons/blob/main/icons/Spring-Dark.svg" alt="HTML Icon" width="50" height="50">
-  <img src="https://github.com/tandpfun/skill-icons/blob/main/icons/MySQL-Dark.svg" alt="HTML Icon" width="50" height="50">
-  <img src="https://icon.icepanel.io/Technology/svg/JUnit.svg" alt="HTML Icon" width="50" height="50">
-</p>
 
 ## Instruções
 
